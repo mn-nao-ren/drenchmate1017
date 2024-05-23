@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "562802764387",
+    "project_id": "drenchmate2024",
+    "storage_bucket": "drenchmate2024.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:562802764387:android:96170e0f21305e98a7e656",
+        "android_client_info": {
+          "package_name": "com.example.drenchmate_2024"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBa-XUkI1YHc8zOxrb7yPLFyiYUpfBF9TQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
