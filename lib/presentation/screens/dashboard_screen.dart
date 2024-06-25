@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'base_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
+  const DashboardScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BaseScreen(

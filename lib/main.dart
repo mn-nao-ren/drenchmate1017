@@ -3,11 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'infrastructure/network/firebase_options.dart';
 import 'package:drenchmate_2024/presentation/screens/authentication_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/treatment_screen.dart';
-import 'package:drenchmate_2024/presentation/screens/splash_screen.dart';
+import 'package:drenchmate_2024/presentation/screens/home_landing_page.dart';
 import 'package:drenchmate_2024/presentation/screens/dashboard_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -27,9 +26,9 @@ class DrenchMateApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const SplashScreen(),
-        '/login': (context) => AuthenticationScreen(),
-        '/dashboard': (context) => DashboardScreen(),
+        '/': (context) => const HomePage(),
+        '/login': (context) => const AuthenticationScreen(),
+        '/dashboard': (context) => const DashboardScreen(),
         '/treatment': (context) => const TreatmentScreen(),
       },
     );
