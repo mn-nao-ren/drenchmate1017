@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:drenchmate_2024/presentation/screens/account_home_screen.dart';
+import 'package:drenchmate_2024/business_logic/controllers/compulsory_info_controller.dart';
 
 class CompulsoryInfoPage extends StatelessWidget {
+  final CompulsoryInfoController controller = CompulsoryInfoController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _contactNumberController = TextEditingController();
   late final String? _selectedRole;
@@ -46,7 +48,7 @@ class CompulsoryInfoPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
-          key: _formKey,
+          key: controller.formKey,
           child: Column(
             children: [
               const SizedBox(height: 20),
@@ -61,14 +63,14 @@ class CompulsoryInfoPage extends StatelessWidget {
                   );
                 }).toList(),
                 onChanged: (value) {
-                  _selectedRole = value;
+                  controller.selectedRole = value;
                 },
                 validator: (value) => value == null ? 'Please select a role' : null,
               ),
               const SizedBox(height: 20),
               // Contact number input
               TextFormField(
-                controller: _contactNumberController,
+                controller: controller.contactNumberController,
                 decoration: const InputDecoration(
                   labelText: 'Enter your contact number',
                   border: OutlineInputBorder(),
@@ -83,7 +85,16 @@ class CompulsoryInfoPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () => _saveCompulsoryInfo(context),
+                onPressed: () async {
+                  User? user = FirebaseAuth.instance.currentUser;
+                  if (user != null) {
+                    await controller.saveCompulsoryInfo(context, user);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('User not logged in')),
+                    );
+                  }
+                },
                 child: const Text('Submit'),
               ),
             ],

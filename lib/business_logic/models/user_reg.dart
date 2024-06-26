@@ -8,6 +8,13 @@ class UserReg {
 
   UserReg({required this.username, required this.password, required this.email, required this.createdAt});
 
+  Map<String, dynamic> toMap() {
+    return {
+      'username': username,
+      'password': password,
+    };
+  }
+
   // Factory constructor to create a UserReg from a JSON object
   factory UserReg.fromJson(Map<String, dynamic> json) {
     return UserReg(

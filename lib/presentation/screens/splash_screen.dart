@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'base_screen.dart';
 import 'package:drenchmate_2024/business_logic/services/auth_service.dart';
 

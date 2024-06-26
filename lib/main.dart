@@ -6,7 +6,7 @@ import 'package:drenchmate_2024/presentation/screens/treatment_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/home_landing_page.dart';
 import 'package:drenchmate_2024/presentation/screens/dashboard_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/compulsory_info.dart';
-
+import 'package:drenchmate_2024/presentation/screens/account_home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +33,7 @@ class DrenchMateApp extends StatelessWidget {
         '/dashboard': (context) => const DashboardScreen(),
         '/treatment': (context) => const TreatmentScreen(),
         '/compulsory_info': (context) => CompulsoryInfoPage(),
+        // '/accountHome': (context) => AccountHomeScreen(),
       },
     );
   }
