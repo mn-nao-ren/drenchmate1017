@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:drenchmate_2024/presentation/screens/login_page.dart';
 
 
 
@@ -37,7 +38,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.asset('assets/drench_mate_logo.jpg', height: 360),
+              Image.asset('assets/drench_mate_logo.jpg', height: 320),
               const SizedBox(height: 20),
               Center(
                 child: Text(
@@ -61,7 +62,7 @@ class HomePage extends StatelessWidget {
                 ),
                 onPressed: () {
                   // Handle login navigation
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
                 },
                 icon: const Icon(Icons.login),
                 label: const Text('Already have an account? Login Here!', style: TextStyle(fontSize: 15, color: Colors.white)),
@@ -137,18 +138,4 @@ class SocialLoginButton extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Page'),
-      ),
-      body: const Center(
-        child: Text('Login Form Here'),
-      ),
-    );
-  }
-}

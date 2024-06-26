@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:drenchmate_2024/business_logic/models/UserReg.dart';
+import 'package:drenchmate_2024/business_logic/models/user_reg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
@@ -29,11 +29,13 @@ class AuthService {
     return _auth.currentUser != null;
   }
 
-  Future<void> createAccount(BuildContext context, UserReg user) async {
 
+
+  Future<User?> createAccount(BuildContext context, UserReg user) async {
     try {
       // Create user with Firebase Authentication
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
         email: user.email,
         password: user.password,
       );
@@ -42,14 +44,23 @@ class AuthService {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Account created successfully!')),
       );
+      Navigator.pushReplacementNamed(context, '/compulsory_info');
 
-      // Save user details to Firestore
-      await _firestore.collection('users').doc(userCredential.user?.uid).set(user.toJson());
+      // add createdAt timestamp to user details
+      user.createdAt = Timestamp.now();
 
-      // Navigate to another page or reset form (optional)
-      // Navigator.pushReplacementNamed(context, '/home');
+      // Save user details to Firestore and wait for explicit confirmation
+      await _firestore
+          .collection('users')
+          .doc(userCredential.user?.uid)
+          .set(user.toJson())
+          .then((_) => _handleFirestoreSuccess(context))
+          .catchError((error) => _handleFirestoreError(context, error));
+
+      return userCredential.user;
 
     } on FirebaseAuthException catch (e) {
+
       String message;
       if (e.code == 'email-already-in-use') {
         message = 'The email is already in use.';
@@ -61,10 +72,27 @@ class AuthService {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message)),
       );
+      return null;
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('An error occurred: $e')),
       );
+      return null;
     }
+  }
+
+  // createAccount's encapsulated methods
+  void _handleFirestoreSuccess(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Account created and data saved successfully!')),
+    );
+    // Optionally reset the form or navigate to another page
+    Navigator.pushReplacementNamed(context, '/compulsory_info');
+  }
+
+  void _handleFirestoreError(BuildContext context, dynamic error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to save user data: $error')),
+    );
   }
 }

@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/business_logic/services/auth_service.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:drenchmate_2024/business_logic/models/UserReg.dart';
+import 'package:drenchmate_2024/business_logic/models/user_reg.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -185,6 +186,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
       username: _usernameController.text,
       password: _passwordController.text,
       email: _emailController.text,
+      createdAt: Timestamp.now(),
     );
     try {
       await _authService.createAccount(context, newUser);
