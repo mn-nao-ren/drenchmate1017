@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/business_logic/controllers/login_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:drenchmate_2024/presentation/components/rounded_button.dart';
+import 'package:drenchmate_2024/presentation/components/constants.dart';
+import 'account_home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -12,6 +14,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _auth = FirebaseAuth.instance;
+  late String email;
+  late String password;
   final LoginController _controller = LoginController();
   final _formKey = GlobalKey<FormState>();
 
@@ -43,45 +48,40 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _controller.usernameController,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.person),
-                      labelText: 'Enter your username',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    validator: (value) => _controller.validateUsername(value!),
+                  TextField(
+                    keyboardType: TextInputType.emailAddress,
+                    textAlign: TextAlign.center,
+                    onChanged: (value) {
+                      email = value;
+                    },
+                    decoration:
+                      kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
                   ),
                   const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _controller.passwordController,
+                  TextField(
                     obscureText: true,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock),
-                      labelText: 'Enter your password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      suffixIcon: const Icon(Icons.visibility),
-                    ),
-                    validator: (value) => _controller.validatePassword(value!),
+                    textAlign: TextAlign.center,
+                    onChanged: (value) {
+                      password = value;
+                    },
+                    decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your password'),
                   ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
+                  RoundedButton(
+                    title: 'Log In',
+                    color: Colors.lightBlueAccent,
                     onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        User? user = await _controller.loginUser(context);
+                      try {
+                        final user = await _auth.signInWithEmailAndPassword(
+                            email: email, password: password);
                         if (user != null) {
-
+                          Navigator.pushNamed(context, AccountHomeScreen.id);
                         }
                       }
+                      catch (e) {
+                        // print(e);
+                      }
                     },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                    ),
-                    child: const Text('Continue'),
                   ),
                 ],
               ),
