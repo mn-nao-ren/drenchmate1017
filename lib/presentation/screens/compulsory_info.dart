@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:drenchmate_2024/presentation/screens/account_home_screen.dart';
 import 'package:drenchmate_2024/business_logic/controllers/compulsory_info_controller.dart';
 
 class CompulsoryInfoPage extends StatelessWidget {

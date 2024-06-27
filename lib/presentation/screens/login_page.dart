@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/business_logic/controllers/login_controller.dart';
-import 'package:drenchmate_2024/presentation/screens/account_home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+
 class LoginScreen extends StatefulWidget {
+  static const String id = 'login_screen';
   const LoginScreen({super.key});
 
   @override

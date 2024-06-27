@@ -178,10 +178,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 try {
                   final newUser = await _auth.createUserWithEmailAndPassword(
                       email: email, password: password);
-                  if (newUser != null) {
-                    Navigator.pushNamed(context, AccountHomeScreen.id);
-                  }
-                }
+                  Navigator.pushNamed(context, AccountHomeScreen.id);
+                                }
                 catch (e) {
                   print(e);
                 }

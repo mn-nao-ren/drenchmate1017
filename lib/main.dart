@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'infrastructure/network/firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:drenchmate_2024/presentation/screens/authentication_screen.dart';
-import 'package:drenchmate_2024/presentation/screens/treatment_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/home_landing_page.dart';
-import 'package:drenchmate_2024/presentation/screens/dashboard_screen.dart';
-import 'package:drenchmate_2024/presentation/screens/compulsory_info.dart';
 import 'package:drenchmate_2024/presentation/screens/account_home_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/email_registration_page.dart';
 
@@ -33,7 +28,7 @@ class DrenchMateApp extends StatelessWidget {
       routes: {
         HomePage.id: (context) => const HomePage(),
         RegistrationPage.id: (context) => const RegistrationPage(),
-        AccountHomeScreen.id: (context) => AccountHomeScreen(),
+        AccountHomeScreen.id: (context) => const AccountHomeScreen(),
       },
     );
   }
