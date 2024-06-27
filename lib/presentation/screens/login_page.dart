@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:drenchmate_2024/business_logic/controllers/login_controller.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:drenchmate_2024/presentation/components/rounded_button.dart';
 import 'package:drenchmate_2024/presentation/components/constants.dart';
@@ -17,12 +17,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuth.instance;
   late String email;
   late String password;
-  final LoginController _controller = LoginController();
+
   final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    _controller.dispose();
+
     super.dispose();
   }
 
