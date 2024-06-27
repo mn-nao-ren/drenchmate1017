@@ -1,72 +1,110 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AccountHomeScreen extends StatelessWidget{
-  final User user;
-  const AccountHomeScreen({super.key, required this.user});
+class AccountHomeScreen extends StatefulWidget {
+  static String id = 'account_home_screen';
+
+  const AccountHomeScreen({super.key});
+  @override
+  _AccountHomeScreenState createState() => _AccountHomeScreenState();
+}
+
+class _AccountHomeScreenState extends State<AccountHomeScreen> {
+  final _auth = FirebaseAuth.instance;
+  late User loggedInUser;
+
+  void getCurrentUser() async {
+    try {
+      final user = await _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+        //print(loggedInUser.email);
+      }
+    } catch (e) {
+      //print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Account Home'),
       ),
-      body: FutureBuilder<DocumentSnapshot>(
-        future: FirebaseFirestore.instance.collection('users').doc(user.uid).get(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
-          if (!snapshot.hasData || !snapshot.data!.exists) {
-            return const Center(child: Text('User data not found'));
-          }
-
-          var userData = snapshot.data!.data() as Map<String, dynamic>;
-          var username = userData['username'] ?? 'User';
-
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Welcome, $username', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 20),
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    children: [
-                      _buildMenuButton(context, 'Mob Status Overview'),
-                      _buildMenuButton(context, 'Chemical Setup'),
-                      _buildMenuButton(context, 'View Weather'),
-                      _buildMenuButton(context, 'Drenching Setup'),
-                      _buildMenuButton(context, 'Mob Setup'),
-                      _buildMenuButton(context, 'Notifications'),
-                      _buildMenuButton(context, 'Property Setup'),
-                      _buildMenuButton(context, 'Profile Matters'),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            const SizedBox(height: 20),
+            ..._menuButtons.map((title) => _buildMenuButton(context, title)),
+          ],
+        ),
       ),
     );
   }
+
+  final List<String> _menuButtons = [
+    'Mob Status Overview',
+    'Chemical Setup',
+    'View Weather',
+    'Drenching Setup',
+    'Mob Setup',
+    'Notifications',
+    'Property Setup',
+    'Profile Matters',
+  ];
 
   Widget _buildMenuButton(BuildContext context, String title) {
-    return ElevatedButton(
-      onPressed: () {
-        // Navigate to respective screens
-      },
-      child: Text(title, textAlign: TextAlign.center),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PlaceholderScreen(title)),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blueAccent, // Background color
+          foregroundColor: Colors.white, // Text color
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 12),
+        ),
+        child: Text(
+          title,
+          style: const TextStyle(fontSize: 16),
+        ),
+      ),
     );
   }
+}
 
+class PlaceholderScreen extends StatelessWidget {
+  final String title;
+
+  const PlaceholderScreen(this.title, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: Center(
+        child: Text(
+          'This is the $title screen',
+          style: const TextStyle(fontSize: 24),
+        ),
+      ),
+    );
+  }
 }

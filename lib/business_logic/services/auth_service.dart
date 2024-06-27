@@ -29,16 +29,17 @@ class AuthService {
     return _auth.currentUser != null;
   }
 
+  Future<void> registerUser(UserReg user) async {
+    await _firestore.collection('users').doc(user.email).set(user.toMap());
+  }
+
+
+
 
 
   Future<User?> createAccount(BuildContext context, UserReg user) async {
     try {
       // Create user with Firebase Authentication
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-        email: user.email,
-        password: user.password,
-      );
 
       // Show success message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -50,14 +51,9 @@ class AuthService {
       user.createdAt = Timestamp.now();
 
       // Save user details to Firestore and wait for explicit confirmation
-      await _firestore
-          .collection('users')
-          .doc(userCredential.user?.uid)
-          .set(user.toJson())
-          .then((_) => _handleFirestoreSuccess(context))
-          .catchError((error) => _handleFirestoreError(context, error));
 
-      return userCredential.user;
+
+      // return user
 
     } on FirebaseAuthException catch (e) {
 
@@ -79,6 +75,7 @@ class AuthService {
       );
       return null;
     }
+    return null;
   }
 
   // createAccount's encapsulated methods

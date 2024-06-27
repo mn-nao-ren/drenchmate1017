@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drenchmate_2024/presentation/screens/account_home_screen.dart';
+// import 'package:drenchmate_2024/presentation/screens/account_home_screen.dart';
 import 'package:drenchmate_2024/business_logic/models/user_role_contact.dart';
 
 class CompulsoryInfoController {
@@ -9,33 +9,43 @@ class CompulsoryInfoController {
   final TextEditingController contactNumberController = TextEditingController();
   String? selectedRole;
 
-  Future<void> saveCompulsoryInfo(BuildContext context, User user) async {
+
+  Future<void> registerAndSaveInfo(BuildContext context) async {
     if (formKey.currentState!.validate()) {
-      UserRoleContact userInfo = UserRoleContact(
-        contactNumber: contactNumberController.text,
-        role: selectedRole ?? '',
-      );
+      try {
+        //String email = emailController.text.trim();
 
-      if (userInfo.isValid()) {
-        try {
-          await FirebaseFirestore.instance.collection('users').doc(user.uid).set(userInfo.toMap(), SetOptions(merge: true));
+        // Register the user using FirebaseAuth
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: 'user@example.com', // Replace with actual email input from user
+          password: 'password123',   // Replace with actual password input from user
+        );
+        User? user = userCredential.user;
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Information saved successfully')),
+        if (user != null) {
+          UserRoleContact userInfo = UserRoleContact(
+            contactNumber: contactNumberController.text,
+            role: selectedRole ?? '',
           );
 
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => AccountHomeScreen(user: user)),
-          );
-        } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Failed to save information. Please try again later.')),
-          );
+          if (userInfo.isValid()) {
+            await FirebaseFirestore.instance.collection('users').doc(user.uid).set(userInfo.toMap(), SetOptions(merge: true));
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Information saved successfully')),
+            );
+
+            // Navigate to AccountHomeScreen
+            Navigator.pushReplacementNamed(context, '/accountHome', arguments: user);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Please fill in all required fields.')),
+            );
+          }
         }
-      } else {
+      } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please fill in all required fields.')),
+          SnackBar(content: Text('Registration failed: $e')),
         );
       }
     }

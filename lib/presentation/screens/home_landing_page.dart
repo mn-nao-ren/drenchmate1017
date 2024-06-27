@@ -6,27 +6,13 @@ import 'package:drenchmate_2024/presentation/screens/login_page.dart';
 
 import 'email_registration_page.dart';
 
-void main() {
-  runApp(const DrenchMateApp());
-}
 
-class DrenchMateApp extends StatelessWidget {
-  const DrenchMateApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Drench Mate',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomePage(),
-    );
-  }
-}
 
 class HomePage extends StatelessWidget {
+
   const HomePage({super.key});
+
+  static String id = 'home_page';
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +53,9 @@ class HomePage extends StatelessWidget {
                 icon: const Icon(Icons.login),
                 label: const Text('Already have an account? Login Here!', style: TextStyle(fontSize: 15, color: Colors.white)),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               const Text('or', style: TextStyle(fontSize: 16, color: Colors.blueGrey)),
+              const SizedBox(height: 10),
               Text(
                 'Create your account',
                 style: TextStyle(
@@ -76,7 +63,7 @@ class HomePage extends StatelessWidget {
                   color: Colors.grey[600],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

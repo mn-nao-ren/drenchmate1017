@@ -27,10 +27,7 @@ class CompulsoryInfoPage extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Information saved successfully')),
         );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => AccountHomeScreen(user: user)),
-        );
+
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('User not logged in')),
@@ -86,14 +83,7 @@ class CompulsoryInfoPage extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  User? user = FirebaseAuth.instance.currentUser;
-                  if (user != null) {
-                    await controller.saveCompulsoryInfo(context, user);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('User not logged in')),
-                    );
-                  }
+                  await controller.registerAndSaveInfo(context);
                 },
                 child: const Text('Submit'),
               ),

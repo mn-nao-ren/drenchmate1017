@@ -73,12 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (_formKey.currentState!.validate()) {
                         User? user = await _controller.loginUser(context);
                         if (user != null) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AccountHomeScreen(user: user),
-                            ),
-                          );
+
                         }
                       }
                     },
