@@ -35,7 +35,19 @@ class _AccountHomeScreenState extends State<AccountHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: null,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.logout_sharp),
+            onPressed: () {
+              _auth.signOut();
+              Navigator.pop(context);
+            }
+          ),
+        ],
+
         title: const Text('Account Home'),
+        backgroundColor: Colors.grey,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

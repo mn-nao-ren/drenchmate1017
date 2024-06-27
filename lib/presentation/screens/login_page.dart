@@ -74,10 +74,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       try {
                         final user = await _auth.signInWithEmailAndPassword(
                             email: email, password: password);
-                        if (user != null) {
-                          Navigator.pushNamed(context, AccountHomeScreen.id);
-                        }
-                      }
+                        Navigator.pushNamed(context, AccountHomeScreen.id);
+                                            }
                       catch (e) {
                         // print(e);
                       }
