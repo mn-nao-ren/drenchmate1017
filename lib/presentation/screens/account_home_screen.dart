@@ -47,7 +47,8 @@ class _AccountHomeScreenState extends State<AccountHomeScreen> {
         ],
 
         title: const Text('Account Home'),
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

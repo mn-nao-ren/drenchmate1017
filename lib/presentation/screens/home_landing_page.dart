@@ -6,8 +6,6 @@ import 'package:drenchmate_2024/presentation/screens/login_page.dart';
 
 import 'email_registration_page.dart';
 
-
-
 class HomePage extends StatelessWidget {
 
   const HomePage({super.key});
@@ -53,9 +51,9 @@ class HomePage extends StatelessWidget {
                 icon: const Icon(Icons.login),
                 label: const Text('Already have an account? Login Here!', style: TextStyle(fontSize: 15, color: Colors.white)),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               const Text('or', style: TextStyle(fontSize: 16, color: Colors.blueGrey)),
-              const SizedBox(height: 10),
+
               Text(
                 'Create your account',
                 style: TextStyle(
