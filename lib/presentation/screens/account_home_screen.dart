@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:drenchmate_2024/presentation/screens/create_profile.dart'; // class name CreateProfileScreen
-import 'package:drenchmate_2024/main.dart';
 
 class AccountHomeScreen extends StatefulWidget {
   static String id = 'account_home_screen';
@@ -49,6 +48,7 @@ class _AccountHomeScreenState extends State<AccountHomeScreen> {
         ],
 
         title: const Text('Account Home'),
+        centerTitle: true,
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
       ),

@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class Profile {
   final int profileID;
   final int userID;
   final String profileName;
-  final String permissions;
+  late List<String> permissions = [];
   final DateTime createdAt;
 
   Profile({
@@ -22,7 +21,7 @@ class Profile {
       profileID: json['profileID'] as int,
       userID: json['userID'] as int,
       profileName: json['profileName'] as String,
-      permissions: json['permissions'] as String,
+      permissions: (json['permissions'] as List<dynamic>).map((e) => e as String).toList(),
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }
@@ -44,7 +43,7 @@ class Profile {
       profileID: map['profileID'] as int,
       userID: map['userID'] as int,
       profileName: map['profileName'] as String,
-      permissions: map['permissions'] as String,
+      permissions: List<String>.from(map['permissions']),
       createdAt: DateTime.parse(map['createdAt'] as String),
     );
   }

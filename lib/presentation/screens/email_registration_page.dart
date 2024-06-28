@@ -1,6 +1,5 @@
 import 'package:drenchmate_2024/presentation/screens/account_home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:drenchmate_2024/business_logic/services/auth_service.dart';
 import 'package:drenchmate_2024/presentation/components/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -170,10 +169,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   try {
                     final newUser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: password);
-                    if (newUser != null) {
-                      Navigator.pushNamed(context, AccountHomeScreen.id);
-                    }
-                    setState(() {
+                    Navigator.pushNamed(context, AccountHomeScreen.id);
+                                      setState(() {
                       showSpinner = false;
                     });
                   } catch (e) {
