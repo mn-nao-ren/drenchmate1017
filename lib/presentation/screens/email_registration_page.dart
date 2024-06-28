@@ -47,6 +47,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
   late String password;
   late String? role;
   late String contactNumber;
+
+  // the not so important attributes
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _agreeToTerms = false;
 

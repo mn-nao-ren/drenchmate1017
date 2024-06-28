@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:drenchmate_2024/presentation/screens/create_profile.dart'; // class name CreateProfileScreen
+import 'package:drenchmate_2024/main.dart';
 
 class AccountHomeScreen extends StatefulWidget {
   static String id = 'account_home_screen';
@@ -65,24 +67,32 @@ class _AccountHomeScreenState extends State<AccountHomeScreen> {
 
   final List<String> _menuButtons = [
     'Mob Status Overview',
+    'Create Profile',
     'Chemical Setup',
     'View Weather',
     'Drenching Setup',
     'Mob Setup',
     'Notifications',
     'Property Setup',
-    'Profile Matters',
   ];
+
+  final Map<String, String> _routes = {
+    'Create Profile': CreateProfileScreen.id,
+    // 'Mob Status Overview': 'mob_status_overview_screen',
+    // 'Chemical Setup': 'chemical_setup_screen',
+    // 'View Weather': 'view_weather_screen',
+    // 'Drenching Setup': 'drenching_setup_screen',
+    // 'Mob Setup': 'mob_setup_screen',
+    // 'Notifications': 'notifications_screen',
+    // 'Property Setup': 'property_setup_screen',
+  };
 
   Widget _buildMenuButton(BuildContext context, String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PlaceholderScreen(title)),
-          );
+          Navigator.pushNamed(context, _routes[title]!);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blueAccent, // Background color
@@ -101,23 +111,4 @@ class _AccountHomeScreenState extends State<AccountHomeScreen> {
   }
 }
 
-class PlaceholderScreen extends StatelessWidget {
-  final String title;
 
-  const PlaceholderScreen(this.title, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Center(
-        child: Text(
-          'This is the $title screen',
-          style: const TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
