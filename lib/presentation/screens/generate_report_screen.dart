@@ -1,5 +1,6 @@
 // generate_report.dart
 import 'dart:collection';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class GenerateReportScreen extends StatefulWidget {
@@ -12,20 +13,31 @@ class GenerateReportScreen extends StatefulWidget {
 class _GenerateReportScreenState extends State<GenerateReportScreen> {
   String? selectedProperty;
   String? selectedMob;
-  //List<String> properties = [];
-  //List<String> mobs = [];
+  List<String> properties = [];
+  List<String> mobs = [];
 
-  final List<String> properties = [
-    'Property 1',
-    'Property 2',
-    'Property 3',
-  ];
+  @override
+  void initState() {
+    super.initState();
+    fetchProperties();
+    fetchMobs();
+  }
 
-  final List<String> mobs = [
-    'Mob 1',
-    'Mob 2',
-    'Mob 3',
-  ];
+  Future<void> fetchProperties() async {
+    final QuerySnapshot result = await FirebaseFirestore.instance.collection('properties').get();
+    final List<DocumentSnapshot> documents = result.docs;
+    setState(() {
+      properties = documents.map((doc) => doc['name'] as String).toList();
+    });
+  }
+
+  Future<void> fetchMobs() async {
+    final QuerySnapshot result = await FirebaseFirestore.instance.collection('mobs').get();
+    final List<DocumentSnapshot> documents = result.docs;
+    setState(() {
+      mobs = documents.map((doc) => doc['name'] as String).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
