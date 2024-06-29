@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart';
+
 
 class AccountHomeScreen extends StatefulWidget {
   static String id = 'account_home_screen';
@@ -71,6 +73,7 @@ class _AccountHomeScreenState extends State<AccountHomeScreen> {
     'Notifications',
     'Property Setup',
     'Profile Matters',
+    'Generate Report',
   ];
 
   Widget _buildMenuButton(BuildContext context, String title) {
@@ -78,9 +81,17 @@ class _AccountHomeScreenState extends State<AccountHomeScreen> {
       padding: const EdgeInsets.only(bottom: 10),
       child: ElevatedButton(
         onPressed: () {
+          Widget destination;
+          switch (title) {
+            case 'Generate Report':
+            destination = GenerateReportScreen();
+            break;
+            default:
+              destination = PlaceholderScreen(title);
+          }
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PlaceholderScreen(title)),
+            MaterialPageRoute(builder: (context) => destination),
           );
         },
         style: ElevatedButton.styleFrom(
