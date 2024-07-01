@@ -7,6 +7,7 @@ import 'package:drenchmate_2024/presentation/components/header.dart';
 import 'package:drenchmate_2024/presentation/components/shortcuts_grid.dart';
 
 class DashboardView extends StatefulWidget {
+  static String id = 'dashboard_page';
   const DashboardView({super.key});
 
   @override

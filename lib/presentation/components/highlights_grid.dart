@@ -8,7 +8,7 @@ class HighlightsGrid extends StatelessWidget {
   final List<String> highlights = ['Mobs', 'Property', 'Drench'];
   final List<String> buttonText = ['Setup a Mob', 'Setup a Property', 'Setup a Drench'];
   final List<String> nextPage = [];
-  final List<Color> colors =  [Colors.grey, Colors.lightBlue, Colors.blue];
+  final List<Color> colors =  [Colors.grey, Colors.green, Colors.blue];
   final List<Image> icons = [
     Image.asset('assets/icon/mob.png'),
     Image.asset('assets/icon/property.png'),
@@ -24,44 +24,45 @@ class HighlightsGrid extends StatelessWidget {
         shrinkWrap: true,
         itemCount: highlights.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 3,
+            crossAxisCount: 2,
+            childAspectRatio: 3,
           crossAxisSpacing: 6,
           mainAxisSpacing: 5,
         ),
 
         itemBuilder: (context, index) {
-          return Card(
-            color: colors[index],
+          return Container(
+            height: 100.0,
+            margin: const EdgeInsets.all(1.0),
+            child: Card(
+              color: colors[index],
+              elevation: 8.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6.0),
+              ),
+              margin: const EdgeInsets.all(1.0),
 
-            elevation: 8.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            margin: const EdgeInsets.all(20.0),
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  icons[index],
-                  Text(
+
+
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+
+                  title: Text(
                     highlights[index],
-                    style: GoogleFonts.lato(
+                    style: GoogleFonts.dangrek(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 32,
                       fontWeight: FontWeight.w300,
                     ),
                   ),
-                  // DataDisplaySection(),
-                  RoundedButton(
-                    title: buttonText[index],
-                    color: Colors.blue,
-                    onPressed: () async {
-                      // navigate to individual pages
-                    },
-                  ),
-                ],
-              )
-            )
+
+                  trailing: Icon(
+                    Icons.smart_display,
+                    color: Colors.grey[800],
+                  )
+                )
+
+            ),
           );
         },
       )

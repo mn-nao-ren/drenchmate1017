@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:drenchmate_2024/presentation/components/rounded_button.dart';
 import 'package:drenchmate_2024/presentation/components/constants.dart';
 import 'account_home_screen.dart';
+import 'dashboard_view.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -73,9 +74,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       try {
                         final user = await _auth.signInWithEmailAndPassword(
-                            email: email, password: password);
-                        Navigator.pushNamed(context, AccountHomeScreen.id);
-                                            }
+                            email: email, password: password
+                        );
+
+                        Navigator.pushNamed(context, DashboardView.id);
+                      }
                       catch (e) {
                         // print(e);
                       }

@@ -4,6 +4,7 @@ import 'infrastructure/network/firebase_options.dart';
 import 'package:drenchmate_2024/presentation/screens/home_landing_page.dart';
 import 'package:drenchmate_2024/presentation/screens/account_home_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/email_registration_page.dart';
+import 'package:drenchmate_2024/presentation/screens/dashboard_view.dart';
 // import 'package:drenchmate_2024/presentation/screens/create_profile.dart'; // class name CreateProfileScreen
 
 void main() async {
@@ -29,6 +30,8 @@ class DrenchMateApp extends StatelessWidget {
         HomePage.id: (context) => const HomePage(),
         RegistrationPage.id: (context) => const RegistrationPage(),
         AccountHomeScreen.id: (context) => const AccountHomeScreen(),
+        DashboardView.id: (context) => const DashboardView(),
+
         // CreateProfileScreen.id: (context) => const CreateProfileScreen(),
       },
     );
