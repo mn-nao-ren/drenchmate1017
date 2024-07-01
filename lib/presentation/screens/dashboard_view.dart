@@ -19,17 +19,17 @@ class DashboardController extends State<DashboardView> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: const DashboardAppBar(),
+        appBar: const DashboardAppbar(),
         body: ListView(
             children: [
               DashboardHeader(pageController: pageController),
               const SizedBox(height: 15),
               const Header(headerTitle: 'Highlights'),
               const SizedBox(height: 4),
-              const HighlightsGrid(),
+              HighlightsGrid(),
               const SizedBox(height: 4),
               const Header(headerTitle: 'ShortCuts'),
-              const ShortcutsGrid(),
+              ShortcutsGrid(),
 
             ],
         ),
