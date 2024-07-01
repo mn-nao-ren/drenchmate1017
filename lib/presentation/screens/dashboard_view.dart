@@ -68,21 +68,30 @@ class DashboardScreen extends StatelessWidget {
                     icon: 'assets/icon/mob.png',
                     title: 'Mobs Info',
                     subtitle: 'display latest from db',
-                    onTap: () {},
+                    buttonText: 'Set up a Mob',
+                    onButtonPressed: () {
+                      // add actions
+                    },
                   ),
                   HighlightCard(
                     color: Colors.black,
                     icon: 'assets/icon/drench.png',
                     title: "Drench Info",
                     subtitle: 'Next drenching in 30 days',
-                    onTap: () {},
+                    buttonText: 'Set up a Drench',
+                    onButtonPressed: () {
+                      // add action
+                    },
                   ),
                   HighlightCard(
-                    color: Colors.blue.shade600,
+                    color: Colors.blue.shade900,
                     icon: 'assets/icon/property.png',
                     title: 'Property Info',
                     subtitle: '5 Mobs',
-                    onTap: () {},
+                    buttonText: 'Set up a Property',
+                    onButtonPressed: () {
+                      // add action
+                    },
                   ),
                 ],
               ),
@@ -91,15 +100,7 @@ class DashboardScreen extends StatelessWidget {
         ),
       ),
 
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: const [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.person),
-      //       label: 'Profile',
-      //     ),
-      //     // Add more BottomNavigationBarItems as needed
-      //   ],
-      // ),
+      //how do you add a BottomNavigationBar properly here?
     );
   }
 }
