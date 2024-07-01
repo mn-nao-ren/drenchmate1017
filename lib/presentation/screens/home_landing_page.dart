@@ -24,7 +24,14 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.asset('assets/drench_mate_logo.jpg', height: 320),
+              ClipOval(
+                child: Image.asset(
+                    'assets/drench_mate_logo.jpg',
+                    height: 360,
+                    width: 350,
+                    fit:BoxFit.cover
+                ),
+              ),
               const SizedBox(height: 20),
               Center(
                 child: Text(

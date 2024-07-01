@@ -37,6 +37,8 @@ dependencies:
   firebase_auth: ^4.19.5  # Authentication
   cloud_firestore: ^4.17.3
   provider: ^6.1.2
+  dashboard: ^0.0.4
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -77,6 +79,7 @@ flutter:
      - assets/icon/drench.png
      - assets/icon/mob.png
      - assets/icon/property.png
+     - assets/icon/icon.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
