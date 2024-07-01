@@ -23,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-
     super.dispose();
   }
 
@@ -55,8 +54,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     onChanged: (value) {
                       email = value;
                     },
-                    decoration:
-                      kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+                    decoration: kTextFieldDecoration.copyWith(
+                        hintText: 'Enter your email'),
                   ),
                   const SizedBox(height: 20),
                   TextField(
@@ -65,7 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     onChanged: (value) {
                       password = value;
                     },
-                    decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your password'),
+                    decoration: kTextFieldDecoration.copyWith(
+                        hintText: 'Enter your password'),
                   ),
                   const SizedBox(height: 20),
                   RoundedButton(
@@ -74,12 +74,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       try {
                         final user = await _auth.signInWithEmailAndPassword(
-                            email: email, password: password
-                        );
+                            email: email, password: password);
 
-                        Navigator.pushNamed(context, DashboardView.id);
-                      }
-                      catch (e) {
+                        Navigator.pushNamed(context, DashboardScreen.id);
+                      } catch (e) {
                         // print(e);
                       }
                     },
