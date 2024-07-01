@@ -30,11 +30,10 @@ class DrenchMateApp extends StatelessWidget {
         HomePage.id: (context) => const HomePage(),
         RegistrationPage.id: (context) => const RegistrationPage(),
         AccountHomeScreen.id: (context) => const AccountHomeScreen(),
-        DashboardView.id: (context) => const DashboardView(),
+        DashboardScreen.id: (context) => DashboardScreen(),
 
         // CreateProfileScreen.id: (context) => const CreateProfileScreen(),
       },
     );
   }
 }
-
