@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'chemical_entry_screen.dart'; // Import the Chemical Entry Screen
+import 'package:provider/provider.dart';
+import 'package:drenchmate_2024/business_logic/models/chemical_provider.dart';
+import 'chemical_entry_screen.dart';
+import 'drench_summary_screen.dart';
 
 class DrenchEntryScreen extends StatefulWidget {
   static String id = 'Drench Entry';
@@ -11,15 +14,14 @@ class DrenchEntryScreen extends StatefulWidget {
 
 class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _propertyIdController = TextEditingController(text: '12345'); // Pre-filled Property ID
-  final TextEditingController _dateController = TextEditingController(); // Controller for the date field
+  final TextEditingController _propertyIdController = TextEditingController(text: '12345');
+  final TextEditingController _dateController = TextEditingController();
   String _selectedMobId = 'Mob 1';
-  String _selectedChemical = 'Chemical A';
+  String? _selectedChemical;
 
   @override
   void initState() {
     super.initState();
-    // Initialize the date controller with the current date
     _dateController.text = _formatDate(DateTime.now());
   }
 
@@ -43,12 +45,14 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final chemicalProvider = Provider.of<ChemicalProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -135,10 +139,10 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                items: ['Chemical A', 'Chemical B', 'Chemical C'].map((chemical) {
+                items: chemicalProvider.chemicals.map((chemical) {
                   return DropdownMenuItem<String>(
-                    value: chemical,
-                    child: Text(chemical),
+                    value: chemical['TradeName'],
+                    child: Text(chemical['TradeName']),
                   );
                 }).toList(),
                 onChanged: (value) {
@@ -152,11 +156,11 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ChemicalEntryScreen()), // Navigate to ChemicalEntryScreen
+                    MaterialPageRoute(builder: (context) => const ChemicalEntryScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueGrey, // Background color
+                  backgroundColor: Colors.blueGrey,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -175,14 +179,22 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    // Process data
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Data')),
+                    final drenchDetails = {
+                      'Property ID': _propertyIdController.text,
+                      'Drenching Date': _dateController.text,
+                      'Mob ID': _selectedMobId,
+                      'Chemical ID': _selectedChemical ?? '',
+                    };
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DrenchSummaryScreen(drenchDetails: drenchDetails),
+                      ),
                     );
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlue, // Background color
+                  backgroundColor: Colors.lightBlue,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
