@@ -38,6 +38,7 @@ dependencies:
   cloud_firestore: ^4.17.3
   provider: ^6.1.2
   dashboard: ^0.0.4
+  modal_progress_hud_nsn: ^0.5.1
 
 
 

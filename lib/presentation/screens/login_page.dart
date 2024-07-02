@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:drenchmate_2024/presentation/components/rounded_button.dart';
 import 'package:drenchmate_2024/presentation/components/constants.dart';
-import 'account_home_screen.dart';
 import 'dashboard_view.dart';
 
 class LoginScreen extends StatefulWidget {
