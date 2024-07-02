@@ -18,7 +18,7 @@ class DashboardScreen extends StatelessWidget {
           style: GoogleFonts.lobster(
               color: Colors.white, fontSize: 35, fontWeight: FontWeight.w400),
         ),
-        backgroundColor: Colors.blueGrey.shade500, //Colors.blue.shade900,
+        backgroundColor: Colors.blueGrey.shade600, //Colors.blue.shade900,
         elevation: 0,
         actions: [
           IconButton(
@@ -42,7 +42,7 @@ class DashboardScreen extends StatelessWidget {
               // develop with stateful widget and fetch
               // do not use the following text widget
               const Text(
-                'John Doer',
+                'User',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
@@ -99,6 +99,17 @@ class DashboardScreen extends StatelessWidget {
                         // add action
                       },
                     ),
+                    HighlightCard(
+                      color: Colors.blueGrey.shade400,
+                      icon: 'assets/icon/profile.png',
+                      title: 'Profile',
+                      subtitle: 'Create profiles, add, restrict actions',
+                      buttonText: 'Create a Profile',
+                      onButtonPressed: () {
+                        // add actions
+                      },
+                    ),
+
                   ],
                 ),
               ),
