@@ -37,9 +37,13 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Image.asset(
-                    'assets/drench_mate_logo.jpg',
-                    height: 150,
+                  ClipOval(
+                    child: Image.asset(
+                      'assets/drenchmate_logo.png',
+                        height: 350,
+                        width: 350,
+                        fit:BoxFit.cover
+                    ),
                   ),
                   const SizedBox(height: 20),
                   const Text(

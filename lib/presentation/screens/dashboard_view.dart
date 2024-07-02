@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/presentation/components/highlight_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
+import 'package:drenchmate_2024/presentation/screens/create_profile.dart';
 
 class DashboardScreen extends StatelessWidget {
   static const id = 'dashboard_screen';
@@ -103,10 +104,11 @@ class DashboardScreen extends StatelessWidget {
                       color: Colors.blueGrey.shade400,
                       icon: 'assets/icon/profile.png',
                       title: 'Profile',
-                      subtitle: 'Create profiles, add, restrict actions',
+                      subtitle: 'Add, restrict actions',
                       buttonText: 'Create a Profile',
                       onButtonPressed: () {
                         // add actions
+                        Navigator.pushNamed(context, CreateProfileScreen.id);
                       },
                     ),
 
