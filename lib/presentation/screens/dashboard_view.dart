@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/presentation/components/highlight_card.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
 
 class DashboardScreen extends StatelessWidget {
-  static final id = 'dashboard_screen';
+  static const id = 'dashboard_screen';
+
+  const DashboardScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +68,7 @@ class DashboardScreen extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   HighlightCard(
-                    color: Colors.blueGrey.shade300,
+                    color: Colors.blueGrey.shade400,
                     icon: 'assets/icon/mob.png',
                     title: 'Mobs Info',
                     subtitle: 'display latest from db',
@@ -99,8 +103,8 @@ class DashboardScreen extends StatelessWidget {
           ),
         ),
       ),
-
       //how do you add a BottomNavigationBar properly here?
+      bottomNavigationBar: const MyNavigationBar(),
     );
   }
 }

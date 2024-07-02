@@ -1,0 +1,66 @@
+import 'package:flutter/material.dart';
+
+class MyNavigationBar extends StatefulWidget {
+  const MyNavigationBar({super.key});
+
+  @override
+  _MyNavigationBarState createState() => _MyNavigationBarState();
+}
+
+class _MyNavigationBarState extends State<MyNavigationBar> {
+  int _currentIndex = 0;
+
+  List<Widget> body = const [
+    Icon(Icons.person),
+    Icon(Icons.home),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: _currentIndex,
+      onTap: (int newIndex) {
+        setState(() {
+          _currentIndex = newIndex;
+        });
+      },
+      items: const [
+        BottomNavigationBarItem(
+          label: 'Profile',
+          icon: Icon(Icons.person),
+        ),
+        BottomNavigationBarItem(
+          label: 'Home',
+          icon: Icon(Icons.home),
+        ),
+      ]
+    );
+
+
+    //   Scaffold(
+    //   body: Center(
+    //     child: body[_currentIndex],
+    //   ),
+    //   bottomNavigationBar: BottomNavigationBar(
+    //     currentIndex: _currentIndex,
+    //     onTap: (int newIndex) {
+    //       setState(() {
+    //         _currentIndex = newIndex;
+    //       });
+    //     },
+    //     items: const [
+    //       BottomNavigationBarItem(
+    //         label: 'Profile',
+    //         icon: Icon(Icons.person),
+    //       ),
+    //       //add more later here
+    //       BottomNavigationBarItem(
+    //         label: 'Home',
+    //         icon: Icon(Icons.home),
+    //       ),
+    //
+    //     ],
+    //   ),
+    // );
+  }
+}

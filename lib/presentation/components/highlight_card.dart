@@ -35,7 +35,7 @@ class HighlightCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipOval(child: Image.asset(icon, height: 40, width: 40)),
+            ClipOval(child: Image.asset(icon, height: 45, width: 45)),
             const SizedBox(height: 5),
             Text(
               title,
@@ -62,6 +62,7 @@ class HighlightCard extends StatelessWidget {
                   backgroundColor: Colors.lightBlue.withOpacity(0.6),
                   foregroundColor: Colors.white,
                   textStyle: const TextStyle(fontSize: 12),
+
                 ),
                 onPressed: () {},
                 child: Text(buttonText),
