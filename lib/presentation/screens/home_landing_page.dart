@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
             children: <Widget>[
               ClipOval(
                 child: Image.asset(
-                    'assets/drench_mate_logo.jpg',
+                    'assets/drenchmate_logo.png',
                     height: 360,
                     width: 350,
                     fit:BoxFit.cover

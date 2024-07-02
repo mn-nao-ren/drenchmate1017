@@ -64,7 +64,7 @@ class HighlightCard extends StatelessWidget {
                   textStyle: const TextStyle(fontSize: 12),
 
                 ),
-                onPressed: () {},
+                onPressed: onButtonPressed,
                 child: Text(buttonText),
               ),
             ),

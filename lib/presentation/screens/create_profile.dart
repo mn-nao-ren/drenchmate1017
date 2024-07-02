@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:drenchmate_2024/presentation/components/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drenchmate_2024/business_logic/models/profile.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CreateProfileScreen extends StatefulWidget {
   static const String id = 'create_profile_Screen';
@@ -86,7 +86,17 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Profile'),
+        backgroundColor: Colors.white,
+        title: Text(
+            '       Profile Management',
+          style: GoogleFonts.epilogue(
+            textStyle: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+            ),
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
@@ -100,10 +110,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             key: _formKey,
             child: Column(
               children: [
-                const Text(
-                  'Specify your profile and profile-specific permissions',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
+
                 const SizedBox(height: 20),
                 TextField(
 
@@ -133,13 +140,19 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                     }).toList(),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: _createProfile,
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
+                    backgroundColor: Colors.lightBlue,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                   child: const Text('CREATE'),
+
                 ),
               ],
             ),

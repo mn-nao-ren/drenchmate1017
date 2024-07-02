@@ -70,7 +70,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
             // DrenchMate logo
             Center(
               child: Image.asset(
-                'assets/drench_mate_logo.jpg', // Update the path to your logo image
+                'assets/drenchmate_logo.png', // Update the path to your logo image
                 height: 190,
               ),
             ),
