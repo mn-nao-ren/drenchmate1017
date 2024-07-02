@@ -81,6 +81,7 @@ flutter:
      - assets/icon/mob.png
      - assets/icon/property.png
      - assets/icon/icon.png
+     - assets/icon/profile.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
