@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'chemical_entry_screen.dart'; // Import the Chemical Entry Screen
 
 class DrenchEntryScreen extends StatefulWidget {
@@ -12,9 +11,35 @@ class DrenchEntryScreen extends StatefulWidget {
 
 class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _propertyIdController = TextEditingController(text: '12345'); // Pre-filled Property ID, to be filled with session value for property
+  final TextEditingController _propertyIdController = TextEditingController(text: '12345'); // Pre-filled Property ID
+  final TextEditingController _dateController = TextEditingController(); // Controller for the date field
   String _selectedMobId = 'Mob 1';
   String _selectedChemical = 'Chemical A';
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the date controller with the current date
+    _dateController.text = _formatDate(DateTime.now());
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != DateTime.now()) {
+      setState(() {
+        _dateController.text = _formatDate(picked);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +53,9 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(
-          'Drenching Setup',
-          style: GoogleFonts.openSans(
+        title: const Text(
+          'Drench Entry',
+          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.blue,
@@ -45,9 +70,9 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
           child: ListView(
             children: <Widget>[
               const SizedBox(height: 16),
-              Text(
-                'Drenching Setup',
-                style: GoogleFonts.openSans(
+              const Text(
+                'Drench Entry',
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -57,8 +82,8 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
               TextFormField(
                 controller: _propertyIdController,
                 decoration: InputDecoration(
-                  labelText: 'Enter Property ID',
-                  prefixIcon: Icon(Icons.person),
+                  labelText: 'Property ID',
+                  prefixIcon: const Icon(Icons.person),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -66,16 +91,29 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
                 readOnly: true,
               ),
               const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                value: _selectedMobId,
+              TextFormField(
+                controller: _dateController,
                 decoration: InputDecoration(
-                  labelText: 'Choose Mob ID (Drop Down List)',
-                  prefixIcon: Icon(Icons.person),
+                  labelText: 'Drenching Date',
+                  prefixIcon: const Icon(Icons.calendar_today),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                items: ['Mob 1', 'Mob 2', 'Mob 3'].map((mob) { //list to be filled with database values
+                readOnly: true,
+                onTap: () => _selectDate(context),
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                value: _selectedMobId,
+                decoration: InputDecoration(
+                  labelText: 'Choose Mob ID (Drop Down List)',
+                  prefixIcon: const Icon(Icons.person),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                items: ['Mob 1', 'Mob 2', 'Mob 3'].map((mob) {
                   return DropdownMenuItem<String>(
                     value: mob,
                     child: Text(mob),
@@ -92,13 +130,12 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
                 value: _selectedChemical,
                 decoration: InputDecoration(
                   labelText: 'Choose Chemical ID (DropDL)',
-                  prefixIcon: Icon(Icons.person),
+                  prefixIcon: const Icon(Icons.person),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                items: ['Chemical A', 'Chemical B', 'Chemical C'] //list to be filled with database values
-                    .map((chemical) {
+                items: ['Chemical A', 'Chemical B', 'Chemical C'].map((chemical) {
                   return DropdownMenuItem<String>(
                     value: chemical,
                     child: Text(chemical),
@@ -125,9 +162,9 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'Manage Chemicals Here',
-                  style: GoogleFonts.openSans(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -140,7 +177,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
                   if (_formKey.currentState!.validate()) {
                     // Process data
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Processing Data')),
+                      const SnackBar(content: Text('Processing Data')),
                     );
                   }
                 },
@@ -151,9 +188,9 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'ADD',
-                  style: GoogleFonts.openSans(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
