@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'infrastructure/network/firebase_options.dart';
 import 'package:drenchmate_2024/presentation/screens/home_landing_page.dart';
-import 'package:drenchmate_2024/presentation/screens/account_home_screen.dart';
-import 'package:drenchmate_2024/presentation/screens/email_registration_page.dart';
 
+import 'package:drenchmate_2024/presentation/screens/email_registration_page.dart';
+import 'package:drenchmate_2024/presentation/screens/dashboard_view.dart';
+import 'package:drenchmate_2024/presentation/screens/create_profile.dart'; // class name CreateProfileScreen
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,9 +29,12 @@ class DrenchMateApp extends StatelessWidget {
       routes: {
         HomePage.id: (context) => const HomePage(),
         RegistrationPage.id: (context) => const RegistrationPage(),
-        AccountHomeScreen.id: (context) => const AccountHomeScreen(),
+
+        DashboardScreen.id: (context) => const DashboardScreen(),
+        CreateProfileScreen.id: (context) => const CreateProfileScreen(),
+
+        // CreateProfileScreen.id: (context) => const CreateProfileScreen(),
       },
     );
   }
 }
-

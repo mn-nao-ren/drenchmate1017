@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:drenchmate_2024/presentation/components/rounded_button.dart';
 import 'package:drenchmate_2024/presentation/components/constants.dart';
-import 'account_home_screen.dart';
+import 'dashboard_view.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -22,7 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-
     super.dispose();
   }
 
@@ -38,9 +37,13 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Image.asset(
-                    'assets/drench_mate_logo.jpg',
-                    height: 150,
+                  ClipOval(
+                    child: Image.asset(
+                      'assets/drenchmate_logo.png',
+                        height: 350,
+                        width: 350,
+                        fit:BoxFit.cover
+                    ),
                   ),
                   const SizedBox(height: 20),
                   const Text(
@@ -54,8 +57,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     onChanged: (value) {
                       email = value;
                     },
-                    decoration:
-                      kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+                    decoration: kTextFieldDecoration.copyWith(
+                        hintText: 'Enter your email'),
                   ),
                   const SizedBox(height: 20),
                   TextField(
@@ -64,7 +67,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     onChanged: (value) {
                       password = value;
                     },
-                    decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your password'),
+                    decoration: kTextFieldDecoration.copyWith(
+                        hintText: 'Enter your password'),
                   ),
                   const SizedBox(height: 20),
                   RoundedButton(
@@ -74,9 +78,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       try {
                         final user = await _auth.signInWithEmailAndPassword(
                             email: email, password: password);
-                        Navigator.pushNamed(context, AccountHomeScreen.id);
-                                            }
-                      catch (e) {
+
+                        Navigator.pushNamed(context, DashboardScreen.id);
+                      } catch (e) {
                         // print(e);
                       }
                     },

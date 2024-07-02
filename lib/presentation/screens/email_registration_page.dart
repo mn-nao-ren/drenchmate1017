@@ -1,5 +1,5 @@
 
-import 'package:drenchmate_2024/presentation/screens/account_home_screen.dart';
+import 'package:drenchmate_2024/presentation/screens/dashboard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/business_logic/services/auth_service.dart';
 import 'package:drenchmate_2024/presentation/components/constants.dart';
@@ -70,7 +70,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
             // DrenchMate logo
             Center(
               child: Image.asset(
-                'assets/drench_mate_logo.jpg', // Update the path to your logo image
+                'assets/drenchmate_logo.png', // Update the path to your logo image
                 height: 190,
               ),
             ),
@@ -178,10 +178,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 try {
                   final newUser = await _auth.createUserWithEmailAndPassword(
                       email: email, password: password);
-                  Navigator.pushNamed(context, AccountHomeScreen.id);
+                  Navigator.pushNamed(context, DashboardScreen.id);
                                 }
                 catch (e) {
-                  print(e);
+                  // print(e);
                 }
               },
               style: ElevatedButton.styleFrom(
