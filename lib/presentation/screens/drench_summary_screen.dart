@@ -3,15 +3,22 @@ import 'package:provider/provider.dart';
 import 'package:drenchmate_2024/business_logic/models/chemical_provider.dart';
 
 class DrenchSummaryScreen extends StatelessWidget {
-  final Map<String, String> drenchDetails;
+  static const String id = 'drench_summary_screen';
+  final List<Map<String, dynamic>> drenchEntries;
+  final int currentIndex;
 
-  const DrenchSummaryScreen({super.key, required this.drenchDetails});
+  const DrenchSummaryScreen({
+    super.key,
+    required this.drenchEntries,
+    required this.currentIndex,
+  });
 
   @override
   Widget build(BuildContext context) {
     final chemicalProvider = Provider.of<ChemicalProvider>(context);
+    final drenchDetails = drenchEntries[currentIndex];
     final selectedChemical = chemicalProvider.chemicals.firstWhere(
-      (chemical) => chemical['TradeName'] == drenchDetails['Chemical ID'],
+      (chemical) => chemical['TradeName'] == drenchDetails['ChemicalID'],
       orElse: () => {},
     );
 
@@ -29,10 +36,10 @@ class DrenchSummaryScreen extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            Text('Property ID: ${drenchDetails['Property ID']}'),
-            Text('Drenching Date: ${drenchDetails['Drenching Date']}'),
-            Text('Mob ID: ${drenchDetails['Mob ID']}'),
-            Text('Chemical ID: ${drenchDetails['Chemical ID']}'),
+            Text('Property ID: ${drenchDetails['PropertyID']}'),
+            Text('Drenching Date: ${drenchDetails['DrenchingDate']}'),
+            Text('Mob ID: ${drenchDetails['MobID']}'),
+            Text('Chemical ID: ${drenchDetails['ChemicalID']}'),
             const SizedBox(height: 16),
             const Text(
               'Chemical Details',
@@ -45,6 +52,44 @@ class DrenchSummaryScreen extends StatelessWidget {
             Text('Dose Rate: ${selectedChemical['DoseRate'] ?? 'N/A'}'),
             Text('Withholding Period: ${selectedChemical['WithholdingPeriod'] ?? 'N/A'} days'),
             Text('Active Ingredient: ${selectedChemical['ActiveIngredient'] ?? 'N/A'}'),
+            const SizedBox(height: 32),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: currentIndex > 0
+                      ? () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DrenchSummaryScreen(
+                                drenchEntries: drenchEntries,
+                                currentIndex: currentIndex - 1,
+                              ),
+                            ),
+                          );
+                        }
+                      : null,
+                  child: const Text('Previous'),
+                ),
+                ElevatedButton(
+                  onPressed: currentIndex < drenchEntries.length - 1
+                      ? () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DrenchSummaryScreen(
+                                drenchEntries: drenchEntries,
+                                currentIndex: currentIndex + 1,
+                              ),
+                            ),
+                          );
+                        }
+                      : null,
+                  child: const Text('Next'),
+                ),
+              ],
+            ),
           ],
         ),
       ),

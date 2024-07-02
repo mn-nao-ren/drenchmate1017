@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:drenchmate_2024/business_logic/models/chemical_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'chemical_entry_screen.dart';
 import 'drench_summary_screen.dart';
 
@@ -40,6 +41,43 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
       setState(() {
         _dateController.text = _formatDate(picked);
       });
+    }
+  }
+
+  Future<void> _saveDrenchDetails() async {
+    if (_formKey.currentState!.validate()) {
+      final drenchDetails = {
+        'PropertyID': _propertyIdController.text,
+        'DrenchingDate': _dateController.text,
+        'MobID': _selectedMobId,
+        'ChemicalID': _selectedChemical ?? '',
+      };
+
+      await FirebaseFirestore.instance.collection('drench_records').add(drenchDetails);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Drench Entry Saved')),
+      );
+
+      final drenchEntries = await FirebaseFirestore.instance.collection('drench_records').get().then((snapshot) {
+        return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+      });
+
+      final currentIndex = drenchEntries.indexWhere((entry) =>
+          entry['PropertyID'] == drenchDetails['PropertyID'] &&
+          entry['DrenchingDate'] == drenchDetails['DrenchingDate'] &&
+          entry['MobID'] == drenchDetails['MobID'] &&
+          entry['ChemicalID'] == drenchDetails['ChemicalID']);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DrenchSummaryScreen(
+            drenchEntries: drenchEntries,
+            currentIndex: currentIndex,
+          ),
+        ),
+      );
     }
   }
 
@@ -177,22 +215,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    final drenchDetails = {
-                      'Property ID': _propertyIdController.text,
-                      'Drenching Date': _dateController.text,
-                      'Mob ID': _selectedMobId,
-                      'Chemical ID': _selectedChemical ?? '',
-                    };
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DrenchSummaryScreen(drenchDetails: drenchDetails),
-                      ),
-                    );
-                  }
-                },
+                onPressed: _saveDrenchDetails,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlue,
                   padding: const EdgeInsets.symmetric(vertical: 16),
