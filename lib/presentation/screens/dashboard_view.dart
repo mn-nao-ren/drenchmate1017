@@ -12,12 +12,13 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // iconTheme: ,
         title: Text(
           '      DrenchMate',
           style: GoogleFonts.lobster(
-              color: Colors.black, fontSize: 35, fontWeight: FontWeight.w400),
+              color: Colors.white, fontSize: 35, fontWeight: FontWeight.w400),
         ),
-        backgroundColor: Colors.grey.shade400,
+        backgroundColor: Colors.blueGrey.shade500, //Colors.blue.shade900,
         elevation: 0,
         actions: [
           IconButton(
@@ -60,44 +61,46 @@ class DashboardScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ),
               const SizedBox(height: 16),
-              GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  HighlightCard(
-                    color: Colors.blueGrey.shade400,
-                    icon: 'assets/icon/mob.png',
-                    title: 'Mobs Info',
-                    subtitle: 'display latest from db',
-                    buttonText: 'Set up a Mob',
-                    onButtonPressed: () {
-                      // add actions
-                    },
-                  ),
-                  HighlightCard(
-                    color: Colors.black,
-                    icon: 'assets/icon/drench.png',
-                    title: "Drench Info",
-                    subtitle: 'Next drenching in 30 days',
-                    buttonText: 'Set up a Drench',
-                    onButtonPressed: () {
-                      // add action
-                    },
-                  ),
-                  HighlightCard(
-                    color: Colors.blue.shade900,
-                    icon: 'assets/icon/property.png',
-                    title: 'Property Info',
-                    subtitle: '5 Mobs',
-                    buttonText: 'Set up a Property',
-                    onButtonPressed: () {
-                      // add action
-                    },
-                  ),
-                ],
+              SingleChildScrollView(
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    HighlightCard(
+                      color: Colors.blueGrey.shade400,
+                      icon: 'assets/icon/mob.png',
+                      title: 'Mobs Info',
+                      subtitle: 'display latest from db',
+                      buttonText: 'Set up a Mob',
+                      onButtonPressed: () {
+                        // add actions
+                      },
+                    ),
+                    HighlightCard(
+                      color: Colors.black,
+                      icon: 'assets/icon/drench.png',
+                      title: "Drench Info",
+                      subtitle: 'Next drenching in 30 days',
+                      buttonText: 'Set up a Drench',
+                      onButtonPressed: () {
+                        // add action
+                      },
+                    ),
+                    HighlightCard(
+                      color: Colors.blue.shade900,
+                      icon: 'assets/icon/property.png',
+                      title: 'Property Info',
+                      subtitle: '5 Mobs',
+                      buttonText: 'Set up a Property',
+                      onButtonPressed: () {
+                        // add action
+                      },
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

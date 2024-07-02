@@ -35,32 +35,5 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
         ),
       ]
     );
-
-
-    //   Scaffold(
-    //   body: Center(
-    //     child: body[_currentIndex],
-    //   ),
-    //   bottomNavigationBar: BottomNavigationBar(
-    //     currentIndex: _currentIndex,
-    //     onTap: (int newIndex) {
-    //       setState(() {
-    //         _currentIndex = newIndex;
-    //       });
-    //     },
-    //     items: const [
-    //       BottomNavigationBarItem(
-    //         label: 'Profile',
-    //         icon: Icon(Icons.person),
-    //       ),
-    //       //add more later here
-    //       BottomNavigationBarItem(
-    //         label: 'Home',
-    //         icon: Icon(Icons.home),
-    //       ),
-    //
-    //     ],
-    //   ),
-    // );
   }
 }
