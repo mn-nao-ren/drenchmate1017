@@ -64,7 +64,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/drenchmate_logo.png"
+  image_path: "assets/round_logo.png"
 
 # The following section is specific to Flutter packages.
 flutter:

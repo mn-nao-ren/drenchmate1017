@@ -19,7 +19,7 @@ class DashboardScreen extends StatelessWidget {
         title: Row(
           children: [
             const SizedBox(height: 40, width: 14),
-            ClipOval(child: Image.asset('assets/icon/mob.png', height: 40, width: 40)),
+            ClipOval(child: Image.asset('assets/round_logo.png', height: 40, width: 41)),
             Text(
             ' DrenchMate',
             style: GoogleFonts.lobster(
@@ -51,13 +51,13 @@ class DashboardScreen extends StatelessWidget {
               // develop with stateful widget and fetch
               // do not use the following text widget
               const Text(
-                'User',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                'William Butcher',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               const Text(
                 'Overview',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text(
