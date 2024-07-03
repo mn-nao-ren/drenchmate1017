@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:drenchmate_2024/presentation/components/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -71,7 +70,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
         Navigator.of(context).pop();
       }
     } catch (e) {
-      print(e);
+      // print(e);
     }
 
     setState(() {
@@ -88,12 +87,12 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-            '       Profile Management',
+            '        Profile Management',
           style: GoogleFonts.epilogue(
-            textStyle: const TextStyle(
-                fontSize: 20,
+            textStyle: TextStyle(
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Colors.blue.shade900,
             ),
           ),
         ),
@@ -111,19 +110,38 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             child: Column(
               children: [
 
-                const SizedBox(height: 20),
-                TextField(
-
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    profileName = value;
-                  },
-                  decoration: kTextFieldDecoration.copyWith(hintText: 'Enter Profile Name'),
+                const SizedBox(height: 12),
+                Text(
+                  'Add Profile',
+                  style: GoogleFonts.epilogue(
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 20),
-                const Text(
+                TextField(
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.person),
+                    hintText: 'Enter Profile Name',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 45),
+                Text(
                   'Choose Permissions',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: GoogleFonts.epilogue(
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: ListView(
