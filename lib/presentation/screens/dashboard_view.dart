@@ -3,6 +3,7 @@ import 'package:drenchmate_2024/presentation/components/highlight_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
 import 'package:drenchmate_2024/presentation/screens/create_profile.dart';
+import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   static const id = 'dashboard_screen';
@@ -122,6 +123,7 @@ class DashboardScreen extends StatelessWidget {
                       buttonText: 'Generate Report',
                       onButtonPressed: () {
                         // add action
+                        Navigator.pushNamed(context, GenerateReportScreen.id);
                       },
                     ),
 
