@@ -1,3 +1,4 @@
+import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'infrastructure/network/firebase_options.dart';
@@ -32,6 +33,7 @@ class DrenchMateApp extends StatelessWidget {
 
         DashboardScreen.id: (context) => const DashboardScreen(),
         CreateProfileScreen.id: (context) => const CreateProfileScreen(),
+        GenerateReportScreen.id: (context) => GenerateReportScreen(),
 
         // CreateProfileScreen.id: (context) => const CreateProfileScreen(),
       },
