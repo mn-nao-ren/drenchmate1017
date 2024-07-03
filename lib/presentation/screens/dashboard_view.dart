@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
 import 'package:drenchmate_2024/presentation/screens/create_profile.dart';
 import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart';
+import 'package:drenchmate_2024/presentation/screens/setup_property_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   static const id = 'dashboard_screen';
@@ -15,10 +16,16 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         // iconTheme: ,
-        title: Text(
-          '      DrenchMate',
-          style: GoogleFonts.lobster(
-              color: Colors.white, fontSize: 35, fontWeight: FontWeight.w400),
+        title: Row(
+          children: [
+            const SizedBox(height: 40, width: 14),
+            ClipOval(child: Image.asset('assets/icon/mob.png', height: 40, width: 40)),
+            Text(
+            ' DrenchMate',
+            style: GoogleFonts.lobster(
+                color: Colors.white, fontSize: 35, fontWeight: FontWeight.w400),
+            ),
+          ],
         ),
         backgroundColor: Colors.blueGrey.shade600, //Colors.blue.shade900,
         elevation: 0,
@@ -98,7 +105,7 @@ class DashboardScreen extends StatelessWidget {
                       subtitle: '5 Mobs',
                       buttonText: 'Set up a Property',
                       onButtonPressed: () {
-                        // add action
+                        Navigator.pushNamed(context, SetupPropertyScreen.id);
                       },
                     ),
                     HighlightCard(

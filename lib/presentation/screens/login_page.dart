@@ -40,8 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ClipOval(
                     child: Image.asset(
                       'assets/drenchmate_logo.png',
-                        height: 350,
-                        width: 350,
+                        height: 280,
+                        width: 280,
                         fit:BoxFit.cover
                     ),
                   ),
