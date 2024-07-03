@@ -112,6 +112,19 @@ class DashboardScreen extends StatelessWidget {
                       },
                     ),
 
+                    // this one is actually for generate report
+
+                    HighlightCard(
+                      color: Colors.black,
+                      icon: 'assets/icon/generate_report.png',
+                      title: "Reports",
+                      subtitle: 'Backed-up logs for gov', // replace w data display widget soon
+                      buttonText: 'Generate Report',
+                      onButtonPressed: () {
+                        // add action
+                      },
+                    ),
+
                   ],
                 ),
               ),
