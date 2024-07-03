@@ -1,3 +1,4 @@
+import 'package:drenchmate_2024/presentation/screens/drench_entry_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -66,23 +67,36 @@ class _AccountHomeScreenState extends State<AccountHomeScreen> {
     'Mob Status Overview',
     'Chemical Setup',
     'View Weather',
-    'Drenching Setup',
+    'Drench Entry', //RS20240628
     'Mob Setup',
     'Notifications',
     'Property Setup',
     'Profile Matters',
   ];
-
   Widget _buildMenuButton(BuildContext context, String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PlaceholderScreen(title)),
-          );
+          if (title == 'Drench Entry') {
+            Navigator.pushNamed(context, DrenchEntryScreen.id);
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PlaceholderScreen(title)),
+            );
+          }
         },
+//  Widget _buildMenuButton(BuildContext context, String title) {
+//    return Padding(
+//      padding: const EdgeInsets.only(bottom: 10),
+//      child: ElevatedButton(
+//        onPressed: () {
+//          Navigator.push(
+//            context,
+//            MaterialPageRoute(builder: (context) => PlaceholderScreen(title)),
+//          );
+//        },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blueAccent, // Background color
           foregroundColor: Colors.white, // Text color
