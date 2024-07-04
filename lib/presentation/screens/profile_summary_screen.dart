@@ -1,11 +1,12 @@
-import 'package:drenchmate_2024/business_logic/models/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:drenchmate_2024/presentation/components/user_card.dart';
 
-class ProfileSummaryScreen extends StatefulWidget {
+class ProfileSummaryScreen extends StatelessWidget {
   static String id = "profile_summary_screen";
   // just an example, replace w widget that fetch from firestore
   final String userId = 'Billy Butcher';
+
+  const ProfileSummaryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class ProfileSummaryScreen extends StatefulWidget {
         title: const Text('Welcome back 👋'),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {},
           ),
         ],
@@ -31,24 +32,8 @@ class ProfileSummaryScreen extends StatefulWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             UserCard(userId: userId),
-            SizedBox(height: 20),
-            Text(
-                'Recent Activities',
-                style: TextStyle(
-                  fontFamily: GoogleFonts.epilogue().fontFamily,
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                )
+            const SizedBox(height: 20),
 
-            ),
-            Expanded(
-              child: ListView(
-                children: [
-
-
-                ],
-              ),
-            ),
           ],
         ),
 
@@ -56,7 +41,5 @@ class ProfileSummaryScreen extends StatefulWidget {
       );
 
   }
-
-
 
 }
