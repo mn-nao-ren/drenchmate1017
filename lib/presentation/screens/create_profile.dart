@@ -14,7 +14,6 @@ class CreateProfileScreen extends StatefulWidget {
 }
 
 class _CreateProfileScreenState extends State<CreateProfileScreen> {
-
   final TextEditingController _profileNameController = TextEditingController();
 
   final _auth = FirebaseAuth.instance;
@@ -28,7 +27,12 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final List<String> _permissionOptions = ["Create", "View", "Update", "Delete"];
+  final List<String> _permissionOptions = [
+    "Create",
+    "View",
+    "Update",
+    "Delete"
+  ];
   final Map<String, bool> _selectedPermissions = {
     "Create": false,
     "View": false,
@@ -78,21 +82,18 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
     });
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-            '        Profile Management',
+          '        Profile Management',
           style: GoogleFonts.epilogue(
             textStyle: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue.shade900,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue.shade900,
             ),
           ),
         ),
@@ -109,7 +110,6 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             key: _formKey,
             child: Column(
               children: [
-
                 const SizedBox(height: 12),
                 Text(
                   'Add Profile',
@@ -128,7 +128,6 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                     hintText: 'Enter Profile Name',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-
                     ),
                   ),
                 ),
@@ -170,7 +169,6 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                     ),
                   ),
                   child: const Text('CREATE'),
-
                 ),
               ],
             ),
