@@ -1,6 +1,8 @@
 import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'business_logic/models/chemical_provider.dart';
 import 'infrastructure/network/firebase_options.dart';
 import 'package:drenchmate_2024/presentation/screens/home_landing_page.dart';
 import 'package:drenchmate_2024/presentation/screens/setup_property_screen.dart';
@@ -22,26 +24,31 @@ class DrenchMateApp extends StatelessWidget {
   const DrenchMateApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'DrenchMate',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ChemicalProvider()..fetchChemicals()),
+      ],
+      child: MaterialApp(
+        title: 'DrenchMate',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        initialRoute: HomePage.id,
+        routes: {
+          HomePage.id: (context) => const HomePage(),
+          RegistrationPage.id: (context) => const RegistrationPage(),
+
+          DashboardScreen.id: (context) => const DashboardScreen(),
+          CreateProfileScreen.id: (context) => const CreateProfileScreen(),
+          GenerateReportScreen.id: (context) => const GenerateReportScreen(),
+          SetupPropertyScreen.id: (context) => const SetupPropertyScreen(),
+          DrenchEntryScreen.id: (context) => const DrenchEntryScreen(),
+          ChemicalEntryScreen.id: (context) => const ChemicalEntryScreen(),
+
+          // CreateProfileScreen.id: (context) => const CreateProfileScreen(),
+        },
       ),
-      initialRoute: HomePage.id,
-      routes: {
-        HomePage.id: (context) => const HomePage(),
-        RegistrationPage.id: (context) => const RegistrationPage(),
-
-        DashboardScreen.id: (context) => const DashboardScreen(),
-        CreateProfileScreen.id: (context) => const CreateProfileScreen(),
-        GenerateReportScreen.id: (context) => const GenerateReportScreen(),
-        SetupPropertyScreen.id: (context) => const SetupPropertyScreen(),
-        DrenchEntryScreen.id: (context) => const DrenchEntryScreen(),
-        ChemicalEntryScreen.id: (context) => const ChemicalEntryScreen(),
-
-        // CreateProfileScreen.id: (context) => const CreateProfileScreen(),
-      },
     );
   }
 }

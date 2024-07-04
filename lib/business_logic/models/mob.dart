@@ -4,10 +4,10 @@ class Mob {
   late String propertyAddress;
   late int paddockId;
   late String mobName;
-  late int numberOfSheep;
+
   late DateTime createdAt;
-  late String deductionReason;
-  late DateTime deductionDate;
+  late String? deductionReason;
+  late DateTime? deductionDate;
 
   Mob({
     required this.mobId,
@@ -15,7 +15,7 @@ class Mob {
     required this.propertyAddress,
     required this.paddockId,
     required this.mobName,
-    required this.numberOfSheep,
+
     required this.createdAt,
     required this.deductionReason,
     required this.deductionDate,
@@ -28,10 +28,10 @@ class Mob {
       'propertyAddress': propertyAddress,
       'paddockId': paddockId,
       'mobName': mobName,
-      'numberOfSheep': numberOfSheep,
-      'createdAt': createdAt,
+
+      'createdAt': createdAt.toIso8601String(),
       'deductionReason': deductionReason,
-      'deductionDate': deductionDate,
+      'deductionDate': deductionDate?.toIso8601String(),
 
     };
   }
@@ -43,10 +43,10 @@ class Mob {
       propertyAddress: map['propertyAddress'],
       paddockId: map['paddockId'],
       mobName: map['mobName'],
-      numberOfSheep: map['numberOfSheep'],
-      createdAt: map['createdAt'],
+
+      createdAt: DateTime.parse(map['createdAt']), // Parse ISO string to DateTime
       deductionReason: map['deductionReason'],
-      deductionDate: map['deductionDate'],
+      deductionDate: map['deductionDate'] != null ? DateTime.parse(map['deductionDate']) : null, // Parse ISO string to DateTime
     );
   }
 
@@ -54,7 +54,7 @@ class Mob {
   String toString() {
     return 'Mob{mobId: $mobId, propertyId: $propertyId, '
         'propertyAddress: $propertyAddress, paddockId: $paddockId, '
-        'mobName: $mobName, numberOfSheep: $numberOfSheep, '
+        'mobName: $mobName, '
         'createdAt: $createdAt, deductionReason: $deductionReason, '
         'deductionDate: $deductionDate}';
   }
