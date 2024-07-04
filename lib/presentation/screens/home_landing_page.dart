@@ -38,8 +38,8 @@ class HomePage extends StatelessWidget {
                   'Welcome to DrenchMate!',
                   style: GoogleFonts.lobster(
                     fontSize: 35,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue[900],
+                    fontWeight: FontWeight.w600,
+                    color: Colors.blue.shade900,
                   ),
                 ),
               ),
@@ -47,7 +47,8 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlue,
+                  backgroundColor: Colors.blue.shade700,
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
