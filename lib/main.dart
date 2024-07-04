@@ -11,6 +11,7 @@ import 'package:drenchmate_2024/presentation/screens/dashboard_view.dart';
 import 'package:drenchmate_2024/presentation/screens/create_profile.dart'; // class name CreateProfileScreen
 import 'package:drenchmate_2024/presentation/screens/drench_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/chemical_entry_screen.dart';
+import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,6 +46,7 @@ class DrenchMateApp extends StatelessWidget {
           SetupPropertyScreen.id: (context) => const SetupPropertyScreen(),
           DrenchEntryScreen.id: (context) => const DrenchEntryScreen(),
           ChemicalEntryScreen.id: (context) => const ChemicalEntryScreen(),
+          CreateMobPage.id: (context) => const CreateMobPage(),
 
           // CreateProfileScreen.id: (context) => const CreateProfileScreen(),
         },
