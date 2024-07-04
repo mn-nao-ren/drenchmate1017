@@ -21,7 +21,13 @@ class FirestoreService {
       'createdAt': DateTime.now(),
     };
 
-    await FirebaseFirestore.instance.collection('mobs').add(mobData);
+    try {
+      await FirebaseFirestore.instance.collection('mobs').add(mobData);
+      print('Mob data saved successfully: $mobData');
+    } catch (e) {
+      print('Failed to save mob data: $e');
+      // Handle the error appropriately, e.g., show a message to the user
+    }
   }
 
 }

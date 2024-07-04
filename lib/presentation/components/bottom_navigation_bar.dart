@@ -30,8 +30,12 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
           icon: Icon(Icons.person),
         ),
         BottomNavigationBarItem(
-          label: 'Home',
-          icon: Icon(Icons.home),
+          label: 'Drench Alert',
+          icon: Icon(Icons.warning_amber_rounded),
+        ),
+        BottomNavigationBarItem(
+          label: 'Activity',
+          icon: Icon(Icons.local_activity_rounded),
         ),
       ]
     );

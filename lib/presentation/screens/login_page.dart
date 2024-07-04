@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: <Widget>[
                   ClipOval(
                     child: Image.asset(
-                      'assets/drenchmate_logo.png',
+                      'assets/round_logo.png',
                         height: 280,
                         width: 280,
                         fit:BoxFit.cover
