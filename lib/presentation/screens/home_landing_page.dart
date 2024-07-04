@@ -26,18 +26,18 @@ class HomePage extends StatelessWidget {
             children: <Widget>[
               ClipOval(
                 child: Image.asset(
-                    'assets/drenchmate_logo.png',
-                    height: 360,
-                    width: 350,
+                    'assets/round_logo.png',
+                    height: 320,
+                    width: 320,
                     fit:BoxFit.cover
                 ),
               ),
               const SizedBox(height: 20),
               Center(
                 child: Text(
-                  'Hello Mate!',
+                  'Welcome to DrenchMate!',
                   style: GoogleFonts.lobster(
-                    fontSize: 37,
+                    fontSize: 35,
                     fontWeight: FontWeight.bold,
                     color: Colors.blue[900],
                   ),
