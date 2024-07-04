@@ -1,10 +1,11 @@
 // generate_report.dart
-import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class GenerateReportScreen extends StatefulWidget {
   static String id = 'generate_report_screen';
+
+  const GenerateReportScreen({super.key});
 
   @override
   _GenerateReportScreenState createState() => _GenerateReportScreenState();
