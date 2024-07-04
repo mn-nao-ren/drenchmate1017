@@ -1,3 +1,4 @@
+import 'package:drenchmate_2024/presentation/screens/chemical_entry_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/presentation/components/highlight_card.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,6 +6,7 @@ import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.da
 import 'package:drenchmate_2024/presentation/screens/create_profile.dart';
 import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/setup_property_screen.dart';
+import 'package:drenchmate_2024/presentation/screens/drench_entry_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   static const id = 'dashboard_screen';
@@ -92,17 +94,17 @@ class DashboardScreen extends StatelessWidget {
                       color: Colors.black,
                       icon: 'assets/icon/drench.png',
                       title: "Drench Info",
-                      subtitle: 'Next drenching in 30 days',
+                      subtitle: 'Upcoming Drenches',
                       buttonText: 'Set up a Drench',
                       onButtonPressed: () {
-                        // add action
+                        Navigator.pushNamed(context, DrenchEntryScreen.id);
                       },
                     ),
                     HighlightCard(
                       color: Colors.blue.shade900,
                       icon: 'assets/icon/property.png',
                       title: 'Property Info',
-                      subtitle: '5 Mobs',
+                      subtitle: 'Your Mobs and their info',
                       buttonText: 'Set up a Property',
                       onButtonPressed: () {
                         Navigator.pushNamed(context, SetupPropertyScreen.id);
@@ -131,6 +133,17 @@ class DashboardScreen extends StatelessWidget {
                       onButtonPressed: () {
                         // add action
                         Navigator.pushNamed(context, GenerateReportScreen.id);
+                      },
+                    ),
+
+                    HighlightCard(
+                      color: Colors.blue.shade900,
+                      icon: 'assets/icon/property.png',
+                      title: 'Manage Products',
+                      subtitle: 'Chemical compositions',
+                      buttonText: 'Enter a new product',
+                      onButtonPressed: () {
+                        Navigator.pushNamed(context, ChemicalEntryScreen.id);
                       },
                     ),
 

@@ -58,7 +58,7 @@ class HomePage extends StatelessWidget {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
                 },
                 icon: const Icon(Icons.login),
-                label: Text(
+                label: const Text(
                     'Already have an account? Login Here!',
                     style: TextStyle(
                         fontSize: 15,

@@ -94,27 +94,20 @@ class _SetupPropertyScreenState extends State<SetupPropertyScreen> {
                     final String address = _addressController.text.trim();
                     final DateTime createdAt = DateTime.now();
 
-                    if (createdAt != null) {
-                      await _firestoreService.savePropertyData(
-                        ownerEmail, // Assuming owner email is used as a userId
-                        propertyName,
-                        address,
-                        createdAt,
-                      );
+                    await _firestoreService.savePropertyData(
+                      ownerEmail, // Assuming owner email is used as a userId
+                      propertyName,
+                      address,
+                      createdAt,
+                    );
 
-                      // Show success message or navigate to another screen
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Property created successfully!')),
+                    // Show success message or navigate to another screen
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Property created successfully!')),
 
-                      );
-                      Navigator.of(context).pop();
-                    } else {
-                      // Show error message if fields are empty
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please fill in all fields')),
-                      );
-                    }
-                  } catch (e) {
+                    );
+                    Navigator.of(context).pop();
+                                    } catch (e) {
                     // handle error
                   }
 
