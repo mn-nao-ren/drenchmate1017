@@ -1,21 +1,37 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:drenchmate_2024/business_logic/models/treatment_record.dart';
+// import 'package:drenchmate_2024/business_logic/models/property.dart';
 
 class FirestoreService {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Add a new user
-
-
-  // Add a treatment record
-  Future<void> addTreatmentRecord(TreatmentRecord record) async {
-    await _db.collection('treatment_records').doc(record.id).set(record.toMap());
+  Future<void> savePropertyData(String userEmail, String propertyName, String location, String country, String countryCode, String postalCode, DateTime createdAt) async {
+    await _firestore.collection('properties').add({
+      'userEmail': userEmail,
+      'propertyName': propertyName,
+      'location': location,
+      'country': country,
+      'countryCode': countryCode,
+      'postalCode': postalCode,
+      'createdAt': createdAt,
+    });
   }
 
-  // Get all treatment records
-  Future<List<TreatmentRecord>> getTreatmentRecords() async {
-    var querySnapshot = await _db.collection('treatment_records').get();
-    return querySnapshot.docs.map((doc) => TreatmentRecord.fromMap(doc.data())).toList();
+
+  Future<void> saveMob(String propertyAddress, int paddockId, String mobName) async {
+    final mobData = {
+      'propertyAddress': propertyAddress,
+      'paddockId': paddockId,
+      'mobName': mobName,
+      'createdAt': DateTime.now(),
+    };
+
+    try {
+      await FirebaseFirestore.instance.collection('mobs').add(mobData);
+      print('Mob data saved successfully: $mobData');
+    } catch (e) {
+      print('Failed to save mob data: $e');
+      // Handle the error appropriately, e.g., show a message to the user
+    }
   }
+
 }

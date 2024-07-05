@@ -1,8 +1,13 @@
+import 'package:drenchmate_2024/presentation/screens/chemical_entry_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/presentation/components/highlight_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
 import 'package:drenchmate_2024/presentation/screens/create_profile.dart';
+import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart';
+import 'package:drenchmate_2024/presentation/screens/setup_property_screen.dart';
+import 'package:drenchmate_2024/presentation/screens/drench_entry_screen.dart';
+import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
 
 class DashboardScreen extends StatelessWidget {
   static const id = 'dashboard_screen';
@@ -14,16 +19,23 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         // iconTheme: ,
-        title: Text(
-          '      DrenchMate',
-          style: GoogleFonts.lobster(
-              color: Colors.white, fontSize: 35, fontWeight: FontWeight.w400),
+        title: Row(
+          children: [
+            const SizedBox(height: 40, width: 12),
+            ClipOval(child: Image.asset('assets/round_logo.png', height: 40, width: 41)),
+            Text(
+            ' DrenchMate',
+            style: GoogleFonts.lobster(
+                color: Colors.white, fontSize: 35, fontWeight: FontWeight.w400),
+            ),
+          ],
         ),
-        backgroundColor: Colors.blueGrey.shade600, //Colors.blue.shade900,
+        backgroundColor: Colors.blueGrey.shade600,
+        foregroundColor: Colors.white,//Colors.blue.shade900,
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications),
+            icon: const Icon(Icons.crisis_alert),
             onPressed: () {},
           ),
         ],
@@ -43,13 +55,13 @@ class DashboardScreen extends StatelessWidget {
               // develop with stateful widget and fetch
               // do not use the following text widget
               const Text(
-                'User',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                'William Butcher',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               const Text(
                 'Overview',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text(
@@ -78,26 +90,27 @@ class DashboardScreen extends StatelessWidget {
                       buttonText: 'Set up a Mob',
                       onButtonPressed: () {
                         // add actions
+                        Navigator.pushNamed(context, CreateMobPage.id);
                       },
                     ),
                     HighlightCard(
                       color: Colors.black,
                       icon: 'assets/icon/drench.png',
                       title: "Drench Info",
-                      subtitle: 'Next drenching in 30 days',
+                      subtitle: 'Upcoming Drenches',
                       buttonText: 'Set up a Drench',
                       onButtonPressed: () {
-                        // add action
+                        Navigator.pushNamed(context, DrenchEntryScreen.id);
                       },
                     ),
                     HighlightCard(
                       color: Colors.blue.shade900,
                       icon: 'assets/icon/property.png',
                       title: 'Property Info',
-                      subtitle: '5 Mobs',
+                      subtitle: 'Your Mobs and their info',
                       buttonText: 'Set up a Property',
                       onButtonPressed: () {
-                        // add action
+                        Navigator.pushNamed(context, SetupPropertyScreen.id);
                       },
                     ),
                     HighlightCard(
@@ -109,6 +122,31 @@ class DashboardScreen extends StatelessWidget {
                       onButtonPressed: () {
                         // add actions
                         Navigator.pushNamed(context, CreateProfileScreen.id);
+                      },
+                    ),
+
+                    // this one is actually for generate report
+
+                    HighlightCard(
+                      color: Colors.black,
+                      icon: 'assets/icon/generate_report.png',
+                      title: "Reports",
+                      subtitle: 'Backed-up logs for gov', // replace w data display widget soon
+                      buttonText: 'Generate Report',
+                      onButtonPressed: () {
+                        // add action
+                        Navigator.pushNamed(context, GenerateReportScreen.id);
+                      },
+                    ),
+
+                    HighlightCard(
+                      color: Colors.blue.shade900,
+                      icon: 'assets/icon/property.png',
+                      title: 'Manage Products',
+                      subtitle: 'Chemical compositions',
+                      buttonText: 'Enter a new product',
+                      onButtonPressed: () {
+                        Navigator.pushNamed(context, ChemicalEntryScreen.id);
                       },
                     ),
 

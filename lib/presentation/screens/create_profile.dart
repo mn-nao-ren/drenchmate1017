@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:drenchmate_2024/presentation/components/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,21 +14,25 @@ class CreateProfileScreen extends StatefulWidget {
 }
 
 class _CreateProfileScreenState extends State<CreateProfileScreen> {
-
   final TextEditingController _profileNameController = TextEditingController();
 
   final _auth = FirebaseAuth.instance;
   bool showSpinner = false;
 
-  late final int profileID;
-  late final int userID;
-  late final String profileName;
-  late List<String> permissions = [];
-  late final DateTime createdAt;
+  int profileID = 0;
+  int userID = 0;
+  String profileName = '';
+  List<String> permissions = [];
+  DateTime createdAt = DateTime.now();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final List<String> _permissionOptions = ["Create", "View", "Update", "Delete"];
+  final List<String> _permissionOptions = [
+    "Create",
+    "View",
+    "Update",
+    "Delete"
+  ];
   final Map<String, bool> _selectedPermissions = {
     "Create": false,
     "View": false,
@@ -71,7 +74,11 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
         Navigator.of(context).pop();
       }
     } catch (e) {
-      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to create profile: $e'),
+        ),
+      );
     }
 
     setState(() {
@@ -79,21 +86,18 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
     });
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-            '       Profile Management',
+          '        Profile Management',
           style: GoogleFonts.epilogue(
-            textStyle: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+            textStyle: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue.shade900,
             ),
           ),
         ),
@@ -110,20 +114,38 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             key: _formKey,
             child: Column(
               children: [
-
-                const SizedBox(height: 20),
-                TextField(
-
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    profileName = value;
-                  },
-                  decoration: kTextFieldDecoration.copyWith(hintText: 'Enter Profile Name'),
+                const SizedBox(height: 12),
+                Text(
+                  'Add Profile',
+                  style: GoogleFonts.epilogue(
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 20),
-                const Text(
+                TextField(
+                  controller: _profileNameController,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.person),
+                    hintText: 'Enter Profile Name',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 45),
+                Text(
                   'Choose Permissions',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: GoogleFonts.epilogue(
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: ListView(
@@ -152,7 +174,6 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                     ),
                   ),
                   child: const Text('CREATE'),
-
                 ),
               ],
             ),

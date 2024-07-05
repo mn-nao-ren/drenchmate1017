@@ -26,20 +26,20 @@ class HomePage extends StatelessWidget {
             children: <Widget>[
               ClipOval(
                 child: Image.asset(
-                    'assets/drenchmate_logo.png',
-                    height: 360,
-                    width: 350,
+                    'assets/round_logo.png',
+                    height: 320,
+                    width: 320,
                     fit:BoxFit.cover
                 ),
               ),
               const SizedBox(height: 20),
               Center(
                 child: Text(
-                  'Hello Mate!',
+                  'Welcome to DrenchMate!',
                   style: GoogleFonts.lobster(
-                    fontSize: 37,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue[900],
+                    fontSize: 35,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.blue.shade900,
                   ),
                 ),
               ),
@@ -47,7 +47,8 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlue,
+                  backgroundColor: Colors.blue.shade700,
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -58,7 +59,13 @@ class HomePage extends StatelessWidget {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
                 },
                 icon: const Icon(Icons.login),
-                label: const Text('Already have an account? Login Here!', style: TextStyle(fontSize: 15, color: Colors.white)),
+                label: const Text(
+                    'Already have an account? Login Here!',
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white
+                    ),
+                ),
               ),
               const SizedBox(height: 10),
               const Text('or', style: TextStyle(fontSize: 16, color: Colors.blueGrey)),

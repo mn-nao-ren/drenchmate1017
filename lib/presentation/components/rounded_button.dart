@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-// example usage: RoundedButton(title: 'Log In', colour: Colors.lightBlueAccent, onPressed: () {
-// Navigator.pushNamed(context, LoginScreen.id);
-// },
-// );
+
 
 class RoundedButton extends StatelessWidget {
   const RoundedButton({super.key,
