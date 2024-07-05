@@ -19,11 +19,11 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   final _auth = FirebaseAuth.instance;
   bool showSpinner = false;
 
-  late final int profileID;
-  late final int userID;
-  late final String profileName;
-  late List<String> permissions = [];
-  late final DateTime createdAt;
+  int profileID = 0;
+  int userID = 0;
+  String profileName = '';
+  List<String> permissions = [];
+  DateTime createdAt = DateTime.now();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -74,7 +74,11 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
         Navigator.of(context).pop();
       }
     } catch (e) {
-      // print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to create profile: $e'),
+        ),
+      );
     }
 
     setState(() {
@@ -123,6 +127,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: _profileNameController,
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.person),
                     hintText: 'Enter Profile Name',

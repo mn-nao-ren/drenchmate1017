@@ -4,14 +4,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> savePropertyData(String userEmail, String propertyName, String location, DateTime createdAt) async {
+  Future<void> savePropertyData(String userEmail, String propertyName, String location, String country, String countryCode, String postalCode, DateTime createdAt) async {
     await _firestore.collection('properties').add({
       'userEmail': userEmail,
       'propertyName': propertyName,
       'location': location,
+      'country': country,
+      'countryCode': countryCode,
+      'postalCode': postalCode,
       'createdAt': createdAt,
     });
   }
+
 
   Future<void> saveMob(String propertyAddress, int paddockId, String mobName) async {
     final mobData = {
