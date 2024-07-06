@@ -84,6 +84,16 @@ class DashboardScreen extends StatelessWidget {
                   children: [
                     HighlightCard(
                       color: Colors.blueGrey.shade400,
+                      icon: 'assets/weather.png',
+                      title: 'Weather Info',
+                      subtitle: 'Monitored, alerts set',
+                      buttonText: 'placeholder button text',
+                      onButtonPressed: () {
+
+                      },
+                    ),
+                    HighlightCard(
+                      color: Colors.black,
                       icon: 'assets/icon/mob.png',
                       title: 'Mobs Info',
                       subtitle: 'display latest from db',
@@ -94,7 +104,7 @@ class DashboardScreen extends StatelessWidget {
                       },
                     ),
                     HighlightCard(
-                      color: Colors.black,
+                      color: Colors.blue.shade900,
                       icon: 'assets/icon/drench.png',
                       title: "Drench Info",
                       subtitle: 'Upcoming Drenches',
@@ -104,17 +114,17 @@ class DashboardScreen extends StatelessWidget {
                       },
                     ),
                     HighlightCard(
-                      color: Colors.blue.shade900,
+                      color: Colors.blueGrey.shade400,
                       icon: 'assets/icon/property.png',
                       title: 'Property Info',
-                      subtitle: 'Your Mobs and their info',
+                      subtitle: 'Your farm property info',
                       buttonText: 'Set up a Property',
                       onButtonPressed: () {
                         Navigator.pushNamed(context, SetupPropertyScreen.id);
                       },
                     ),
                     HighlightCard(
-                      color: Colors.blueGrey.shade400,
+                      color: Colors.black,
                       icon: 'assets/icon/profile.png',
                       title: 'Profile',
                       subtitle: 'Add, restrict actions',
@@ -128,7 +138,7 @@ class DashboardScreen extends StatelessWidget {
                     // this one is actually for generate report
 
                     HighlightCard(
-                      color: Colors.black,
+                      color: Colors.blue.shade900,
                       icon: 'assets/icon/generate_report.png',
                       title: "Reports",
                       subtitle: 'Backed-up logs for gov', // replace w data display widget soon
@@ -140,7 +150,7 @@ class DashboardScreen extends StatelessWidget {
                     ),
 
                     HighlightCard(
-                      color: Colors.blue.shade900,
+                      color: Colors.blueGrey.shade400,
                       icon: 'assets/icon/property.png',
                       title: 'Manage Products',
                       subtitle: 'Chemical compositions',

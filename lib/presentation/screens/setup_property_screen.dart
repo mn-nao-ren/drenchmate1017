@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
 import 'package:drenchmate_2024/business_logic/services/input_validation_service.dart';
+import 'package:drenchmate_2024/business_logic/services/new_drench_state_controller.dart';
 
 
 class SetupPropertyScreen extends StatefulWidget {

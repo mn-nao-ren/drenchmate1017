@@ -84,6 +84,7 @@ flutter:
      - assets/icon/profile.png
      - assets/icon/generate_report.png
      - assets/round_logo.png
+     - assets/weather.png
 
 
 

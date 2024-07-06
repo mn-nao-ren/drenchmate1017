@@ -179,8 +179,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   final newUser = await _auth.createUserWithEmailAndPassword(
                       email: email, password: password);
                   Navigator.pushNamed(context, DashboardScreen.id);
-                                }
-                catch (e) {
+                } catch (e) {
                   // print(e);
                 }
               },

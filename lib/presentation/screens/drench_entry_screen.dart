@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:drenchmate_2024/business_logic/models/chemical_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'chemical_entry_screen.dart';
+import 'package:drenchmate_2024/business_logic/services/new_drench_state_controller.dart';
 
 class DrenchEntryScreen extends StatefulWidget {
   static String id = 'drench_entry_screen';
@@ -13,40 +15,32 @@ class DrenchEntryScreen extends StatefulWidget {
 }
 
 class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _propertyIdController = TextEditingController(text: '12345');
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _propertyIdController = TextEditingController();
+  final TextEditingController _propertyAddressController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  // final bool _autovalidate = false;
+
   String _selectedMobId = 'Mob 1';
   String? _selectedChemical;
 
   @override
   void initState() {
     super.initState();
-    _dateController.text = _formatDate(DateTime.now());
-  }
-
-  String _formatDate(DateTime date) {
-    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+    populateInitialData(
+        propertyIdController: _propertyIdController,
+        propertyAddressController: _propertyAddressController,
+        dateController: _dateController,
+        setState: setState,
+        context: context
     );
-    if (picked != null && picked != DateTime.now()) {
-      setState(() {
-        _dateController.text = _formatDate(picked);
-      });
-    }
   }
 
   Future<void> _saveDrenchDetails() async {
     if (_formKey.currentState!.validate()) {
       final drenchDetails = {
         'PropertyID': _propertyIdController.text,
+        'PropertyAddress': _propertyAddressController.text, //
         'DrenchingDate': _dateController.text,
         'MobID': _selectedMobId,
         'ChemicalID': _selectedChemical ?? '',
@@ -58,25 +52,18 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
         const SnackBar(content: Text('Drench Entry Saved')),
       );
 
-      final drenchEntries = await FirebaseFirestore.instance.collection('drench_records').get().then((snapshot) {
-        return snapshot.docs.map((doc) => doc.data()).toList();
-      });
 
-      final currentIndex = drenchEntries.indexWhere((entry) =>
-      entry['PropertyID'] == drenchDetails['PropertyID'] &&
-          entry['DrenchingDate'] == drenchDetails['DrenchingDate'] &&
-          entry['MobID'] == drenchDetails['MobID'] &&
-          entry['ChemicalID'] == drenchDetails['ChemicalID']);
+      // for what?
+      // final drenchEntries = await FirebaseFirestore.instance.collection('drench_records').get().then((snapshot) {
+      //   return snapshot.docs.map((doc) => doc.data()).toList();
+      // });
+      //
+      // final currentIndex = drenchEntries.indexWhere((entry) =>
+      // entry['PropertyID'] == drenchDetails['PropertyID'] &&
+      //     entry['DrenchingDate'] == drenchDetails['DrenchingDate'] &&
+      //     entry['MobID'] == drenchDetails['MobID'] &&
+      //     entry['ChemicalID'] == drenchDetails['ChemicalID']);
 
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => DrenchSummaryScreen(
-      //       drenchEntries: drenchEntries,
-      //       currentIndex: currentIndex,
-      //     ),
-      //   ),
-      // );
     }
   }
 
@@ -86,7 +73,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -94,13 +81,23 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text(
-          'Drench Entry',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.blue,
-          ),
+        title: Row(
+          children: [
+            Text(
+              '           Drench Entry',
+              style: GoogleFonts.epilogue(
+                color: Colors.blue.shade900,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Icon(
+              Icons.edit,
+              color: Colors.blue.shade900,
+              size: 20,
+            ),
+          ],
         ),
         centerTitle: true,
       ),
@@ -112,7 +109,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
             children: <Widget>[
               const SizedBox(height: 16),
               const Text(
-                'Drench Entry',
+                'Drench Form',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -129,8 +126,19 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                readOnly: true,
               ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _propertyAddressController, // New TextFormField for Property Address
+                decoration: InputDecoration(
+                  labelText: 'Property Address',
+                  prefixIcon: const Icon(Icons.location_on),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+
               const SizedBox(height: 16),
               TextFormField(
                 controller: _dateController,
@@ -141,8 +149,11 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                readOnly: true,
-                onTap: () => _selectDate(context),
+                onTap: () => selectDate(
+                  context: context,
+                  dateController: _dateController,
+                  setState: setState,
+                ),
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
