@@ -8,6 +8,9 @@ import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart
 import 'package:drenchmate_2024/presentation/screens/setup_property_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/drench_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
+import 'package:drenchmate_2024/presentation/components/username.dart';
+import 'package:intl/intl.dart';
+
 
 class DashboardScreen extends StatelessWidget {
   static const id = 'dashboard_screen';
@@ -30,12 +33,12 @@ class DashboardScreen extends StatelessWidget {
             ),
           ],
         ),
-        backgroundColor: Colors.blueGrey.shade600,
+        backgroundColor: Colors.blueGrey.shade800,
         foregroundColor: Colors.white,//Colors.blue.shade900,
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.crisis_alert),
+            icon: const Icon(Icons.notifications),
             onPressed: () {},
           ),
         ],
@@ -54,19 +57,21 @@ class DashboardScreen extends StatelessWidget {
               // John Doer is just a placeholder,
               // develop with stateful widget and fetch
               // do not use the following text widget
-              const Text(
-                'William Butcher',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
+              UserProfile(),
+              // Text(
+              //   'William Butcher',
+              //   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              // ),
               const SizedBox(height: 16),
               const Text(
                 'Overview',
                 style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'TUES 11 JUL',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+              Text(
+                DateFormat('EEE d MMM').format(DateTime.now()).toUpperCase(),
+                style: TextStyle(fontSize: 20, color: Colors.grey.shade600),
+
               ),
               const SizedBox(height: 16),
               const Text(

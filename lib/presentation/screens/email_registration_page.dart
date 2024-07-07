@@ -5,6 +5,7 @@ import 'package:drenchmate_2024/business_logic/services/auth_service.dart';
 import 'package:drenchmate_2024/presentation/components/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 
@@ -18,6 +19,7 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +44,7 @@ class RegistrationForm extends StatefulWidget {
 
 class _RegistrationFormState extends State<RegistrationForm> {
   final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
 
   late String username;
   late String email;
@@ -90,7 +93,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
             TextField(
               textAlign: TextAlign.center,
               onChanged: (value) {
-                email = value;
+                username = value;
               },
               decoration: 
                 kTextFieldDecoration.copyWith(hintText: 'Enter your username'),
@@ -175,12 +178,30 @@ class _RegistrationFormState extends State<RegistrationForm> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                try {
-                  final newUser = await _auth.createUserWithEmailAndPassword(
-                      email: email, password: password);
-                  Navigator.pushNamed(context, DashboardScreen.id);
-                } catch (e) {
-                  // print(e);
+                if (_formKey.currentState?.validate() ?? false) {
+                  try {
+                    final newUser = await _auth.createUserWithEmailAndPassword(
+                        email: email, password: password);
+
+                    // Save additional user info to Firestore
+                    await _firestore.collection('users').doc(newUser.user?.uid).set({
+                      'username': username,
+                      'email': email,
+                      'contactNumber': contactNumber,
+                      'role': role,
+                    });
+
+
+                    Navigator.pushNamed(context, DashboardScreen.id);
+                  } catch (e) {
+                    // Handle errors appropriately
+                    print(e);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Failed to register: $e'),
+                      ),
+                    );
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(

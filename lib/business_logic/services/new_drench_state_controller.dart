@@ -30,7 +30,7 @@ Future<void> populateInitialData({
       }
     }
   } catch (e) {
-    print('Error fetching user property info: $e');
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Error fetching property info')),
     );
