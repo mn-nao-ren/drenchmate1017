@@ -57,7 +57,7 @@ class DashboardScreen extends StatelessWidget {
               // John Doer is just a placeholder,
               // develop with stateful widget and fetch
               // do not use the following text widget
-              UserProfile(),
+              const UserProfile(),
               // Text(
               //   'William Butcher',
               //   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),

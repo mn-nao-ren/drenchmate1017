@@ -20,9 +20,9 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
     return BottomNavigationBar(
       currentIndex: _currentIndex,
 
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey.shade300,
       selectedItemColor: Colors.black,
-      unselectedItemColor: Colors.grey.shade600,
+      unselectedItemColor: Colors.black,
 
       onTap: (int newIndex) {
         setState(() {
@@ -40,10 +40,10 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
               const SizedBox(height: 2),
               SizedBox(
                 height: 5,
-                width: 39,
+                width: 54,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    color: Colors.blue.shade900,
+                    color: Colors.blue,
                     borderRadius: BorderRadius.circular(55),
                   ),
                 ),
@@ -58,11 +58,11 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
               ? Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.warning_amber_rounded),
+              const Icon(Icons.notifications),
               const SizedBox(height: 2),
               SizedBox(
                 height: 5,
-                width: 66,
+                width: 77,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: Colors.red.shade600,
@@ -72,7 +72,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
               )
             ],
           )
-              : const Icon(Icons.warning_amber_rounded),
+              : const Icon(Icons.notifications),
         ),
         BottomNavigationBarItem(
           label: 'Activity',
@@ -80,11 +80,11 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
               ? Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.work),
+              const Icon(Icons.add_business),
               const SizedBox(height: 2),
               SizedBox(
                 height: 5,
-                width: 42,
+                width: 56,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: Colors.blue,
@@ -94,7 +94,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
               )
             ],
           )
-              : const Icon(Icons.work),
+              : const Icon(Icons.add_business),
         ),
       ]
     );
