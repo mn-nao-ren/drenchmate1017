@@ -47,7 +47,7 @@ class _UserProfileState extends State<UserProfile> {
     return Text(
       username,
       style: GoogleFonts.epilogue(
-        fontSize: 22,
+        fontSize: 21,
           fontWeight: FontWeight.w700,
         color: Colors.black,
       ),

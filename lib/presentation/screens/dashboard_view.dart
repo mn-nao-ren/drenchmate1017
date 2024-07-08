@@ -49,36 +49,44 @@ class DashboardScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Welcome back 👋',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                style: GoogleFonts.lobster(
+                    fontSize: 29,
+                    fontWeight: FontWeight.w500
+                ),
               ),
-              const SizedBox(height: 8),
-              // John Doer is just a placeholder,
-              // develop with stateful widget and fetch
-              // do not use the following text widget
+
               const UserProfile(),
-              // Text(
-              //   'William Butcher',
-              //   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              // ),
-              const SizedBox(height: 16),
-              const Text(
+
+              const SizedBox(height: 20),
+
+
+              Text(
                 'Overview',
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                style: GoogleFonts.roboto(fontSize: 26, fontWeight: FontWeight.w600),
               ),
-              const SizedBox(height: 8),
+
+
+
               Text(
                 DateFormat('EEE d MMM').format(DateTime.now()).toUpperCase(),
                 style: TextStyle(fontSize: 20, color: Colors.grey.shade600),
 
               ),
-              const SizedBox(height: 16),
+
+              const SizedBox(height: 20),
+
+
+
               const Text(
                 'Highlights',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 16),
+
+              const SizedBox(height: 9),
+
+
               SingleChildScrollView(
                 child: GridView.count(
                   crossAxisCount: 2,
@@ -92,13 +100,13 @@ class DashboardScreen extends StatelessWidget {
                       icon: 'assets/weather.png',
                       title: 'Weather Info',
                       subtitle: 'Monitored, alerts set',
-                      buttonText: 'placeholder button text',
+                      buttonText: 'placeholder',
                       onButtonPressed: () {
 
                       },
                     ),
                     HighlightCard(
-                      color: Colors.black,
+                      color: Colors.lightBlue.shade500,
                       icon: 'assets/icon/mob.png',
                       title: 'Mobs Info',
                       subtitle: 'display latest from db',
@@ -129,7 +137,7 @@ class DashboardScreen extends StatelessWidget {
                       },
                     ),
                     HighlightCard(
-                      color: Colors.black,
+                      color: Colors.lightBlue.shade500,
                       icon: 'assets/icon/profile.png',
                       title: 'Profile',
                       subtitle: 'Add, restrict actions',

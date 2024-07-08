@@ -59,9 +59,9 @@ class HighlightCard extends StatelessWidget {
               child: TextButton(
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.all(7),
-                  backgroundColor: Colors.lightBlue.withOpacity(0.6),
-                  foregroundColor: Colors.white,
-                  textStyle: const TextStyle(fontSize: 12),
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
 
                 ),
                 onPressed: onButtonPressed,

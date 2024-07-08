@@ -20,9 +20,10 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
     return BottomNavigationBar(
       currentIndex: _currentIndex,
 
-        backgroundColor: Colors.grey.shade300,
+        backgroundColor: Colors.white,
       selectedItemColor: Colors.black,
       unselectedItemColor: Colors.black,
+
 
       onTap: (int newIndex) {
         setState(() {
@@ -36,33 +37,34 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
               ? Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.person),
+              const Icon(Icons.person_outlined),
               const SizedBox(height: 2),
               SizedBox(
-                height: 5,
-                width: 54,
+                height: 7,
+                width: 32,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.blue.shade800,
                     borderRadius: BorderRadius.circular(55),
                   ),
                 ),
               )
             ],
           )
-              : const Icon(Icons.person),
+              : const Icon(Icons.person_outlined),
         ),
         BottomNavigationBarItem(
           label: 'Drench Alert',
+
           icon: _currentIndex == 1
               ? Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.notifications),
+              const Icon(Icons.notifications_outlined),
               const SizedBox(height: 2),
               SizedBox(
-                height: 5,
-                width: 77,
+                height: 7,
+                width: 45,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: Colors.red.shade600,
@@ -72,7 +74,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
               )
             ],
           )
-              : const Icon(Icons.notifications),
+              : const Icon(Icons.notifications_outlined),
         ),
         BottomNavigationBarItem(
           label: 'Activity',
@@ -80,11 +82,11 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
               ? Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.add_business),
+              const Icon(Icons.business_outlined),
               const SizedBox(height: 2),
               SizedBox(
-                height: 5,
-                width: 56,
+                height: 7,
+                width: 32,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: Colors.blue,
@@ -94,7 +96,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
               )
             ],
           )
-              : const Icon(Icons.add_business),
+              : const Icon(Icons.business_outlined),
         ),
       ]
     );

@@ -5,6 +5,7 @@ import 'package:drenchmate_2024/business_logic/models/chemical_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'chemical_entry_screen.dart';
 import 'package:drenchmate_2024/business_logic/services/new_drench_state_controller.dart';
+import 'package:drenchmate_2024/presentation/screens/dashboard_view.dart';
 
 class DrenchEntryScreen extends StatefulWidget {
   static String id = 'drench_entry_screen';
@@ -51,19 +52,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Drench Entry Saved')),
       );
-
-
-      // for what?
-      // final drenchEntries = await FirebaseFirestore.instance.collection('drench_records').get().then((snapshot) {
-      //   return snapshot.docs.map((doc) => doc.data()).toList();
-      // });
-      //
-      // final currentIndex = drenchEntries.indexWhere((entry) =>
-      // entry['PropertyID'] == drenchDetails['PropertyID'] &&
-      //     entry['DrenchingDate'] == drenchDetails['DrenchingDate'] &&
-      //     entry['MobID'] == drenchDetails['MobID'] &&
-      //     entry['ChemicalID'] == drenchDetails['ChemicalID']);
-
+      Navigator.pushNamed(context, DashboardScreen.id);
     }
   }
 
