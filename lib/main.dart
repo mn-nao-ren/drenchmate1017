@@ -1,4 +1,5 @@
 import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart';
+import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -15,9 +16,7 @@ import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp();
   runApp(const DrenchMateApp());
 }
 
@@ -40,13 +39,14 @@ class DrenchMateApp extends StatelessWidget {
           HomePage.id: (context) => const HomePage(),
           RegistrationPage.id: (context) => const RegistrationPage(),
 
-          DashboardScreen.id: (context) => const DashboardScreen(),
+          DashboardScreen.id: (context) => DashboardScreen(),
           CreateProfileScreen.id: (context) => const CreateProfileScreen(),
           GenerateReportScreen.id: (context) => const GenerateReportScreen(),
           SetupPropertyScreen.id: (context) => const SetupPropertyScreen(),
           DrenchEntryScreen.id: (context) => const DrenchEntryScreen(),
           ChemicalEntryScreen.id: (context) => const ChemicalEntryScreen(),
           CreateMobPage.id: (context) => const CreateMobPage(),
+          NotificationScreen.id: (context) => NotificationScreen(),
 
           // CreateProfileScreen.id: (context) => const CreateProfileScreen(),
         },

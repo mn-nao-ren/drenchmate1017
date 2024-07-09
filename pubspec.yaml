@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   flutter_signin_button: ^2.0.0
   flutter_svg: ^1.0.3
   google_fonts: ^6.0.0
@@ -39,6 +40,8 @@ dependencies:
   provider: ^6.1.2
   dashboard: ^0.0.4
   modal_progress_hud_nsn: ^0.5.1
+  intl: ^0.19.0
+  flutter_local_notifications: ^12.0.4
 
 
 
@@ -84,6 +87,7 @@ flutter:
      - assets/icon/profile.png
      - assets/icon/generate_report.png
      - assets/round_logo.png
+     - assets/weather.png
 
 
 

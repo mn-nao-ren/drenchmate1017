@@ -8,11 +8,38 @@ import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart
 import 'package:drenchmate_2024/presentation/screens/setup_property_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/drench_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
+import 'package:drenchmate_2024/presentation/components/username.dart';
+import 'package:intl/intl.dart';
+import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
 
-class DashboardScreen extends StatelessWidget {
+
+
+class DashboardScreen extends StatefulWidget {
   static const id = 'dashboard_screen';
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
 
-  const DashboardScreen({super.key});
+class _DashboardScreenState extends State<DashboardScreen> {
+  int _currentIndex = 0;
+
+  void _onItemTapped(int index) {
+    if (index == 2) {
+      Navigator.pushNamed(context, NotificationScreen.id).then((_) {
+        setState(() {
+          _currentIndex = 2;
+        });
+      });
+    } else {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +57,12 @@ class DashboardScreen extends StatelessWidget {
             ),
           ],
         ),
-        backgroundColor: Colors.blueGrey.shade600,
+        backgroundColor: Colors.blueGrey.shade800,
         foregroundColor: Colors.white,//Colors.blue.shade900,
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.crisis_alert),
+            icon: const Icon(Icons.notifications),
             onPressed: () {},
           ),
         ],
@@ -46,34 +73,44 @@ class DashboardScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Welcome back 👋',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                style: GoogleFonts.lobster(
+                    fontSize: 33,
+                    fontWeight: FontWeight.w500
+                ),
               ),
-              const SizedBox(height: 8),
-              // John Doer is just a placeholder,
-              // develop with stateful widget and fetch
-              // do not use the following text widget
-              const Text(
-                'William Butcher',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
-              const Text(
+
+              const UserProfile(),
+
+              const SizedBox(height: 20),
+
+
+              Text(
                 'Overview',
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                style: GoogleFonts.roboto(fontSize: 26, fontWeight: FontWeight.w600),
               ),
-              const SizedBox(height: 8),
-              const Text(
-                'TUES 11 JUL',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+
+
+
+              Text(
+                DateFormat('EEE d MMM').format(DateTime.now()).toUpperCase(),
+                style: TextStyle(fontSize: 20, color: Colors.grey.shade600),
+
               ),
-              const SizedBox(height: 16),
+
+              const SizedBox(height: 20),
+
+
+
               const Text(
                 'Highlights',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 16),
+
+              const SizedBox(height: 9),
+
+
               SingleChildScrollView(
                 child: GridView.count(
                   crossAxisCount: 2,
@@ -84,6 +121,17 @@ class DashboardScreen extends StatelessWidget {
                   children: [
                     HighlightCard(
                       color: Colors.blueGrey.shade400,
+                      icon: 'assets/weather.png',
+                      title: 'Weather Info',
+                      subtitle: 'Monitored, alerts set',
+                      buttonText: 'placeholder',
+                      onButtonPressed: () {
+
+                      },
+                    ),
+
+                    HighlightCard(
+                      color: Colors.lightBlue.shade500,
                       icon: 'assets/icon/mob.png',
                       title: 'Mobs Info',
                       subtitle: 'display latest from db',
@@ -93,8 +141,9 @@ class DashboardScreen extends StatelessWidget {
                         Navigator.pushNamed(context, CreateMobPage.id);
                       },
                     ),
+
                     HighlightCard(
-                      color: Colors.black,
+                      color: Colors.blue.shade900,
                       icon: 'assets/icon/drench.png',
                       title: "Drench Info",
                       subtitle: 'Upcoming Drenches',
@@ -103,18 +152,20 @@ class DashboardScreen extends StatelessWidget {
                         Navigator.pushNamed(context, DrenchEntryScreen.id);
                       },
                     ),
+
                     HighlightCard(
-                      color: Colors.blue.shade900,
+                      color: Colors.blueGrey.shade400,
                       icon: 'assets/icon/property.png',
                       title: 'Property Info',
-                      subtitle: 'Your Mobs and their info',
+                      subtitle: 'Your farm property info',
                       buttonText: 'Set up a Property',
                       onButtonPressed: () {
                         Navigator.pushNamed(context, SetupPropertyScreen.id);
                       },
                     ),
+
                     HighlightCard(
-                      color: Colors.blueGrey.shade400,
+                      color: Colors.lightBlue.shade500,
                       icon: 'assets/icon/profile.png',
                       title: 'Profile',
                       subtitle: 'Add, restrict actions',
@@ -128,7 +179,7 @@ class DashboardScreen extends StatelessWidget {
                     // this one is actually for generate report
 
                     HighlightCard(
-                      color: Colors.black,
+                      color: Colors.blue.shade900,
                       icon: 'assets/icon/generate_report.png',
                       title: "Reports",
                       subtitle: 'Backed-up logs for gov', // replace w data display widget soon
@@ -140,13 +191,25 @@ class DashboardScreen extends StatelessWidget {
                     ),
 
                     HighlightCard(
-                      color: Colors.blue.shade900,
+                      color: Colors.blueGrey.shade400,
                       icon: 'assets/icon/property.png',
                       title: 'Manage Products',
                       subtitle: 'Chemical compositions',
                       buttonText: 'Enter a new product',
                       onButtonPressed: () {
                         Navigator.pushNamed(context, ChemicalEntryScreen.id);
+                      },
+                    ),
+
+                    HighlightCard(
+                      color: Colors.lightBlue.shade500,
+                      icon: 'assets/icon/mob.png',
+                      title: 'Parasite Testing',
+                      subtitle: 'Worm egg count test results',
+                      buttonText: 'Enter results',
+                      onButtonPressed: () {
+                        // add actions
+                        Navigator.pushNamed(context, CreateMobPage.id);
                       },
                     ),
 
@@ -158,7 +221,10 @@ class DashboardScreen extends StatelessWidget {
         ),
       ),
       //how do you add a BottomNavigationBar properly here?
-      bottomNavigationBar: const MyNavigationBar(),
+      bottomNavigationBar: MyNavigationBar(
+        currentIndex: _currentIndex,
+        onItemTapped: _onItemTapped,
+      )
     );
   }
 }
