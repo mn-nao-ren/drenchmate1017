@@ -16,6 +16,7 @@ class MyNavigationBar extends StatefulWidget {
 }
 
 class _MyNavigationBarState extends State<MyNavigationBar> {
+  /* class method */
   BottomNavigationBarItem _buildNavigationBarItem({
     required int index,
     required IconData icon,
@@ -65,14 +66,14 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
         ),
         _buildNavigationBarItem(
           index: 1,
-          icon: Icons.notifications_outlined,
-          label: 'Drench Alert',
+          icon: Icons.data_object_outlined,
+          label: 'Export',
           color: Colors.red.shade600,
           selectedColor: Colors.red.shade600,
         ),
         _buildNavigationBarItem(
           index: 2,
-          icon: Icons.business_outlined,
+          icon: Icons.warning_amber_outlined,
           label: 'Alerts',
           color: Colors.blue,
           selectedColor: Colors.blue,

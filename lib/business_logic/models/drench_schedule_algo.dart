@@ -24,7 +24,7 @@ class DrenchSchedule {
 
     final nextDrenchNeeded = fecalEggCount > fecalEggThreshold;
 
-    final drenchEffective = daysSinceLastDrench <= effectivePeriodDays;
+    final drenchEffective = (daysSinceLastDrench <= effectivePeriodDays);
 
     if (nextDrenchNeeded || !drenchEffective || reInfectionRisk == 'high') {
       return currentDate;

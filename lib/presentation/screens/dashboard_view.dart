@@ -129,6 +129,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                       },
                     ),
+
                     HighlightCard(
                       color: Colors.lightBlue.shade500,
                       icon: 'assets/icon/mob.png',
@@ -140,6 +141,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Navigator.pushNamed(context, CreateMobPage.id);
                       },
                     ),
+
                     HighlightCard(
                       color: Colors.blue.shade900,
                       icon: 'assets/icon/drench.png',
@@ -150,6 +152,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Navigator.pushNamed(context, DrenchEntryScreen.id);
                       },
                     ),
+
                     HighlightCard(
                       color: Colors.blueGrey.shade400,
                       icon: 'assets/icon/property.png',
@@ -160,6 +163,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Navigator.pushNamed(context, SetupPropertyScreen.id);
                       },
                     ),
+
                     HighlightCard(
                       color: Colors.lightBlue.shade500,
                       icon: 'assets/icon/profile.png',
@@ -194,6 +198,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       buttonText: 'Enter a new product',
                       onButtonPressed: () {
                         Navigator.pushNamed(context, ChemicalEntryScreen.id);
+                      },
+                    ),
+
+                    HighlightCard(
+                      color: Colors.lightBlue.shade500,
+                      icon: 'assets/icon/mob.png',
+                      title: 'Parasite Testing',
+                      subtitle: 'Worm egg count test results',
+                      buttonText: 'Enter results',
+                      onButtonPressed: () {
+                        // add actions
+                        Navigator.pushNamed(context, CreateMobPage.id);
                       },
                     ),
 

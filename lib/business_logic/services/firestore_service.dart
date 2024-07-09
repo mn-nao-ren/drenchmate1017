@@ -17,10 +17,11 @@ class FirestoreService {
   }
 
 
-  Future<void> saveMob(String propertyAddress, int paddockId, String mobName) async {
+  Future<void> saveMob(String propertyAddress, int paddockId, int mobNumber, String mobName) async {
     final mobData = {
       'propertyAddress': propertyAddress,
       'paddockId': paddockId,
+      'mobNumber': mobNumber,
       'mobName': mobName,
       'createdAt': DateTime.now(),
     };

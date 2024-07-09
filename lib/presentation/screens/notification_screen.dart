@@ -16,7 +16,7 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   void _onItemTapped(BuildContext context, int index) {
-    if (index != 2) {
+    if (index != 1) {
       Navigator.pop(context);
     }
   }
@@ -86,7 +86,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
               const SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
-                  itemCount: 10, // Hardcoded number of notifications for now
+                  /* set itemCount to accommodate flexible number of items,
+                  * as many notifications as StreamBuilder will give out
+                  * */
+                  itemCount: 10,
                   itemBuilder: (context, index) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,14 +98,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           children: [
                             const Icon(Icons.calendar_today, size: 16, color: Colors.grey),
                             const SizedBox(width: 8),
+
+                            /* this date time widget needs to display the date and time
+                            * at which the notification was triggered and sent out. not just today's
+                            * date */
                             TodayDateWidget(),
 
 
                           ],
                         ),
                         const SizedBox(height: 10),
+
+                        /* The design of each notification is:
+                        * Reasons for drenching -
+                        * report days since last drenched
+                        * report fecal egg count level
+                        * report weather conditions: is it warm_humid or not?
+                        * report re-infection risk: high or low?
+                        * Last drench effective period exceeded: yes or no
+                        *  */
                         const Text(
-                          'Average Rainfall hits limit, time to Drench.', // Hardcoded notification for now
+                          'Average Rainfall hits limit, time to Drench.',
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black,

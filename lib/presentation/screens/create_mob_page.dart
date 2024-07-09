@@ -17,6 +17,7 @@ class _CreateMobPageState extends State<CreateMobPage> {
   final _formKey = GlobalKey<FormState>();
   String? propertyAddress;
   int? paddockId;
+  int? mobNumber;
   String? mobName;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -26,8 +27,8 @@ class _CreateMobPageState extends State<CreateMobPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey.shade600,
-        foregroundColor: Colors.white,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.blue.shade900,
         title: Row(
           children: [
             Text(
@@ -80,8 +81,8 @@ class _CreateMobPageState extends State<CreateMobPage> {
               const SizedBox(height: 10),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Enter Paddock Number',
-                  prefixIcon: const Icon(Icons.landscape),
+                  labelText: 'Enter Paddock Number i.e. 1, 2, 3, etc',
+                  prefixIcon: const Icon(Icons.cabin_outlined),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -98,6 +99,29 @@ class _CreateMobPageState extends State<CreateMobPage> {
                 },
                 onSaved: (value) {
                   paddockId = int.parse(value!);
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Assign Mob Number e.g. 1, 2, 3, etc',
+                  prefixIcon: const Icon(Icons.numbers_outlined),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please assign a Mob number';
+                  }
+                  if (int.tryParse(value) == null) {
+                    return 'Please enter a valid number';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  mobNumber = int.parse(value!);
                 },
               ),
               const SizedBox(height: 10),
@@ -128,11 +152,13 @@ class _CreateMobPageState extends State<CreateMobPage> {
 
                       if (propertyAddress != null &&
                           paddockId != null &&
+                          mobNumber != null &&
                           mobName != null) {
                         try {
                           await _firestoreService.saveMob(
                             propertyAddress!,
                             paddockId!,
+                            mobNumber!,
                             mobName!,
                           );
 
@@ -141,16 +167,20 @@ class _CreateMobPageState extends State<CreateMobPage> {
                           );
                           Navigator.pushNamed(context, DashboardScreen.id);
                         } catch (e) {
-                          print(e);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Mob not added, retry')),
+                          );
                         }
                       } else {
                         // Handle the case where values are not set
-                        print('One or more values are null');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('One or more values are null')),
+                        );
                       }
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.lightBlueAccent,
+                    backgroundColor: Colors.lightBlue.shade600,
                     foregroundColor: Colors.white,
                     elevation: 5.0, // Background color
                     shape: RoundedRectangleBorder(
