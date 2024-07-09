@@ -1,104 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
 
 class MyNavigationBar extends StatefulWidget {
-  const MyNavigationBar({super.key});
+  final int currentIndex;
+  final Function(int) onItemTapped;
+
+  const MyNavigationBar({
+    super.key,
+    required this.currentIndex,
+    required this.onItemTapped,
+  });
 
   @override
   _MyNavigationBarState createState() => _MyNavigationBarState();
 }
 
 class _MyNavigationBarState extends State<MyNavigationBar> {
-  int _currentIndex = 0;
-
-  List<Widget> body = const [
-    Icon(Icons.person),
-    Icon(Icons.home),
-  ];
+  BottomNavigationBarItem _buildNavigationBarItem({
+    required int index,
+    required IconData icon,
+    required String label,
+    required Color color,
+    required Color selectedColor,
+  }) {
+    return BottomNavigationBarItem(
+      label: label,
+      icon: widget.currentIndex == index
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+             children: [
+               Icon(icon),
+               const SizedBox(height: 2),
+               SizedBox(
+                 height: 7,
+                 width: 32,
+                 child: DecoratedBox(
+                   decoration: BoxDecoration(
+                     color: color,
+                     borderRadius: BorderRadius.circular(55),
+                   ),
+                 ),
+               ),
+             ],
+          )
+          : Icon(icon),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: _currentIndex,
-
-        backgroundColor: Colors.white,
+      currentIndex: widget.currentIndex,
+      backgroundColor: Colors.white,
       selectedItemColor: Colors.black,
       unselectedItemColor: Colors.black,
-
-
-      onTap: (int newIndex) {
-        setState(() {
-          _currentIndex = newIndex;
-        });
-      },
+      onTap: widget.onItemTapped,
       items: [
-        BottomNavigationBarItem(
+        _buildNavigationBarItem(
+          index: 0,
+          icon: Icons.person_outlined,
           label: 'Profile',
-          icon: _currentIndex == 0
-              ? Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.person_outlined),
-              const SizedBox(height: 2),
-              SizedBox(
-                height: 7,
-                width: 32,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Colors.blue.shade800,
-                    borderRadius: BorderRadius.circular(55),
-                  ),
-                ),
-              )
-            ],
-          )
-              : const Icon(Icons.person_outlined),
+          color: Colors.blue.shade800,
+          selectedColor: Colors.blue.shade800,
         ),
-        BottomNavigationBarItem(
+        _buildNavigationBarItem(
+          index: 1,
+          icon: Icons.notifications_outlined,
           label: 'Drench Alert',
-
-          icon: _currentIndex == 1
-              ? Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.notifications_outlined),
-              const SizedBox(height: 2),
-              SizedBox(
-                height: 7,
-                width: 45,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Colors.red.shade600,
-                    borderRadius: BorderRadius.circular(55),
-                  ),
-                ),
-              )
-            ],
-          )
-              : const Icon(Icons.notifications_outlined),
+          color: Colors.red.shade600,
+          selectedColor: Colors.red.shade600,
         ),
-        BottomNavigationBarItem(
-          label: 'Activity',
-          icon: _currentIndex == 2
-              ? Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.business_outlined),
-              const SizedBox(height: 2),
-              SizedBox(
-                height: 7,
-                width: 32,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(55),
-                  ),
-                ),
-              )
-            ],
-          )
-              : const Icon(Icons.business_outlined),
+        _buildNavigationBarItem(
+          index: 2,
+          icon: Icons.business_outlined,
+          label: 'Alerts',
+          color: Colors.blue,
+          selectedColor: Colors.blue,
         ),
-      ]
+      ],
     );
   }
 }

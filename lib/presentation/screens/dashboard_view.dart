@@ -10,12 +10,36 @@ import 'package:drenchmate_2024/presentation/screens/drench_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
 import 'package:drenchmate_2024/presentation/components/username.dart';
 import 'package:intl/intl.dart';
+import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
 
 
-class DashboardScreen extends StatelessWidget {
+
+class DashboardScreen extends StatefulWidget {
   static const id = 'dashboard_screen';
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
 
-  const DashboardScreen({super.key});
+class _DashboardScreenState extends State<DashboardScreen> {
+  int _currentIndex = 0;
+
+  void _onItemTapped(int index) {
+    if (index == 2) {
+      Navigator.pushNamed(context, NotificationScreen.id).then((_) {
+        setState(() {
+          _currentIndex = 2;
+        });
+      });
+    } else {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +76,7 @@ class DashboardScreen extends StatelessWidget {
               Text(
                 'Welcome back 👋',
                 style: GoogleFonts.lobster(
-                    fontSize: 29,
+                    fontSize: 33,
                     fontWeight: FontWeight.w500
                 ),
               ),
@@ -181,7 +205,10 @@ class DashboardScreen extends StatelessWidget {
         ),
       ),
       //how do you add a BottomNavigationBar properly here?
-      bottomNavigationBar: const MyNavigationBar(),
+      bottomNavigationBar: MyNavigationBar(
+        currentIndex: _currentIndex,
+        onItemTapped: _onItemTapped,
+      )
     );
   }
 }
