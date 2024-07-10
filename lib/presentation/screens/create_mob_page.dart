@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
-import 'package:drenchmate_2024/presentation/screens/dashboard_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'dashboard_view.dart';
 
 class CreateMobPage extends StatefulWidget {
   static String id = 'create_mob_page';
@@ -20,8 +21,15 @@ class _CreateMobPageState extends State<CreateMobPage> {
   int? mobNumber;
   String? mobName;
 
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirestoreService _firestoreService = FirestoreService();
+
+  User? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = FirebaseAuth.instance.currentUser;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,13 +161,16 @@ class _CreateMobPageState extends State<CreateMobPage> {
                       if (propertyAddress != null &&
                           paddockId != null &&
                           mobNumber != null &&
-                          mobName != null) {
+                          mobName != null &&
+                          currentUser != null) {
                         try {
                           await _firestoreService.saveMob(
                             propertyAddress!,
                             paddockId!,
                             mobNumber!,
                             mobName!,
+                            currentUser!.uid,
+                            currentUser!.email!,
                           );
 
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -172,7 +183,6 @@ class _CreateMobPageState extends State<CreateMobPage> {
                           );
                         }
                       } else {
-                        // Handle the case where values are not set
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('One or more values are null')),
                         );

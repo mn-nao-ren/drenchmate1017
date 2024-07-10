@@ -4,6 +4,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+
+  Future<List<String>> fetchMobs(String userId) async {
+    try {
+      QuerySnapshot snapshot = await _firestore.collection('mobs').where('userId', isEqualTo: userId).get();
+
+
+      return snapshot.docs.map((doc) => doc['mobNumber'].toString()).toList();
+    } catch (e) {
+      print('Error fetching mobs: $e');
+      return [];
+    }
+  }
+
   Future<void> savePropertyData(String userEmail, String propertyName, String location, String country, String countryCode, String postalCode, DateTime createdAt) async {
     await _firestore.collection('properties').add({
       'userEmail': userEmail,
@@ -17,13 +30,15 @@ class FirestoreService {
   }
 
 
-  Future<void> saveMob(String propertyAddress, int paddockId, int mobNumber, String mobName) async {
+  Future<void> saveMob(String propertyAddress, int paddockId, int mobNumber, String mobName, String userId, String userEmail) async {
     final mobData = {
       'propertyAddress': propertyAddress,
       'paddockId': paddockId,
       'mobNumber': mobNumber,
       'mobName': mobName,
-      'createdAt': DateTime.now(),
+
+      'userId': userId,
+      'userEmail': userEmail,
     };
 
     try {

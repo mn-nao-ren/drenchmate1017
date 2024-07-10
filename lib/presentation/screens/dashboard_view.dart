@@ -1,4 +1,5 @@
 import 'package:drenchmate_2024/presentation/screens/chemical_entry_screen.dart';
+import 'package:drenchmate_2024/presentation/screens/enter_egg_test_results.dart';
 import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/presentation/components/highlight_card.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +17,8 @@ import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const id = 'dashboard_screen';
+
+  const DashboardScreen({super.key});
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
@@ -204,12 +207,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     HighlightCard(
                       color: Colors.lightBlue.shade500,
                       icon: 'assets/icon/mob.png',
-                      title: 'Parasite Testing',
+                      title: 'Parasite Test',
                       subtitle: 'Worm egg count test results',
                       buttonText: 'Enter results',
                       onButtonPressed: () {
                         // add actions
-                        Navigator.pushNamed(context, CreateMobPage.id);
+                        Navigator.pushNamed(context, EnterResultsPage.id);
                       },
                     ),
 

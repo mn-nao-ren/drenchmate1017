@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
 
 class MyNavigationBar extends StatefulWidget {
   final int currentIndex;

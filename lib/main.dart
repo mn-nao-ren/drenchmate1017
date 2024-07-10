@@ -1,10 +1,10 @@
+import 'package:drenchmate_2024/presentation/screens/enter_egg_test_results.dart';
 import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'business_logic/models/chemical_provider.dart';
-import 'infrastructure/network/firebase_options.dart';
 import 'package:drenchmate_2024/presentation/screens/home_landing_page.dart';
 import 'package:drenchmate_2024/presentation/screens/setup_property_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/email_registration_page.dart';
@@ -39,14 +39,15 @@ class DrenchMateApp extends StatelessWidget {
           HomePage.id: (context) => const HomePage(),
           RegistrationPage.id: (context) => const RegistrationPage(),
 
-          DashboardScreen.id: (context) => DashboardScreen(),
+          DashboardScreen.id: (context) => const DashboardScreen(),
           CreateProfileScreen.id: (context) => const CreateProfileScreen(),
           GenerateReportScreen.id: (context) => const GenerateReportScreen(),
           SetupPropertyScreen.id: (context) => const SetupPropertyScreen(),
           DrenchEntryScreen.id: (context) => const DrenchEntryScreen(),
           ChemicalEntryScreen.id: (context) => const ChemicalEntryScreen(),
           CreateMobPage.id: (context) => const CreateMobPage(),
-          NotificationScreen.id: (context) => NotificationScreen(),
+          NotificationScreen.id: (context) => const NotificationScreen(),
+          EnterResultsPage.id: (context) => const EnterResultsPage(),
 
           // CreateProfileScreen.id: (context) => const CreateProfileScreen(),
         },

@@ -2,7 +2,6 @@ import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.da
 import 'package:drenchmate_2024/presentation/components/today_date_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:drenchmate_2024/presentation/components/today_date_widget.dart';
 import '../components/username.dart';
 
 
@@ -10,6 +9,8 @@ import '../components/username.dart';
 
 class NotificationScreen extends StatefulWidget {
   static String id = 'notification_screen';
+
+  const NotificationScreen({super.key});
   @override
   _NotificationScreenState createState() => _NotificationScreenState();
 }
@@ -91,13 +92,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   * */
                   itemCount: 10,
                   itemBuilder: (context, index) {
-                    return Column(
+                    return const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.calendar_today, size: 16, color: Colors.grey),
-                            const SizedBox(width: 8),
+                            Icon(Icons.calendar_today, size: 16, color: Colors.grey),
+                            SizedBox(width: 8),
 
                             /* this date time widget needs to display the date and time
                             * at which the notification was triggered and sent out. not just today's
@@ -107,7 +108,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
 
                         /* The design of each notification is:
                         * Reasons for drenching -
@@ -117,14 +118,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         * report re-infection risk: high or low?
                         * Last drench effective period exceeded: yes or no
                         *  */
-                        const Text(
+                        Text(
                           'Average Rainfall hits limit, time to Drench.',
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black,
                           ),
                         ),
-                        const Divider(),
+                        Divider(),
                       ],
                     );
                   },
