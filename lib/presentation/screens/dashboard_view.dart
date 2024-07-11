@@ -86,7 +86,132 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
               const UserProfile(),
 
+              const SizedBox(height: 11),
+
+              const Card(
+                margin: EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.supervised_user_circle_outlined,
+                    color: Colors.black,
+                  ),
+                  title: Text(
+                    '            User Guide',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Source Sans Pro',
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+
+              Card(
+                margin: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 66.0),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.house_outlined,
+                    color: Colors.teal,
+                  ),
+                  title: Text(
+                    'Step 1: Property',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.teal.shade900,
+                      fontFamily: 'Source Sans Pro',
+                    ),
+                  ),
+                ),
+              ),
+              Card(
+                margin: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 55.0),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.add_business,
+                    color: Colors.teal,
+                  ),
+                  title: Text(
+                    'Step 2: Set up mobs',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.teal.shade900,
+                      fontFamily: 'Source Sans Pro',
+                    ),
+                  ),
+                ),
+              ),
+              Card(
+                margin: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 55.0),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.house_outlined,
+                    color: Colors.teal,
+                  ),
+                  title: Text(
+                    'Step 3: Paddock #',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.teal.shade900,
+                      fontFamily: 'Source Sans Pro',
+                    ),
+                  ),
+                ),
+              ),
+              Card(
+                margin: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 66.0),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.medical_services_outlined,
+                    color: Colors.teal,
+                  ),
+                  title: Text(
+                    'Step 4: Drench',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.teal.shade900,
+                      fontFamily: 'Source Sans Pro',
+                    ),
+                  ),
+                ),
+              ),
+              Card(
+                margin: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 55.0),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.medical_information_outlined,
+                    color: Colors.teal,
+                  ),
+                  title: Text(
+                    'Step 5: Egg Count',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.teal.shade900,
+                      fontFamily: 'Source Sans Pro',
+                    ),
+                  ),
+                ),
+              ),
+              Card(
+                margin: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 55.0),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.notifications_outlined,
+                    color: Colors.teal,
+                  ),
+                  title: Text(
+                    'Step 6: Notification',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.teal.shade900,
+                      fontFamily: 'Source Sans Pro',
+                    ),
+                  ),
+                ),
+              ),
+
               const SizedBox(height: 20),
+
 
 
               Text(
