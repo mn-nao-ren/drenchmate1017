@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
-import 'package:drenchmate_2024/presentation/screens/dashboard_view.dart';
 
 class EnterResultsPage extends StatefulWidget {
   static String id = 'enter_results_page';
@@ -35,16 +33,19 @@ class _EnterResultsPageState extends State<EnterResultsPage> {
         setState(() {
           mobList = fetchedMobs.toSet().toList(); // Ensure unique values
         });
-        print('Mob List: $mobList');
 
       } catch (e) {
         // Handle error fetching mobs
-        print('Error fetching mobs: $e');
+        // print('Error fetching mobs: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to load mobs: $e')),
         );
       }
     }
+  }
+
+  Future<void> fetchMobDetails(String mobNumber) async {
+
   }
 
 
@@ -53,11 +54,6 @@ class _EnterResultsPageState extends State<EnterResultsPage> {
     super.initState();
     getMobs();
   }
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
