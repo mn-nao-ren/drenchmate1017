@@ -28,7 +28,7 @@ class AdvancedNoticeRepository {
   Future<DateTime> getLastDrenchDate() async {
     try {
       // Simulate network call
-      return DateTime.now().subtract(Duration(days: 10)); // Placeholder for actual last drench date
+      return DateTime.now().subtract(const Duration(days: 10)); // Placeholder for actual last drench date
     } catch (e) {
       print('Error: Failed to fetch last drench date - $e');
       throw Exception('Failed to fetch last drench date');

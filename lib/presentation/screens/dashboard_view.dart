@@ -12,6 +12,7 @@ import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
 import 'package:drenchmate_2024/presentation/components/username.dart';
 import 'package:intl/intl.dart';
 import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
+import 'package:drenchmate_2024/presentation/components/first_steps_popup.dart';
 
 
 
@@ -88,127 +89,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
               const SizedBox(height: 11),
 
-              const Card(
-                margin: EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+              ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return FirstStepsPopup();
+                    },
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal.shade100,
+                  padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 85.0),
+                ),
                 child: ListTile(
                   leading: Icon(
                     Icons.supervised_user_circle_outlined,
-                    color: Colors.black,
+                    color: Colors.teal.shade900,
                   ),
                   title: Text(
-                    '            User Guide',
+                    'FIRST STEPS',
+
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.teal.shade900,
                       fontFamily: 'Source Sans Pro',
-                      fontSize: 22.0,
+                      fontSize: 18.0,
                       fontWeight: FontWeight.bold,
+
                     ),
                   ),
                 ),
+
               ),
 
-              Card(
-                margin: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 66.0),
-                child: ListTile(
-                  leading: const Icon(
-                    Icons.house_outlined,
-                    color: Colors.teal,
-                  ),
-                  title: Text(
-                    'Step 1: Property',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.teal.shade900,
-                      fontFamily: 'Source Sans Pro',
-                    ),
-                  ),
-                ),
-              ),
-              Card(
-                margin: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 55.0),
-                child: ListTile(
-                  leading: const Icon(
-                    Icons.add_business,
-                    color: Colors.teal,
-                  ),
-                  title: Text(
-                    'Step 2: Set up mobs',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.teal.shade900,
-                      fontFamily: 'Source Sans Pro',
-                    ),
-                  ),
-                ),
-              ),
-              Card(
-                margin: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 55.0),
-                child: ListTile(
-                  leading: const Icon(
-                    Icons.house_outlined,
-                    color: Colors.teal,
-                  ),
-                  title: Text(
-                    'Step 3: Paddock #',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.teal.shade900,
-                      fontFamily: 'Source Sans Pro',
-                    ),
-                  ),
-                ),
-              ),
-              Card(
-                margin: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 66.0),
-                child: ListTile(
-                  leading: const Icon(
-                    Icons.medical_services_outlined,
-                    color: Colors.teal,
-                  ),
-                  title: Text(
-                    'Step 4: Drench',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.teal.shade900,
-                      fontFamily: 'Source Sans Pro',
-                    ),
-                  ),
-                ),
-              ),
-              Card(
-                margin: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 55.0),
-                child: ListTile(
-                  leading: const Icon(
-                    Icons.medical_information_outlined,
-                    color: Colors.teal,
-                  ),
-                  title: Text(
-                    'Step 5: Egg Count',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.teal.shade900,
-                      fontFamily: 'Source Sans Pro',
-                    ),
-                  ),
-                ),
-              ),
-              Card(
-                margin: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 55.0),
-                child: ListTile(
-                  leading: const Icon(
-                    Icons.notifications_outlined,
-                    color: Colors.teal,
-                  ),
-                  title: Text(
-                    'Step 6: Notification',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.teal.shade900,
-                      fontFamily: 'Source Sans Pro',
-                    ),
-                  ),
-                ),
-              ),
+
+
+
 
               const SizedBox(height: 20),
 
@@ -216,14 +132,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
               Text(
                 'Overview',
-                style: GoogleFonts.roboto(fontSize: 26, fontWeight: FontWeight.w600),
+                style: GoogleFonts.roboto(fontSize: 22, fontWeight: FontWeight.w600),
               ),
 
 
 
               Text(
                 DateFormat('EEE d MMM').format(DateTime.now()).toUpperCase(),
-                style: TextStyle(fontSize: 20, color: Colors.grey.shade600),
+                style: TextStyle(fontSize: 19, color: Colors.grey.shade600),
 
               ),
 
@@ -348,7 +264,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
       ),
-      //how do you add a BottomNavigationBar properly here?
+
       bottomNavigationBar: MyNavigationBar(
         currentIndex: _currentIndex,
         onItemTapped: _onItemTapped,

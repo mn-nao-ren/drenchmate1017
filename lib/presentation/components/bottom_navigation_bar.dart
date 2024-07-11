@@ -25,25 +25,27 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   }) {
     return BottomNavigationBarItem(
       label: label,
-      icon: widget.currentIndex == index
-          ? Column(
-              mainAxisSize: MainAxisSize.min,
-             children: [
-               Icon(icon),
-               const SizedBox(height: 2),
-               SizedBox(
-                 height: 7,
-                 width: 32,
-                 child: DecoratedBox(
-                   decoration: BoxDecoration(
-                     color: color,
-                     borderRadius: BorderRadius.circular(55),
-                   ),
-                 ),
-               ),
-             ],
-          )
-          : Icon(icon),
+      icon: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: widget.currentIndex == index ? selectedColor : color,
+          ),
+          const SizedBox(height: 2),
+          if (widget.currentIndex == index)
+            SizedBox(
+              height: 7,
+              width: 32,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: selectedColor,
+                  borderRadius: BorderRadius.circular(55),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 
@@ -55,25 +57,33 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
       selectedItemColor: Colors.black,
       unselectedItemColor: Colors.black,
       onTap: widget.onItemTapped,
+      showUnselectedLabels: true,
       items: [
         _buildNavigationBarItem(
           index: 0,
           icon: Icons.person_outlined,
           label: 'Profile',
-          color: Colors.blue.shade800,
-          selectedColor: Colors.blue.shade800,
+          color: Colors.blue.shade900,
+          selectedColor: Colors.blue.shade900,
         ),
         _buildNavigationBarItem(
           index: 1,
           icon: Icons.data_object_outlined,
           label: 'Export',
-          color: Colors.red.shade600,
-          selectedColor: Colors.red.shade600,
+          color: Colors.black,
+          selectedColor: Colors.black,
         ),
         _buildNavigationBarItem(
           index: 2,
           icon: Icons.warning_amber_outlined,
           label: 'Alerts',
+          color: Colors.red.shade900,
+          selectedColor: Colors.red.shade800,
+        ),
+        _buildNavigationBarItem(
+          index: 3,
+          icon: Icons.call_to_action_outlined,
+          label: 'First Steps',
           color: Colors.blue,
           selectedColor: Colors.blue,
         ),

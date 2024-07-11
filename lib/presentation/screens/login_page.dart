@@ -89,37 +89,35 @@ class _LoginScreenState extends State<LoginScreen> {
                           try {
                             final user = await _auth.signInWithEmailAndPassword(
                                 email: email, password: password);
-                            if (user != null) {
-                              SharedPreferences prefs = await SharedPreferences.getInstance();
-                              bool isFirstLogin = prefs.getBool('first_login') ?? true;
-                              if (isFirstLogin) {
-                                await prefs.setBool('first_login', false);
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Welcome to DrenchMate!'),
-                                      content: const Text(
-                                          'Step 1: Set up your property, your mobs, and their paddock numbers.\n'
-                                              'Step 2: Enter Drenches.\n'
-                                              'Step 3: Enter Worm Egg Count Results.\n'
-                                              'Step 4: Await Advanced drench notifications.'
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            bool isFirstLogin = prefs.getBool('first_login') ?? true;
+                            if (isFirstLogin) {
+                              await prefs.setBool('first_login', false);
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Welcome to DrenchMate!'),
+                                    content: const Text(
+                                        'Step 1: Set up your property, your mobs, and their paddock numbers.\n'
+                                            'Step 2: Enter Drenches.\n'
+                                            'Step 3: Enter Worm Egg Count Results.\n'
+                                            'Step 4: Await Advanced drench notifications.'
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('Close'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
                                       ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('Close'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                        ),
-                                      ],
+                                    ],
 
-                                    );
-                                  },
-                                );
-                              }
+                                  );
+                                },
+                              );
                             }
-                            Navigator.pushNamed(context, DashboardScreen.id);
+                                                      Navigator.pushNamed(context, DashboardScreen.id);
                           } catch (e) {
                             // print(e);
                             // Show error message to the user if needed

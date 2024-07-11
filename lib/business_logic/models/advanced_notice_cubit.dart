@@ -42,7 +42,7 @@ class AdvancedNoticeCubit extends Cubit<AdvancedNoticeState> {
     required WeatherData weatherData,
   }) {
     // Add algorithm logic to compute next drench date
-    DateTime nextDrenchDate = lastDrenchDate.add(Duration(days: 21)); // Placeholder logic
+    DateTime nextDrenchDate = lastDrenchDate.add(const Duration(days: 21)); // Placeholder logic
     return nextDrenchDate;
   }
 
