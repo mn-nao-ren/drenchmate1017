@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class FirstStepsPopup extends StatelessWidget {
+  const FirstStepsPopup({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

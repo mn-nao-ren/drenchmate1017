@@ -80,13 +80,6 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
           color: Colors.red.shade900,
           selectedColor: Colors.red.shade800,
         ),
-        _buildNavigationBarItem(
-          index: 3,
-          icon: Icons.call_to_action_outlined,
-          label: 'First Steps',
-          color: Colors.blue,
-          selectedColor: Colors.blue,
-        ),
       ],
     );
   }

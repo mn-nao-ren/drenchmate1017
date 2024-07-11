@@ -18,8 +18,10 @@ class DrenchEntryScreen extends StatefulWidget {
 class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _propertyIdController = TextEditingController();
-  final TextEditingController _propertyAddressController = TextEditingController();
+  final TextEditingController _propertyAddressController =
+      TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+
   // final bool _autovalidate = false;
 
   String _selectedMobId = 'Mob 1';
@@ -33,8 +35,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
         propertyAddressController: _propertyAddressController,
         dateController: _dateController,
         setState: setState,
-        context: context
-    );
+        context: context);
   }
 
   Future<void> _saveDrenchDetails() async {
@@ -47,7 +48,29 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
         'ChemicalID': _selectedChemical ?? '',
       };
 
-      await FirebaseFirestore.instance.collection('drench_records').add(drenchDetails);
+      try {
+        DocumentReference mobDocRef =
+            FirebaseFirestore.instance.collection('mobs').doc(_selectedMobId);
+
+        // reference to the drenches subcollection
+        CollectionReference drenchesCollection =
+            mobDocRef.collection('drenches');
+
+        await drenchesCollection.add(drenchDetails);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Drench Entry Saved')),
+        );
+        Navigator.pushNamed(context, DashboardScreen.id);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to save drench details: $e')),
+        );
+      }
+
+      await FirebaseFirestore.instance
+          .collection('drench_records')
+          .add(drenchDetails);
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Drench Entry Saved')),
@@ -118,7 +141,8 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller: _propertyAddressController, // New TextFormField for Property Address
+                controller:
+                    _propertyAddressController, // New TextFormField for Property Address
                 decoration: InputDecoration(
                   labelText: 'Property Address',
                   prefixIcon: const Icon(Icons.location_on),
@@ -127,7 +151,6 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 16),
               TextFormField(
                 controller: _dateController,
@@ -193,7 +216,8 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ChemicalEntryScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const ChemicalEntryScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(

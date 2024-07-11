@@ -19,13 +19,13 @@ class _UserProfileState extends State<UserProfile> {
     fetchUsername();
   }
 
-
   Future<void> fetchUsername() async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         String uid = user.uid;
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+        DocumentSnapshot userDoc =
+            await FirebaseFirestore.instance.collection('users').doc(uid).get();
         setState(() {
           username = userDoc['username'];
         });
@@ -47,11 +47,10 @@ class _UserProfileState extends State<UserProfile> {
     return Text(
       username,
       style: GoogleFonts.inconsolata(
-        fontSize: 26,
-          fontWeight: FontWeight.bold,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
         color: Colors.black,
       ),
-
     );
   }
 }
