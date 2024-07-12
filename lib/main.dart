@@ -13,11 +13,18 @@ import 'package:drenchmate_2024/presentation/screens/create_profile.dart'; // cl
 import 'package:drenchmate_2024/presentation/screens/drench_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/chemical_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
+import 'package:drenchmate_2024/business_logic/state/navbar_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const DrenchMateApp());
+  runApp(
+      ChangeNotifierProvider(
+        create: (_) => NavbarState(),
+        child: const DrenchMateApp(),
+      )
+  );
+
 }
 
 class DrenchMateApp extends StatelessWidget {

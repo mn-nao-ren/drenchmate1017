@@ -2,7 +2,6 @@ import 'package:drenchmate_2024/presentation/screens/chemical_entry_screen.dart'
 import 'package:drenchmate_2024/presentation/screens/enter_egg_test_results.dart';
 import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/presentation/components/highlight_card.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
 import 'package:drenchmate_2024/presentation/screens/create_profile.dart';
@@ -52,7 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           // iconTheme: ,
           title: Row(
             children: [
-              const SizedBox(height: 40, width: 12),
+              const SizedBox(height: 40, width: 13),
               ClipOval(
                   child: Image.asset('assets/round_logo.png',
                       height: 40, width: 41)),
@@ -242,9 +241,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: MyNavigationBar(
-          currentIndex: _currentIndex,
-          onItemTapped: _onItemTapped,
-        ));
+        bottomNavigationBar: MyNavigationBar()
+    );
   }
 }

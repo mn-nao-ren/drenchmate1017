@@ -3,6 +3,7 @@ import 'package:drenchmate_2024/presentation/components/today_date_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../components/username.dart';
+import 'dashboard_view.dart';
 
 
 
@@ -34,7 +35,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               // Handle back button press
-              Navigator.pop(context);
+              Navigator.pushNamed(context, DashboardScreen.id);
             },
           ),
           title: Column(
@@ -134,10 +135,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ],
           ),
         ),
-        bottomNavigationBar: MyNavigationBar(
-          currentIndex: 2,
-          onItemTapped: (index) => _onItemTapped(context, index),
-        ),
+        bottomNavigationBar: MyNavigationBar(),
       ),
     );
   }

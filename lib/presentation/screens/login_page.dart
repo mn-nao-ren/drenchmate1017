@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                               );
                             }
-                                                      Navigator.pushNamed(context, DashboardScreen.id);
+                            Navigator.pushNamed(context, DashboardScreen.id);
                           } catch (e) {
                             // print(e);
                             // Show error message to the user if needed
