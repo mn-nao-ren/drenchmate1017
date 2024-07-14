@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:drenchmate_2024/business_logic/state/navbar_state.dart';
 
 class MyNavigationBar extends StatelessWidget {
+  const MyNavigationBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<NavbarState>(
@@ -11,7 +13,7 @@ class MyNavigationBar extends StatelessWidget {
           currentIndex: navbarState.selectedIndex,
           backgroundColor: Colors.white,
           selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.black,
+          unselectedItemColor: Colors.grey.shade600,
           onTap: (index) {
             navbarState.setIndex(index);
             _onItemTapped(context, index);
@@ -22,7 +24,7 @@ class MyNavigationBar extends StatelessWidget {
               context: context,
               index: 0,
               icon: Icons.dashboard,
-              label: 'Dashboard',
+              label: 'Home',
               color: Colors.blue.shade900,
               selectedColor: Colors.blue.shade900,
             ),

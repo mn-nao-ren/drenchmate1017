@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:drenchmate_2024/presentation/components/rounded_button.dart';
 import 'package:drenchmate_2024/presentation/components/constants.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dashboard_view.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -49,9 +50,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
+                    Text(
                       'Log In',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style: GoogleFonts.epilogue(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
@@ -79,8 +80,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 20),
                     RoundedButton(
-                      title: 'Log In',
-                      color: Colors.lightBlueAccent,
+                      title: 'L og  In',
+                      color: Colors.blue.shade500,
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           setState(() {

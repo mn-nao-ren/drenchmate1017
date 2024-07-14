@@ -14,6 +14,8 @@ import 'package:intl/intl.dart';
 import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
 import 'package:drenchmate_2024/presentation/components/first_steps_popup.dart';
 
+import 'login_page.dart';
+
 class DashboardScreen extends StatefulWidget {
   static const id = 'dashboard_screen';
 
@@ -48,7 +50,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          // iconTheme: ,
           title: Row(
             children: [
               const SizedBox(height: 40, width: 13),
@@ -69,8 +70,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           elevation: 0,
           actions: [
             IconButton(
-              icon: const Icon(Icons.notifications),
-              onPressed: () {},
+              icon: const Icon(Icons.logout_outlined),
+              onPressed: () {
+                Navigator.pushNamed(context, LoginScreen.id);
+              },
             ),
           ],
         ),
@@ -80,46 +83,58 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Welcome back 👋',
-                  style: GoogleFonts.lobster(
-                      fontSize: 32, fontWeight: FontWeight.w500),
-                ),
-                const UserProfile(),
-                const SizedBox(height: 5),
-                ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const FirstStepsPopup();
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Welcome back👋',
+                      style: GoogleFonts.lobster(
+                          fontSize: 31, fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(width: 11),
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const FirstStepsPopup();
+                          },
+                        );
                       },
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal.shade100,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 1.0, horizontal: 85.0),
-                  ),
-                  child: SizedBox(
-                    height: 51.6,
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.supervised_user_circle_outlined,
-                        color: Colors.teal.shade900,
-                      ),
-                      title: Text(
-                        'FIRST STEPS',
-                        style: TextStyle(
-                          color: Colors.teal.shade900,
-                          fontFamily: 'Source Sans Pro',
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 9.0),
+                        backgroundColor: Colors.teal.shade100,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.double_arrow,
+                            color: Colors.teal.shade900,
+                          ),
+                          const SizedBox(width: 5),
+
+
+                          Text(
+                            'FIRST STEPS',
+                            style: TextStyle(
+                              color: Colors.teal.shade900,
+                              fontFamily: 'Source Sans Pro',
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
+
+                const UserProfile(),
+                const SizedBox(height: 5),
                 const SizedBox(height: 22),
                 Text(
                   DateFormat('EEE d MMM').format(DateTime.now()).toUpperCase(),
@@ -150,7 +165,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         buttonText: 'placeholder',
                         onButtonPressed: () {},
                       ),
-
                       HighlightCard(
                         color: Colors.lightBlue.shade500,
                         icon: 'assets/icon/mob.png',
@@ -158,11 +172,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         subtitle: 'display latest from db',
                         buttonText: 'Set up a Mob',
                         onButtonPressed: () {
-                          // add actions
                           Navigator.pushNamed(context, CreateMobPage.id);
                         },
                       ),
-
                       HighlightCard(
                         color: Colors.blue.shade900,
                         icon: 'assets/icon/drench.png',
@@ -173,7 +185,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Navigator.pushNamed(context, DrenchEntryScreen.id);
                         },
                       ),
-
                       HighlightCard(
                         color: Colors.blueGrey.shade400,
                         icon: 'assets/icon/property.png',
@@ -184,7 +195,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Navigator.pushNamed(context, SetupPropertyScreen.id);
                         },
                       ),
-
                       HighlightCard(
                         color: Colors.lightBlue.shade500,
                         icon: 'assets/icon/profile.png',
@@ -192,26 +202,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         subtitle: 'Add, restrict actions',
                         buttonText: 'Create a Profile',
                         onButtonPressed: () {
-                          // add actions
                           Navigator.pushNamed(context, CreateProfileScreen.id);
                         },
                       ),
-
-                      // this one is actually for generate report
-
                       HighlightCard(
                         color: Colors.blue.shade900,
                         icon: 'assets/icon/generate_report.png',
                         title: "Reports",
-                        subtitle:
-                            'Backed-up logs for gov', // replace w data display widget soon
+                        subtitle: 'Backed-up logs for gov',
                         buttonText: 'Generate Report',
                         onButtonPressed: () {
-                          // add action
                           Navigator.pushNamed(context, GenerateReportScreen.id);
                         },
                       ),
-
                       HighlightCard(
                         color: Colors.blueGrey.shade400,
                         icon: 'assets/icon/property.png',
@@ -222,7 +225,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Navigator.pushNamed(context, ChemicalEntryScreen.id);
                         },
                       ),
-
                       HighlightCard(
                         color: Colors.lightBlue.shade500,
                         icon: 'assets/icon/mob.png',
@@ -230,7 +232,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         subtitle: 'Worm egg count test results',
                         buttonText: 'Enter results',
                         onButtonPressed: () {
-                          // add actions
                           Navigator.pushNamed(context, EnterResultsPage.id);
                         },
                       ),
@@ -241,7 +242,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: MyNavigationBar()
+        bottomNavigationBar: const MyNavigationBar()
     );
   }
 }

@@ -2,11 +2,10 @@ import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.da
 import 'package:drenchmate_2024/presentation/components/today_date_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import '../../business_logic/state/navbar_state.dart';
 import '../components/username.dart';
 import 'dashboard_view.dart';
-
-
-
 
 class NotificationScreen extends StatefulWidget {
   static String id = 'notification_screen';
@@ -17,6 +16,10 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  late final Function() _backButtonCallback;
+
+
+
   void _onItemTapped(BuildContext context, int index) {
     if (index != 1) {
       Navigator.pop(context);
@@ -25,19 +28,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (result) async {
-        Navigator.pop(context, true);
+      canPop: true,
+      onPopInvoked: (bool didPop) async {
+        Provider.of<NavbarState>(context, listen: false).setIndex(0);
+        Navigator.pushReplacementNamed(context, DashboardScreen.id);
+        return Future.value(false);
 
       },
+
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              // Handle back button press
-              Navigator.pushNamed(context, DashboardScreen.id);
-            },
-          ),
+
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -135,7 +136,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ],
           ),
         ),
-        bottomNavigationBar: MyNavigationBar(),
+        bottomNavigationBar: const MyNavigationBar(),
       ),
     );
   }

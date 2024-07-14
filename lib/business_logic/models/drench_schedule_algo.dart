@@ -14,6 +14,7 @@ class DrenchSchedule {
     required this.weatherConditions,
   });
 
+
   DateTime determineNextDrenchDate() {
     final daysSinceLastDrench = currentDate.difference(lastDrenchDate).inDays;
 

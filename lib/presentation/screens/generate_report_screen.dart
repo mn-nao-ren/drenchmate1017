@@ -1,5 +1,6 @@
 // generate_report.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class GenerateReportScreen extends StatefulWidget {
@@ -101,6 +102,7 @@ class _GenerateReportScreenState extends State<GenerateReportScreen> {
           ],
         ),
       ),
+      bottomNavigationBar: MyNavigationBar(),
     );
   }
 }
