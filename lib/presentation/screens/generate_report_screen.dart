@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class GenerateReportScreen extends StatefulWidget {
   static String id = 'generate_report_screen';
@@ -45,7 +46,23 @@ class _GenerateReportScreenState extends State<GenerateReportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Generate Report'),
+        backgroundColor: Colors.white70,
+        foregroundColor: Colors.blue.shade900,
+        title: Row(
+          children: [
+            Text(
+              '                     Generate Report',
+              style: GoogleFonts.epilogue(
+                color: Colors.blue.shade900,
+                fontSize: 19,
+                fontWeight: FontWeight.w700,
+              )
+            ),
+            const SizedBox(width: 5),
+            const Icon(Icons.document_scanner_outlined),
+          ],
+        ),
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

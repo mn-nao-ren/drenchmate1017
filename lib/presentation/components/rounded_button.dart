@@ -27,13 +27,13 @@ class RoundedButton extends StatelessWidget {
         child: MaterialButton(
           onPressed: onPressed,
           minWidth: 200.0,
-          height: 50.0,
+          height: 42.0,
           child: Text(
             title,
-            style: GoogleFonts.lobster(
+            style: const TextStyle(
               color: Colors.white,
-              fontSize: 21,
-              fontWeight: FontWeight.w100,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
 
             ),
           ),

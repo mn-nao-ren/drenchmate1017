@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 20),
                     RoundedButton(
-                      title: 'L og  In',
+                      title: 'Log In',
                       color: Colors.blue.shade500,
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
