@@ -6,6 +6,7 @@ import 'package:drenchmate_2024/presentation/components/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
@@ -58,6 +59,13 @@ class _RegistrationFormState extends State<RegistrationForm> {
   bool _agreeToTerms = false;
   final AuthService _authService = AuthService();
   String? _selectedRole;
+
+  Future<void> saveRegistrationStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('is_registered', true);
+    await prefs.setBool('is_first_time', false);
+  }
+
 
 
 
@@ -190,6 +198,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                       'contactNumber': contactNumber,
                       'role': role,
                     });
+
+                    await saveRegistrationStatus();
 
 
                     Navigator.pushNamed(context, DashboardScreen.id);

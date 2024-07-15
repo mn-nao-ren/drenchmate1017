@@ -1,9 +1,12 @@
 import 'package:drenchmate_2024/presentation/screens/enter_egg_test_results.dart';
 import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart';
+import 'package:drenchmate_2024/presentation/screens/login_page.dart';
 import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'business_logic/models/chemical_provider.dart';
 import 'package:drenchmate_2024/presentation/screens/home_landing_page.dart';
 import 'package:drenchmate_2024/presentation/screens/setup_property_screen.dart';
@@ -15,22 +18,62 @@ import 'package:drenchmate_2024/presentation/screens/chemical_entry_screen.dart'
 import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
 import 'package:drenchmate_2024/business_logic/state/navbar_state.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(
-      ChangeNotifierProvider(
-        create: (_) => NavbarState(),
-        child: const DrenchMateApp(),
-      )
-  );
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
+  // Initialize Flutter Local Notifications Plugin
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+  final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+  flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+  // check user status
+  bool isFirstTime = prefs.getBool('is_first_time') ?? true;
+  bool isRegistered = prefs.getBool('is_registered') ?? false;
+  bool isLoggedIn = prefs.getBool('is_logged_in') ?? false;
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => NavbarState(),
+      child: DrenchMateApp(
+        isFirstTime: isFirstTime,
+        isRegistered: isRegistered,
+        isLoggedIn: isLoggedIn,
+      ),
+    ),
+  );
 }
 
+
 class DrenchMateApp extends StatelessWidget {
-  const DrenchMateApp({super.key});
+  final bool isFirstTime;
+  final bool isRegistered;
+  final bool isLoggedIn;
+
+  const DrenchMateApp({
+    super.key,
+    required this.isFirstTime,
+    required this.isRegistered,
+    required this.isLoggedIn,
+  });
+
+
   @override
   Widget build(BuildContext context) {
+    String initialRoute;
+    if (isFirstTime) {
+      initialRoute = HomePage.id; // First time user
+    } else if (isLoggedIn) {
+      initialRoute = DashboardScreen.id; // Logged in user
+    } else if (isRegistered) {
+      initialRoute = LoginScreen.id; // Registered but not logged in
+    } else {
+      initialRoute = RegistrationPage.id; // Unregistered user
+    }
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ChemicalProvider()..fetchChemicals()),
@@ -41,10 +84,11 @@ class DrenchMateApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: HomePage.id,
+        initialRoute: initialRoute,
         routes: {
           HomePage.id: (context) => const HomePage(),
           RegistrationPage.id: (context) => const RegistrationPage(),
+          LoginScreen.id: (context) => const LoginScreen(),
 
           DashboardScreen.id: (context) => const DashboardScreen(),
           CreateProfileScreen.id: (context) => const CreateProfileScreen(),

@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:drenchmate_2024/presentation/screens/chemical_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/enter_egg_test_results.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/presentation/components/highlight_card.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,8 +15,9 @@ import 'package:drenchmate_2024/presentation/components/username.dart';
 import 'package:intl/intl.dart';
 import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
 import 'package:drenchmate_2024/presentation/components/first_steps_popup.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
+import 'package:drenchmate_2024/business_logic/services/notifications_service.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const id = 'dashboard_screen';
@@ -26,25 +29,18 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   int _currentIndex = 0;
+  late Timer _timer;
 
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 2:
-        Navigator.pushReplacementNamed(context, NotificationScreen.id)
-            .then((_) {
-          setState(() {
-            _currentIndex = 2;
-          });
-        });
-        break;
 
-      default:
-        setState(() {
-          _currentIndex = index;
-        });
-        break;
-    }
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(hours: 1), (timer) {
+      //checkConditionsAndNotify(context);
+    });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,8 +67,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
           actions: [
             IconButton(
               icon: const Icon(Icons.logout_outlined),
-              onPressed: () {
-                Navigator.pushNamed(context, LoginScreen.id);
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.setBool('is_logged_in', false);
+                Navigator.pushNamedAndRemoveUntil(context, LoginScreen.id, (route) => false);
               },
             ),
           ],

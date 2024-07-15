@@ -119,7 +119,7 @@ class _GenerateReportScreenState extends State<GenerateReportScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: MyNavigationBar(),
+      bottomNavigationBar: const MyNavigationBar(),
     );
   }
 }
