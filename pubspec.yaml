@@ -30,7 +30,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   flutter_signin_button: ^2.0.0
   flutter_svg: ^1.0.3
   google_fonts: ^6.0.0
@@ -44,6 +43,8 @@ dependencies:
   shared_preferences: ^2.2.3
   bloc: ^8.0.0
   flutter_local_notifications: ^17.2.1+1
+  firebase_messaging: ^14.9.4
+  http: ^1.2.1
 
 
 

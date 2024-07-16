@@ -13,11 +13,9 @@ import 'package:drenchmate_2024/presentation/screens/drench_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
 import 'package:drenchmate_2024/presentation/components/username.dart';
 import 'package:intl/intl.dart';
-import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
 import 'package:drenchmate_2024/presentation/components/first_steps_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
-import 'package:drenchmate_2024/business_logic/services/notifications_service.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const id = 'dashboard_screen';
@@ -28,7 +26,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  int _currentIndex = 0;
+  final int _currentIndex = 0;
   late Timer _timer;
 
 
@@ -36,7 +34,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     _timer = Timer.periodic(const Duration(hours: 1), (timer) {
-      //checkConditionsAndNotify(context);
+      // logic for getting values for last drench date, egg count, weather conditions,
+      // and effective period days
     });
   }
 

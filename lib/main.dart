@@ -17,6 +17,7 @@ import 'package:drenchmate_2024/presentation/screens/drench_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/chemical_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
 import 'package:drenchmate_2024/business_logic/state/navbar_state.dart';
+import 'package:drenchmate_2024/business_logic/services/notifications_service.dart';
 
 
 void main() async {
@@ -25,10 +26,8 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   // Initialize Flutter Local Notifications Plugin
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-  final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
-  flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  initializeNotifications();
+
 
   // check user status
   bool isFirstTime = prefs.getBool('is_first_time') ?? true;
@@ -64,6 +63,7 @@ class DrenchMateApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String initialRoute;
+
     if (isFirstTime) {
       initialRoute = HomePage.id; // First time user
     } else if (isLoggedIn) {
@@ -100,7 +100,6 @@ class DrenchMateApp extends StatelessWidget {
           NotificationScreen.id: (context) => const NotificationScreen(),
           EnterResultsPage.id: (context) => const EnterResultsPage(),
 
-          // CreateProfileScreen.id: (context) => const CreateProfileScreen(),
         },
       ),
     );
