@@ -50,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         appBar: AppBar(
           title: Row(
             children: [
-              const SizedBox(height: 40, width: 66),
+              const SizedBox(height: 40, width: 16),
               ClipOval(
                   child: Image.asset('assets/round_logo.png',
                       height: 40, width: 41)),
