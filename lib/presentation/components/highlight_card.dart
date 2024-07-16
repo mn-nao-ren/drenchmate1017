@@ -8,7 +8,7 @@ class HighlightCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final String buttonText;
-//  final VoidCallback onTap;
+  final VoidCallback onTap;
   final VoidCallback onButtonPressed;
 
   const HighlightCard({
@@ -18,14 +18,14 @@ class HighlightCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.buttonText,
-    // required this.onTap,
+    required this.onTap,
     required this.onButtonPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // onTap: onTap,
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           color: color,

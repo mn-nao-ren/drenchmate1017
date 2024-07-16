@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:drenchmate_2024/business_logic/models/property.dart';
 
 class FirestoreService {
@@ -51,6 +52,29 @@ class FirestoreService {
       throw Exception('Failed to add egg results: $e');
     }
   }
+
+  Future<List<Map<String, dynamic>>> fetchMobsForCurrentUser() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      // Handle the case where the user is not logged in
+      print('User not logged in');
+      return [];
+    }
+
+    try {
+      QuerySnapshot snapshot = await firestore
+          .collection('mobs')
+          .where('userId', isEqualTo: user.uid)
+          .get();
+      return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    } catch (e) {
+      print('Error fetching mobs: $e');
+      return [];
+    }
+  }
+
 
   Future<List<String>> fetchMobs(String userId) async {
     try {

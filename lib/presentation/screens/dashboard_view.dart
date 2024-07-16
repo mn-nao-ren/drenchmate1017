@@ -15,6 +15,7 @@ import 'package:drenchmate_2024/presentation/components/username.dart';
 import 'package:intl/intl.dart';
 import 'package:drenchmate_2024/presentation/components/first_steps_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:drenchmate_2024/presentation/screens/mobs_view.dart';
 import 'login_page.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -43,11 +44,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+
     return Scaffold(
         appBar: AppBar(
           title: Row(
             children: [
-              const SizedBox(height: 40, width: 13),
+              const SizedBox(height: 40, width: 66),
               ClipOval(
                   child: Image.asset('assets/round_logo.png',
                       height: 40, width: 41)),
@@ -132,8 +135,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
 
                 const UserProfile(),
-                const SizedBox(height: 5),
-                const SizedBox(height: 22),
+
+                const SizedBox(height: 16),
                 Text(
                   DateFormat('EEE d MMM').format(DateTime.now()).toUpperCase(),
                   style: TextStyle(
@@ -141,7 +144,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       fontWeight: FontWeight.w500,
                       color: Colors.grey.shade600),
                 ),
-                const SizedBox(height: 9),
+                const SizedBox(height: 16),
                 const Text(
                   'Highlights',
                   style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
@@ -161,6 +164,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         title: 'Weather Info',
                         subtitle: 'Monitored, alerts set',
                         buttonText: 'placeholder',
+                        onTap: () {},
                         onButtonPressed: () {},
                       ),
                       HighlightCard(
@@ -169,6 +173,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         title: 'Mobs Info',
                         subtitle: 'display latest from db',
                         buttonText: 'Set up a Mob',
+                        onTap: () {
+                          Navigator.pushNamed(context, MobsView.id);
+                        },
                         onButtonPressed: () {
                           Navigator.pushNamed(context, CreateMobPage.id);
                         },
@@ -179,6 +186,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         title: "Drench Info",
                         subtitle: 'Upcoming Drenches',
                         buttonText: 'Set up a Drench',
+                        onTap: () {},
                         onButtonPressed: () {
                           Navigator.pushNamed(context, DrenchEntryScreen.id);
                         },
@@ -189,6 +197,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         title: 'Property Info',
                         subtitle: 'Your farm property info',
                         buttonText: 'Set up a Property',
+                        onTap: () {},
                         onButtonPressed: () {
                           Navigator.pushNamed(context, SetupPropertyScreen.id);
                         },
@@ -199,6 +208,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         title: 'Profile',
                         subtitle: 'Add, restrict actions',
                         buttonText: 'Create a Profile',
+                        onTap: () {},
                         onButtonPressed: () {
                           Navigator.pushNamed(context, CreateProfileScreen.id);
                         },
@@ -209,6 +219,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         title: "Reports",
                         subtitle: 'Backed-up logs for gov',
                         buttonText: 'Generate Report',
+                        onTap: () {},
                         onButtonPressed: () {
                           Navigator.pushNamed(context, GenerateReportScreen.id);
                         },
@@ -219,6 +230,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         title: 'Manage Products',
                         subtitle: 'Chemical compositions',
                         buttonText: 'Enter a new product',
+                        onTap: () {},
                         onButtonPressed: () {
                           Navigator.pushNamed(context, ChemicalEntryScreen.id);
                         },
@@ -229,6 +241,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         title: 'Parasite Test',
                         subtitle: 'Worm egg count test results',
                         buttonText: 'Enter results',
+                        onTap: () {},
                         onButtonPressed: () {
                           Navigator.pushNamed(context, EnterResultsPage.id);
                         },

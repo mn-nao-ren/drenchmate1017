@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; //managed to get mob number to load. paddockId working
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:drenchmate_2024/business_logic/models/chemical_provider.dart';
@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'chemical_entry_screen.dart';
 import 'package:drenchmate_2024/business_logic/services/new_drench_state_controller.dart';
 import 'package:drenchmate_2024/presentation/screens/dashboard_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DrenchEntryScreen extends StatefulWidget {
   static String id = 'drench_entry_screen';
@@ -18,44 +19,131 @@ class DrenchEntryScreen extends StatefulWidget {
 class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _propertyIdController = TextEditingController();
-  final TextEditingController _propertyAddressController =
-      TextEditingController();
+  final TextEditingController _propertyAddressController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _livestockQtyController = TextEditingController();
+  final TextEditingController _withholdingPeriodController = TextEditingController();
+  final TextEditingController _exportSlaughterIntervalController = TextEditingController();
+  final TextEditingController _dateSafeForSlaughterController = TextEditingController();
+  final TextEditingController _adverseReactionsController = TextEditingController();
+  final TextEditingController _equipmentCleanedByController = TextEditingController();
+  final TextEditingController _contactNoController = TextEditingController();
+  final TextEditingController _batchNumberController = TextEditingController();
+  final TextEditingController _expirationDateController = TextEditingController();
+  final TextEditingController _doseRateController = TextEditingController();
+  final TextEditingController _paddockIdController = TextEditingController();
 
-  // final bool _autovalidate = false;
-
-  String _selectedMobId = 'Mob 1';
+  String? _selectedMobNumber;
   String? _selectedChemical;
+  String _brokenNeedleInAnimal = 'No';
+  String _equipmentCleaned = 'Yes';
+
+  User? currentUser;
+
+  Map<String, String> mobNumberToIdMap = {};
+  List<String> mobNumbers = [];
 
   @override
   void initState() {
     super.initState();
     populateInitialData(
-        propertyIdController: _propertyIdController,
-        propertyAddressController: _propertyAddressController,
-        dateController: _dateController,
-        setState: setState,
-        context: context);
+      propertyIdController: _propertyIdController,
+      propertyAddressController: _propertyAddressController,
+      dateController: _dateController,
+      setState: setState,
+      context: context,
+    );
+    fetchCurrentUserDetails();
+    getMobs();
+  }
+
+  Future<void> fetchCurrentUserDetails() async {
+    try {
+      currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        String uid = currentUser!.uid;
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+        setState(() {
+          _equipmentCleanedByController.text = userDoc['username'];
+          _contactNoController.text = userDoc['contactNumber'];
+        });
+      } else {
+        setState(() {
+          _equipmentCleanedByController.text = 'N/A';
+          _contactNoController.text = 'N/A';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _equipmentCleanedByController.text = 'Error loading data';
+        _contactNoController.text = 'Error loading data';
+      });
+    }
+  }
+
+  Future<void> getMobs() async {
+    if (currentUser != null) {
+      try {
+        QuerySnapshot mobSnapshot = await FirebaseFirestore.instance.collection('mobs').where('userId', isEqualTo: currentUser!.uid).get();
+        mobNumbers = mobSnapshot.docs.map((doc) => doc['mobNumber'].toString()).toList();
+        mobNumberToIdMap = {for (var doc in mobSnapshot.docs) doc['mobNumber'].toString(): doc.id};
+
+        setState(() {
+          mobNumbers = mobNumbers.toSet().toList(); // Ensure unique values
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load mobs: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> fetchPaddockId(String mobNumber) async {
+    try {
+      String? mobId = mobNumberToIdMap[mobNumber];
+      if (mobId != null) {
+        DocumentSnapshot mobDoc = await FirebaseFirestore.instance.collection('mobs').doc(mobId).get();
+        setState(() {
+          _paddockIdController.text = mobDoc.get('paddockId').toString();
+        });
+      } else {
+        throw Exception('Mob ID not found for the selected Mob Number');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load paddock ID: $e')),
+      );
+    }
   }
 
   Future<void> _saveDrenchDetails() async {
     if (_formKey.currentState!.validate()) {
       final drenchDetails = {
         'PropertyID': _propertyIdController.text,
-        'PropertyAddress': _propertyAddressController.text, //
+        'PropertyAddress': _propertyAddressController.text,
+        'LivestockDescription': 'Sheep',
+        'PaddockID': _paddockIdController.text,
+        'LivestockQty': int.tryParse(_livestockQtyController.text),
         'DrenchingDate': _dateController.text,
-        'MobID': _selectedMobId,
+        'MobNumber': _selectedMobNumber,
         'ChemicalID': _selectedChemical ?? '',
+        'BatchNumber': _batchNumberController.text,
+        'ExpirationDate': _expirationDateController.text,
+        'DoseRate': _doseRateController.text,
+        'WithholdingPeriod': _withholdingPeriodController.text,
+        'ExportSlaughterInterval': _exportSlaughterIntervalController.text,
+        'DateSafeForSlaughter': _dateSafeForSlaughterController.text,
+        'AdverseReactions': _adverseReactionsController.text,
+        'BrokenNeedleInAnimal': _brokenNeedleInAnimal,
+        'EquipmentCleaned': _equipmentCleaned,
+        'EquipmentCleanedBy': _equipmentCleanedByController.text,
+        'ContactNo': _contactNoController.text,
       };
 
       try {
-        DocumentReference mobDocRef =
-            FirebaseFirestore.instance.collection('mobs').doc(_selectedMobId);
-
-        // reference to the drenches subcollection
-        CollectionReference drenchesCollection =
-            mobDocRef.collection('drenches');
-
+        DocumentReference mobDocRef = FirebaseFirestore.instance.collection('mobs').doc(mobNumberToIdMap[_selectedMobNumber]);
+        CollectionReference drenchesCollection = mobDocRef.collection('drenches');
         await drenchesCollection.add(drenchDetails);
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -67,16 +155,31 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
           SnackBar(content: Text('Failed to save drench details: $e')),
         );
       }
-
-      await FirebaseFirestore.instance
-          .collection('drench_records')
-          .add(drenchDetails);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Drench Entry Saved')),
-      );
-      Navigator.pushNamed(context, DashboardScreen.id);
     }
+  }
+
+  Future<void> calculateDateSafeForSlaughter() async {
+    if (_dateController.text.isNotEmpty && _withholdingPeriodController.text.isNotEmpty) {
+      DateTime drenchingDate = DateTime.parse(_dateController.text);
+      int withholdingPeriod = int.parse(_withholdingPeriodController.text);
+      DateTime dateSafeForSlaughter = drenchingDate.add(Duration(days: withholdingPeriod));
+
+      setState(() {
+        _dateSafeForSlaughterController.text = dateSafeForSlaughter.toString().split(' ')[0];
+      });
+    }
+  }
+
+  InputDecoration _readOnlyInputDecoration(String labelText, IconData icon) {
+    return InputDecoration(
+      labelText: labelText,
+      prefixIcon: Icon(icon),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      fillColor: Colors.grey[200],
+      filled: true,
+    );
   }
 
   @override
@@ -131,25 +234,32 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _propertyIdController,
-                decoration: InputDecoration(
-                  labelText: 'Property ID',
-                  prefixIcon: const Icon(Icons.person),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
+                decoration: _readOnlyInputDecoration('Property ID', Icons.person),
+                readOnly: true,
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller:
-                    _propertyAddressController, // New TextFormField for Property Address
+                controller: _propertyAddressController,
+                decoration: _readOnlyInputDecoration('Property Address', Icons.location_on),
+                readOnly: true,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                decoration: _readOnlyInputDecoration('Livestock Description', Icons.description),
+                readOnly: true,
+                controller: TextEditingController(text: 'Sheep'),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _livestockQtyController,
                 decoration: InputDecoration(
-                  labelText: 'Property Address',
-                  prefixIcon: const Icon(Icons.location_on),
+                  labelText: 'Livestock Qty',
+                  prefixIcon: const Icon(Icons.format_list_numbered),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
+                keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -169,25 +279,32 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: _selectedMobId,
+                value: _selectedMobNumber,
                 decoration: InputDecoration(
-                  labelText: 'Choose Mob ID (Drop Down List)',
-                  prefixIcon: const Icon(Icons.person),
+                  labelText: 'Choose Mob Number',
+                  prefixIcon: const Icon(Icons.group),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                items: ['Mob 1', 'Mob 2', 'Mob 3'].map((mob) {
+                items: mobNumbers.map((mob) {
                   return DropdownMenuItem<String>(
                     value: mob,
                     child: Text(mob),
                   );
                 }).toList(),
-                onChanged: (value) {
+                onChanged: (value) async {
                   setState(() {
-                    _selectedMobId = value!;
+                    _selectedMobNumber = value!;
                   });
+                  await fetchPaddockId(value!);
                 },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _paddockIdController,
+                decoration: _readOnlyInputDecoration('Paddock ID', Icons.landscape),
+                readOnly: true,
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
@@ -208,16 +325,131 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
                 onChanged: (value) {
                   setState(() {
                     _selectedChemical = value!;
+                    final selectedChemical = chemicalProvider.chemicals.firstWhere(
+                          (chemical) => chemical['TradeName'] == value,
+                    );
+                    _batchNumberController.text = selectedChemical['BatchNumber'];
+                    _expirationDateController.text = selectedChemical['ExpirationDate'];
+                    _doseRateController.text = selectedChemical['DoseRate'].toString();
+                    _withholdingPeriodController.text = selectedChemical['WithholdingPeriod'].toString();
+
+                    // Set Export Slaughter Interval to be the same as Withholding Period
+                    _exportSlaughterIntervalController.text = selectedChemical['WithholdingPeriod'].toString();
+
+                    // Calculate Date Safe for Slaughter
+                    calculateDateSafeForSlaughter();
                   });
                 },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _batchNumberController,
+                decoration: _readOnlyInputDecoration('Batch Number', Icons.format_list_numbered),
+                readOnly: true,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _expirationDateController,
+                decoration: _readOnlyInputDecoration('Expiration Date', Icons.date_range),
+                readOnly: true,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _doseRateController,
+                decoration: _readOnlyInputDecoration('Dose Rate', Icons.speed),
+                readOnly: true,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _withholdingPeriodController,
+                decoration: _readOnlyInputDecoration('Withholding Period', Icons.timer),
+                readOnly: true,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _exportSlaughterIntervalController,
+                decoration: _readOnlyInputDecoration('Export Slaughter Interval', Icons.local_shipping),
+                readOnly: true,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _dateSafeForSlaughterController,
+                decoration: _readOnlyInputDecoration('Date Safe for Slaughter', Icons.event_available),
+                readOnly: true,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _adverseReactionsController,
+                decoration: InputDecoration(
+                  labelText: 'Adverse Reactions',
+                  prefixIcon: const Icon(Icons.warning),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                value: _brokenNeedleInAnimal,
+                decoration: InputDecoration(
+                  labelText: 'Broken Needle in Animal',
+                  prefixIcon: const Icon(Icons.healing),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                items: ['Yes', 'No'].map((value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _brokenNeedleInAnimal = value!;
+                  });
+                },
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                value: _equipmentCleaned,
+                decoration: InputDecoration(
+                  labelText: 'Equipment Cleaned/Calibrated',
+                  prefixIcon: const Icon(Icons.cleaning_services),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                items: ['Yes', 'No'].map((value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _equipmentCleaned = value!;
+                  });
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _equipmentCleanedByController,
+                decoration: _readOnlyInputDecoration('Equipment Cleaned/Calibrated By', Icons.person),
+                readOnly: true,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _contactNoController,
+                decoration: _readOnlyInputDecoration('Contact No', Icons.phone),
+                readOnly: true,
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const ChemicalEntryScreen()),
+                    MaterialPageRoute(builder: (context) => const ChemicalEntryScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -262,3 +494,4 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
     );
   }
 }
+

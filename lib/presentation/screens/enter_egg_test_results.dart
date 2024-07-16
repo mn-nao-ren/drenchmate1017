@@ -84,8 +84,8 @@ class _EnterResultsPageState extends State<EnterResultsPage> {
                       Text(
                         'Compulsory Test Details',
                         style: GoogleFonts.epilogue(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
                         ),
                       ),
                       const SizedBox(height: 16),

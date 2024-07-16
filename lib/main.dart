@@ -3,7 +3,6 @@ import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart
 import 'package:drenchmate_2024/presentation/screens/login_page.dart';
 import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +17,7 @@ import 'package:drenchmate_2024/presentation/screens/chemical_entry_screen.dart'
 import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
 import 'package:drenchmate_2024/business_logic/state/navbar_state.dart';
 import 'package:drenchmate_2024/business_logic/services/notifications_service.dart';
+import 'package:drenchmate_2024/presentation/screens/mobs_view.dart';
 
 
 void main() async {
@@ -99,8 +99,9 @@ class DrenchMateApp extends StatelessWidget {
           CreateMobPage.id: (context) => const CreateMobPage(),
           NotificationScreen.id: (context) => const NotificationScreen(),
           EnterResultsPage.id: (context) => const EnterResultsPage(),
-
+          MobsView.id: (context) =>  const MobsView(),
         },
+
       ),
     );
   }
