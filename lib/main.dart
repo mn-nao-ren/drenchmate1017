@@ -16,8 +16,10 @@ import 'package:drenchmate_2024/presentation/screens/drench_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/chemical_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
 import 'package:drenchmate_2024/business_logic/state/navbar_state.dart';
-import 'package:drenchmate_2024/business_logic/services/notifications_service.dart';
+import 'package:drenchmate_2024/business_logic/services/push_notifications_service.dart';
 import 'package:drenchmate_2024/presentation/screens/mobs_view.dart';
+import 'dart:async';
+import 'package:drenchmate_2024/business_logic/services/advanced_notice_logic.dart';
 
 
 void main() async {
@@ -35,14 +37,17 @@ void main() async {
   bool isLoggedIn = prefs.getBool('is_logged_in') ?? false;
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => NavbarState(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => NavbarState()),
+        ChangeNotifierProvider(create: (_) => NoticeHandler()),
+      ],
       child: DrenchMateApp(
         isFirstTime: isFirstTime,
         isRegistered: isRegistered,
         isLoggedIn: isLoggedIn,
-      ),
-    ),
+      )
+    )
   );
 }
 

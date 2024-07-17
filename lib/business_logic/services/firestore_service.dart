@@ -53,6 +53,7 @@ class FirestoreService {
     }
   }
 
+
   Future<List<Map<String, dynamic>>> fetchMobsForCurrentUser() async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
     final user = FirebaseAuth.instance.currentUser;

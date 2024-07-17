@@ -90,9 +90,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Text(
                       'Welcome back👋',
                       style: GoogleFonts.lobster(
-                          fontSize: 30, fontWeight: FontWeight.w500),
+                          fontSize: 32, fontWeight: FontWeight.w500),
                     ),
-                    const SizedBox(width: 21),
+                    const SizedBox(width: 7),
+
                     TextButton(
                       onPressed: () {
                         showDialog(

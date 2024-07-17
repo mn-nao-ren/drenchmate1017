@@ -1,10 +1,13 @@
-import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
-import 'package:drenchmate_2024/presentation/components/today_date_widget.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:drenchmate_2024/business_logic/services/advanced_notice_logic.dart';
+import 'package:drenchmate_2024/business_logic/models/advanced_notice.dart';
+import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
+import 'package:drenchmate_2024/presentation/components/today_date_widget.dart';
+import 'package:drenchmate_2024/presentation/components/username.dart';
 import '../../business_logic/state/navbar_state.dart';
-import '../components/username.dart';
 import 'dashboard_view.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -16,15 +19,21 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  late final Function() _backButtonCallback;
+  List<String> notices = [];
+  NoticeHandler noticeHandler = NoticeHandler();
 
+  @override
+  void initState() {
+    super.initState();
 
+  }
 
   void _onItemTapped(BuildContext context, int index) {
     if (index != 1) {
       Navigator.pop(context);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -33,12 +42,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
         Provider.of<NavbarState>(context, listen: false).setIndex(0);
         Navigator.pushReplacementNamed(context, DashboardScreen.id);
         return Future.value(false);
-
       },
-
       child: Scaffold(
         appBar: AppBar(
-
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -53,7 +59,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
               const UserProfile(),
             ],
           ),
-
           titleTextStyle: GoogleFonts.epilogue(
             color: Colors.black,
             fontSize: 20,
@@ -88,50 +93,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ),
               const SizedBox(height: 20),
               Expanded(
-                child: ListView.builder(
-                  /* set itemCount to accommodate flexible number of items,
-                  * as many notifications as StreamBuilder will give out
-                  * */
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.calendar_today, size: 16, color: Colors.grey),
-                            SizedBox(width: 8),
-
-                            /* this date time widget needs to display the date and time
-                            * at which the notification was triggered and sent out. not just today's
-                            * date */
-                            TodayDateWidget(),
-
-
-                          ],
-                        ),
-                        SizedBox(height: 10),
-
-                        /* The design of each notification is:
-                        * Reasons for drenching -
-                        * report days since last drenched
-                        * report fecal egg count level
-                        * report weather conditions: is it warm_humid or not?
-                        * report re-infection risk: high or low?
-                        * Last drench effective period exceeded: yes or no
-                        *  */
-                        Text(
-                          'Average Rainfall hits limit, time to Drench.',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Divider(),
-                      ],
+                child: Consumer<NoticeHandler>(
+                  builder: (context, noticeHandler, child) {
+                    return ListView.builder(
+                      itemCount: noticeHandler.notices.length,
+                      itemBuilder: (context, index) {
+                        return AdvancedNotice(message: noticeHandler.notices[index]);
+                      }
                     );
-                  },
-                ),
+                  }
+                )
+
               ),
             ],
           ),
