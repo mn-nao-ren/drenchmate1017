@@ -50,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         appBar: AppBar(
           title: Row(
             children: [
-              const SizedBox(height: 40, width: 16),
+              const SizedBox(height: 40, width: 65),
               ClipOval(
                   child: Image.asset('assets/round_logo.png',
                       height: 40, width: 41)),
@@ -90,9 +90,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Text(
                       'Welcome back👋',
                       style: GoogleFonts.lobster(
-                          fontSize: 31, fontWeight: FontWeight.w500),
+                          fontSize: 30, fontWeight: FontWeight.w500),
                     ),
-                    const SizedBox(width: 11),
+                    const SizedBox(width: 21),
                     TextButton(
                       onPressed: () {
                         showDialog(
@@ -163,7 +163,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         icon: 'assets/weather.png',
                         title: 'Weather Info',
                         subtitle: 'Monitored, alerts set',
-                        buttonText: 'placeholder',
+                        buttonText: 'OpenWeather',
                         onTap: () {},
                         onButtonPressed: () {},
                       ),

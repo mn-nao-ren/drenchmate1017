@@ -142,14 +142,31 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
       };
 
       try {
-        DocumentReference mobDocRef = FirebaseFirestore.instance.collection('mobs').doc(mobNumberToIdMap[_selectedMobNumber]);
-        CollectionReference drenchesCollection = mobDocRef.collection('drenches');
-        await drenchesCollection.add(drenchDetails);
+        // Assuming you have the user ID available in your app
+        String userId = FirebaseAuth.instance.currentUser!.uid;
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Drench Entry Saved')),
-        );
-        Navigator.pushNamed(context, DashboardScreen.id);
+        // Fetch the correct mob document based on the userId and mob number
+        QuerySnapshot mobSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection('mobs')
+            .where('mobNumber', isEqualTo: _selectedMobNumber)
+            .get();
+
+        if (mobSnapshot.docs.isNotEmpty) {
+          DocumentReference mobDocRef = mobSnapshot.docs.first.reference;
+          CollectionReference drenchesCollection = mobDocRef.collection('drenches');
+          await drenchesCollection.add(drenchDetails);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Drench Entry Saved')),
+          );
+          Navigator.pushNamed(context, DashboardScreen.id);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('No matching mob found')),
+          );
+        }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to save drench details: $e')),
@@ -157,6 +174,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
       }
     }
   }
+
 
   Future<void> calculateDateSafeForSlaughter() async {
     if (_dateController.text.isNotEmpty && _withholdingPeriodController.text.isNotEmpty) {
@@ -235,18 +253,18 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
               TextFormField(
                 controller: _propertyIdController,
                 decoration: _readOnlyInputDecoration('Property ID', Icons.person),
-                readOnly: true,
+
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _propertyAddressController,
                 decoration: _readOnlyInputDecoration('Property Address', Icons.location_on),
-                readOnly: true,
+
               ),
               const SizedBox(height: 16),
               TextFormField(
                 decoration: _readOnlyInputDecoration('Livestock Description', Icons.description),
-                readOnly: true,
+
                 controller: TextEditingController(text: 'Sheep'),
               ),
               const SizedBox(height: 16),
@@ -304,7 +322,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
               TextFormField(
                 controller: _paddockIdController,
                 decoration: _readOnlyInputDecoration('Paddock ID', Icons.landscape),
-                readOnly: true,
+
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
@@ -345,37 +363,37 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
               TextFormField(
                 controller: _batchNumberController,
                 decoration: _readOnlyInputDecoration('Batch Number', Icons.format_list_numbered),
-                readOnly: true,
+
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _expirationDateController,
                 decoration: _readOnlyInputDecoration('Expiration Date', Icons.date_range),
-                readOnly: true,
+
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _doseRateController,
                 decoration: _readOnlyInputDecoration('Dose Rate', Icons.speed),
-                readOnly: true,
+
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _withholdingPeriodController,
                 decoration: _readOnlyInputDecoration('Withholding Period', Icons.timer),
-                readOnly: true,
+
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _exportSlaughterIntervalController,
                 decoration: _readOnlyInputDecoration('Export Slaughter Interval', Icons.local_shipping),
-                readOnly: true,
+
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _dateSafeForSlaughterController,
                 decoration: _readOnlyInputDecoration('Date Safe for Slaughter', Icons.event_available),
-                readOnly: true,
+
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -436,13 +454,13 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
               TextFormField(
                 controller: _equipmentCleanedByController,
                 decoration: _readOnlyInputDecoration('Equipment Cleaned/Calibrated By', Icons.person),
-                readOnly: true,
+
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _contactNoController,
                 decoration: _readOnlyInputDecoration('Contact No', Icons.phone),
-                readOnly: true,
+
               ),
               const SizedBox(height: 16),
               ElevatedButton(
