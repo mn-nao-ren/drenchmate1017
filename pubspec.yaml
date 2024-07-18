@@ -45,6 +45,9 @@ dependencies:
   flutter_local_notifications: ^17.2.1+1
   firebase_messaging: ^14.9.4
   http: ^1.2.1
+  excel: ^4.0.3
+  flutter_email_sender: ^6.0.3
+  path_provider: ^2.1.3
 
 
 

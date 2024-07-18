@@ -32,6 +32,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
   final TextEditingController _expirationDateController = TextEditingController();
   final TextEditingController _doseRateController = TextEditingController();
   final TextEditingController _paddockIdController = TextEditingController();
+  final TextEditingController _commentsController = TextEditingController();
 
   String? _selectedMobNumber;
   String? _selectedChemical;
@@ -139,6 +140,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
         'EquipmentCleaned': _equipmentCleaned,
         'EquipmentCleanedBy': _equipmentCleanedByController.text,
         'ContactNo': _contactNoController.text,
+        'Comments': _commentsController,
       };
 
       try {
@@ -262,6 +264,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
 
               ),
               const SizedBox(height: 16),
+              const Text('Livestock description field: describe livestock and location'),
               TextFormField(
                 decoration: _readOnlyInputDecoration('Livestock Description', Icons.description),
 
@@ -463,6 +466,11 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
 
               ),
               const SizedBox(height: 16),
+              TextFormField(
+                controller: _commentsController,
+                decoration: _readOnlyInputDecoration('Comments', Icons.comment),
+              ),
+
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(

@@ -110,23 +110,22 @@ class FirestoreService {
     });
   }
 
-  Future<void> saveMob(String propertyAddress, int paddockId, int mobNumber,
-      String mobName, String userId, String userEmail) async {
-    final mobData = {
-      'propertyAddress': propertyAddress,
-      'paddockId': paddockId,
-      'mobNumber': mobNumber,
-      'mobName': mobName,
-      'userId': userId,
-      'userEmail': userEmail,
-    };
+  Future<void> saveMob(String propertyAddress, int paddockId, int mobNumber, String mobName, String userId, String userEmail) async {
+        final mobData = {
+          'propertyAddress': propertyAddress,
+          'paddockId': paddockId,
+          'mobNumber': mobNumber,
+          'mobName': mobName,
+          'userId': userId,
+          'userEmail': userEmail,
+        };
 
-    try {
-      await FirebaseFirestore.instance.collection('mobs').add(mobData);
-      print('Mob data saved successfully: $mobData');
-    } catch (e) {
-      print('Failed to save mob data: $e');
-      // Handle the error appropriately, e.g., show a message to the user
-    }
+        try {
+          await FirebaseFirestore.instance.collection('users').doc(userId).collection('mobs').add(mobData);
+          print('Mob data saved successfully: $mobData');
+        } catch (e) {
+          print('Failed to save mob data: $e');
+          // Handle the error appropriately, e.g., show a message to the user
+        }
   }
 }
