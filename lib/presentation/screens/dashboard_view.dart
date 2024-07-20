@@ -52,7 +52,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(width: 21),
+                const SizedBox(width: 32),
                 ClipOval(
                     child: Image.asset('assets/round_logo.png',
                         height: 42, width: 42)),
@@ -60,7 +60,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ' DrenchMate',
                   style: GoogleFonts.lobster(
                       color: Colors.white,
-                      fontSize: 41,
+                      fontSize: 34,
                       fontWeight: FontWeight.w400),
                 ),
               ],
@@ -83,22 +83,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ],
           automaticallyImplyLeading: false,
         ),
+
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                     Text(
+                       Text(
                       'Welcome back👋',
-                      style: GoogleFonts.lobster(
-                          fontSize: 32, fontWeight: FontWeight.w500),
+                      style: GoogleFonts.inter(
+                          fontSize: 25, fontWeight: FontWeight.w700),
                     ),
 
-                    const SizedBox(width: 22),
+                    const SizedBox(width: 35),
 
                     TextButton(
                       onPressed: () {
