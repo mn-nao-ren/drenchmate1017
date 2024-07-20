@@ -48,20 +48,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Row(
-            children: [
-              const SizedBox(height: 40, width: 65),
-              ClipOval(
-                  child: Image.asset('assets/round_logo.png',
-                      height: 40, width: 41)),
-              Text(
-                ' DrenchMate',
-                style: GoogleFonts.lobster(
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontWeight: FontWeight.w400),
-              ),
-            ],
+          title: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(width: 21),
+                ClipOval(
+                    child: Image.asset('assets/round_logo.png',
+                        height: 42, width: 42)),
+                Text(
+                  ' DrenchMate',
+                  style: GoogleFonts.lobster(
+                      color: Colors.white,
+                      fontSize: 41,
+                      fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
           ),
           backgroundColor: Colors.blueGrey.shade800,
           foregroundColor: Colors.white, //Colors.blue.shade900,
@@ -76,7 +79,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Navigator.pushNamedAndRemoveUntil(context, LoginScreen.id, (route) => false);
               },
             ),
+
           ],
+          automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -87,12 +92,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
+                     Text(
                       'Welcome back👋',
                       style: GoogleFonts.lobster(
                           fontSize: 32, fontWeight: FontWeight.w500),
                     ),
-                    const SizedBox(width: 7),
+
+                    const SizedBox(width: 22),
 
                     TextButton(
                       onPressed: () {
@@ -117,6 +123,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             Icons.double_arrow,
                             color: Colors.teal.shade900,
                           ),
+
                           const SizedBox(width: 5),
 
 
@@ -135,27 +142,60 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
 
-                const UserProfile(),
+                const Row(
+                    children: [
+                       SizedBox(width: 16),
+                       UserProfile(),
+                    ]
+                ),
 
-                const SizedBox(height: 16),
+
+                const SizedBox(height: 18),
                 Text(
-                  DateFormat('EEE d MMM').format(DateTime.now()).toUpperCase(),
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey.shade600),
+                  'Overview',
+                  style: GoogleFonts.epilogue(
+                      color: Colors.black,
+                      fontSize: 25, fontWeight: FontWeight.w700
+                  )
                 ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Highlights',
-                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                // const SizedBox(height: 8),
+
+                // the Row with the date
+                Row(
+
+                  children: [
+                    const Icon(Icons.sunny),
+                    const SizedBox(width: 17),
+                    Text(
+                      DateFormat('EEE d MMM').format(DateTime.now()).toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey.shade600
+                      ),
+                    ),
+                  ],
+
                 ),
-                const SizedBox(height: 5),
+
+                const SizedBox(height: 28),
+
+               Text(
+                    'Highlights',
+                    style: GoogleFonts.epilogue(
+                      color: Colors.black,
+                        fontSize: 23, fontWeight: FontWeight.w700
+                    )
+
+                  ),
+
+
+                const SizedBox(height: 3),
                 SingleChildScrollView(
                   child: GridView.count(
                     crossAxisCount: 2,
                     crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
+                    mainAxisSpacing: 39,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
@@ -186,7 +226,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         icon: 'assets/icon/drench.png',
                         title: "Drench Info",
                         subtitle: 'Upcoming Drenches',
-                        buttonText: 'Set up a Drench',
+                        buttonText: 'Enter a Drench',
                         onTap: () {},
                         onButtonPressed: () {
                           Navigator.pushNamed(context, DrenchEntryScreen.id);

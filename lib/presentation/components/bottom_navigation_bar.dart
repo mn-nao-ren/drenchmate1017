@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:drenchmate_2024/business_logic/state/navbar_state.dart';
+import 'package:drenchmate_2024/presentation/screens/export_page.dart';
+
+import '../screens/dashboard_view.dart';
 
 class MyNavigationBar extends StatelessWidget {
   const MyNavigationBar({super.key});
@@ -95,7 +98,7 @@ class MyNavigationBar extends StatelessWidget {
   void _onItemTapped(BuildContext context, int index) {
     switch (index) {
       case 0:
-        Navigator.pushReplacementNamed(context, 'dashboard_screen');
+        Navigator.pushReplacementNamed(context, DashboardScreen.id);
         break;
       case 1:
         Navigator.pushReplacementNamed(context, 'notification_screen');
@@ -104,7 +107,7 @@ class MyNavigationBar extends StatelessWidget {
         Navigator.pushReplacementNamed(context, 'create_profile_screen');
         break;
       case 3:
-        Navigator.pushReplacementNamed(context, 'generate_report_screen');
+        Navigator.pushReplacementNamed(context, ExportPage.id);
         break;
     }
   }

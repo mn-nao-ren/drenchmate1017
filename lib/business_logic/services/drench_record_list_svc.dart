@@ -10,11 +10,11 @@ class DrenchRecordList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     return Expanded(
       child: StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection('users').doc(userId).collection('mobs').snapshots(),
+        stream: firestore.collection('users').doc(userId).collection('mobs').snapshots(),
         builder: (context, mobSnapshot) {
           if (mobSnapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

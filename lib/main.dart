@@ -18,9 +18,9 @@ import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
 import 'package:drenchmate_2024/business_logic/state/navbar_state.dart';
 import 'package:drenchmate_2024/business_logic/services/push_notifications_service.dart';
 import 'package:drenchmate_2024/presentation/screens/mobs_view.dart';
-import 'dart:async';
 import 'package:drenchmate_2024/business_logic/services/advanced_notice_logic.dart';
-
+import 'package:drenchmate_2024/presentation/screens/drench_success_screen.dart';
+import 'package:drenchmate_2024/presentation/screens/export_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -105,6 +105,9 @@ class DrenchMateApp extends StatelessWidget {
           NotificationScreen.id: (context) => const NotificationScreen(),
           EnterResultsPage.id: (context) => const EnterResultsPage(),
           MobsView.id: (context) =>  const MobsView(),
+          DrenchSuccessPage.id: (context) => DrenchSuccessPage(),
+          ExportPage.id: (context) => const ExportPage(),
+
         },
 
       ),

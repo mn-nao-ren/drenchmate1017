@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:device_apps/device_apps.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
@@ -9,8 +10,13 @@ import 'package:drenchmate_2024/presentation/screens/dashboard_view.dart';
 import 'package:drenchmate_2024/presentation/components/username.dart';
 import 'package:drenchmate_2024/business_logic/services/drench_record_list_svc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter_mailer/flutter_mailer.dart';
 
 class ExportPage extends StatefulWidget {
+  static String id = 'export_page';
+
+  const ExportPage({super.key});
+
   @override
   _ExportPageState createState() => _ExportPageState();
 }
@@ -19,6 +25,8 @@ class _ExportPageState extends State<ExportPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String? _email;
+
+  // @override, initState - load user's email address from his user document
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +37,8 @@ class _ExportPageState extends State<ExportPage> {
         toolbarHeight: 80,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pushNamed(context, DashboardScreen.id);
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_active_outlined, color: Colors.black),
-            onPressed: () {},
-          ),
-        ],
+        automaticallyImplyLeading: false,
+
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -81,54 +79,107 @@ class _ExportPageState extends State<ExportPage> {
 
 
   void _exportDrenchRecord(Map<String, dynamic> recordData, String email) async {
+    try {
 
-    // create Excel file
-    var excel = Excel.createExcel();
-    Sheet sheetObject = excel['DrenchRecords'];
+      // create Excel file
+      var excel = Excel.createExcel();
+      Sheet sheetObject = excel['DrenchRecords'];
 
-    // Add column headers
-    sheetObject.appendRow([
-      // all field names required by government
-      // below is just example, fill it up correctly tmr
-      const TextCellValue('Mob Name'),
-      const TextCellValue('Mob Number'),
-      const TextCellValue('Paddock ID'),
-      const TextCellValue('Drenching Date'),
-      const TextCellValue('Comments')
-    ]);
+      // Add column headers
+      sheetObject.appendRow([
 
-    // Add drench record data
-    sheetObject.appendRow([
-      // the values of each field name required by government
-      // below is just example, fill it up correctly tmr
-      TextCellValue(recordData['mobName']),
-      TextCellValue(recordData['MobNumber']),
-      TextCellValue(recordData['PaddockID']),
-      TextCellValue(recordData['DrenchingDate']),
-      TextCellValue(recordData['Comments']),
-    ]);
+        const TextCellValue('PropertyID'),
+        const TextCellValue('PropertyAddress'),
+        const TextCellValue('LivestockDescription'),
+        const TextCellValue('PaddockID'),
+        const TextCellValue('LivestockQty'),
+        const TextCellValue('DrenchingDate'),
+        const TextCellValue('MobNumber'),
+        const TextCellValue('ChemicalID'),
+        const TextCellValue('BatchNumber'),
+        const TextCellValue('ExpirationDate'),
+        const TextCellValue('DoseRate'),
+        const TextCellValue('WithholdingPeriod'),
+        const TextCellValue('ExportSlaughterInterval'),
+        const TextCellValue('DateSafeForSlaughter'),
+        const TextCellValue('AdverseReactions'),
+        const TextCellValue('BrokenNeedleInAnimal'),
+        const TextCellValue('EquipmentCleaned'),
+        const TextCellValue('EquipmentCleanedBy'),
+        const TextCellValue('ContactNo'),
+        const TextCellValue('Comments'),
 
-    // Save Excel file
-    final directory = await getApplicationDocumentsDirectory();
-    final path = '${directory.path}/drench_record.xlsx';
-    final file = File(path);
-    file.writeAsBytesSync(excel.encode()!);
+      ]);
 
-    // Send email with attachment
-    final Email emailToSend = Email(
-      body: 'Please find the attached drench record.',
-      subject: 'Drench Record Export',
-      recipients: [email],
-      attachmentPaths: [path],
-      isHTML: false,
-    );
+      // Add drench record data
+      sheetObject.appendRow([
 
-    await FlutterEmailSender.send(emailToSend);
+        TextCellValue(recordData['PropertyID'].toString()),
+        TextCellValue(recordData['PropertyAddress'].toString()),
+        TextCellValue(recordData['LivestockDescription'].toString()),
+        TextCellValue(recordData['PaddockID'].toString()),
+        TextCellValue(recordData['LivestockQty'].toString()),
+        TextCellValue(recordData['DrenchingDate'].toString()),
+        TextCellValue(recordData['MobNumber'].toString()),
+        TextCellValue(recordData['ChemicalID'].toString()),
+        TextCellValue(recordData['BatchNumber'].toString()),
+        TextCellValue(recordData['ExpirationDate'].toString()),
+        TextCellValue(recordData['DoseRate'].toString()),
+        TextCellValue(recordData['WithholdingPeriod'].toString()),
+        TextCellValue(recordData['ExportSlaughterInterval'].toString()),
+        TextCellValue(recordData['DateSafeForSlaughter'].toString()),
+        TextCellValue(recordData['AdverseReactions'].toString()),
+        TextCellValue(recordData['BrokenNeedleInAnimal'].toString()),
+        TextCellValue(recordData['EquipmentCleaned'].toString()),
+        TextCellValue(recordData['EquipmentCleanedBy'].toString()),
+        TextCellValue(recordData['ContactNo'].toString()),
+        TextCellValue(recordData['Comments'].toString()),
 
+      ]);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Drench record exported successfully')),
-    );
+      // Save Excel file
+      final directory = await getApplicationDocumentsDirectory();
+      final path = '${directory.path}/drench_record.xlsx';
+      final file = File(path);
+      file.writeAsBytesSync(excel.encode()!);
+
+      // check if email client is available
+      final bool canSendMail = await FlutterMailer.canSendMail();
+
+      if (canSendMail) {
+        final MailOptions mailOptions = MailOptions(
+          body: 'Please find the attached drench record.',
+          subject: 'Drench Record Export',
+          recipients: [email],
+          attachments: [path],
+          isHTML: false,
+        );
+
+        await FlutterMailer.send(mailOptions);
+
+        print('Drench record exported successfully');
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Drench record exported successfully')),
+        );
+
+      } else {
+
+        print('No email clients found on this device.');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No email clients found on this device.')),
+        );
+
+      }
+
+    } catch (e) {
+
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to export drench record: $e')),
+      );
+
+    }
   }
 
 }

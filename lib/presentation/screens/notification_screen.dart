@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:drenchmate_2024/business_logic/services/advanced_notice_logic.dart';
 import 'package:drenchmate_2024/business_logic/models/advanced_notice.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
-import 'package:drenchmate_2024/presentation/components/today_date_widget.dart';
 import 'package:drenchmate_2024/presentation/components/username.dart';
 import '../../business_logic/state/navbar_state.dart';
 import 'dashboard_view.dart';

@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,34 +14,25 @@ class MobsView extends StatefulWidget {
 
 class _MobsViewState extends State<MobsView> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirestoreService _firestoreService = FirestoreService();
   List<Map<String, dynamic>> mobs = [];
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    fetchMyMobs();
+    _loadMobs();
   }
 
-  Future<void> fetchMyMobs() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      // Handle the case where the user is not logged in
-      print('User not logged in');
-      return;
-    }
-
+  Future<void> _loadMobs() async {
     try {
-      QuerySnapshot snapshot = await _firestore
-          .collection('mobs')
-          .where('userId', isEqualTo: user.uid)
-          .get();
+      final fetchedMobs = await _firestoreService.fetchUserMobs();
       setState(() {
-        mobs = snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+        mobs = fetchedMobs;
         isLoading = false;
       });
     } catch (e) {
-      print('Error fetching mobs: $e');
+      print('Failed to load mobs: $e');
       setState(() {
         isLoading = false;
       });
@@ -92,7 +83,10 @@ class _MobsViewState extends State<MobsView> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: fetchMyMobs,
+        onPressed: () async {
+          await _loadMobs();
+        },
+        tooltip: 'Load Mobs',
         child: const Icon(Icons.refresh),
       ),
     );

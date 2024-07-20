@@ -3,10 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:drenchmate_2024/business_logic/models/chemical_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
+import '../components/bottom_navigation_bar.dart';
 import 'chemical_entry_screen.dart';
 import 'package:drenchmate_2024/business_logic/services/new_drench_state_controller.dart';
 import 'package:drenchmate_2024/presentation/screens/dashboard_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:drenchmate_2024/presentation/screens/drench_success_screen.dart';
 
 class DrenchEntryScreen extends StatefulWidget {
   static String id = 'drench_entry_screen';
@@ -17,7 +20,13 @@ class DrenchEntryScreen extends StatefulWidget {
 }
 
 class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
+
+  final FirestoreService _firestoreService = FirestoreService();
+  List<Map<String, dynamic>> mobs = [];
+  bool isLoading = true;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final TextEditingController _propertyIdController = TextEditingController();
   final TextEditingController _propertyAddressController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
@@ -55,7 +64,33 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
       context: context,
     );
     fetchCurrentUserDetails();
-    getMobs();
+    _loadMobs();
+  }
+
+  Future<void> _loadMobs() async {
+    try {
+      final fetchedMobs = await _firestoreService.fetchUserMobs();
+
+      setState(() {
+        mobs = fetchedMobs;
+        isLoading = false;
+
+        // populate mobNumbers list and mobNumberToIdMap
+        mobNumbers = fetchedMobs.map((mob) => mob['mobNumber'].toString()).toList();
+        mobNumberToIdMap = {for (var mob in fetchedMobs) mob['mobNumber'].toString(): mob['id']};
+
+        // if there are no mobs for the user, _selectedMobNumber is cleared
+        if (_selectedMobNumber != null && !mobNumbers.contains(_selectedMobNumber)) {
+          _selectedMobNumber = null;
+        }
+      });
+
+    } catch (e) {
+      print('Failed to load mobs: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   Future<void> fetchCurrentUserDetails() async {
@@ -82,32 +117,22 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
     }
   }
 
-  Future<void> getMobs() async {
-    if (currentUser != null) {
-      try {
-        QuerySnapshot mobSnapshot = await FirebaseFirestore.instance.collection('mobs').where('userId', isEqualTo: currentUser!.uid).get();
-        mobNumbers = mobSnapshot.docs.map((doc) => doc['mobNumber'].toString()).toList();
-        mobNumberToIdMap = {for (var doc in mobSnapshot.docs) doc['mobNumber'].toString(): doc.id};
 
-        setState(() {
-          mobNumbers = mobNumbers.toSet().toList(); // Ensure unique values
-        });
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to load mobs: $e')),
-        );
-      }
-    }
-  }
-
-  Future<void> fetchPaddockId(String mobNumber) async {
+  Future<void> fetchPaddockId(String userId, String mobNumber) async {
     try {
       String? mobId = mobNumberToIdMap[mobNumber];
       if (mobId != null) {
-        DocumentSnapshot mobDoc = await FirebaseFirestore.instance.collection('mobs').doc(mobId).get();
+        DocumentSnapshot mobDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection('mobs')
+            .doc(mobId)
+            .get();
+
         setState(() {
           _paddockIdController.text = mobDoc.get('paddockId').toString();
         });
+
       } else {
         throw Exception('Mob ID not found for the selected Mob Number');
       }
@@ -118,41 +143,45 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
     }
   }
 
+
+
+  // saveDrenchDetails
   Future<void> _saveDrenchDetails() async {
     if (_formKey.currentState!.validate()) {
       final drenchDetails = {
-        'PropertyID': _propertyIdController.text,
-        'PropertyAddress': _propertyAddressController.text,
-        'LivestockDescription': 'Sheep',
-        'PaddockID': _paddockIdController.text,
-        'LivestockQty': int.tryParse(_livestockQtyController.text),
-        'DrenchingDate': _dateController.text,
-        'MobNumber': _selectedMobNumber,
-        'ChemicalID': _selectedChemical ?? '',
-        'BatchNumber': _batchNumberController.text,
-        'ExpirationDate': _expirationDateController.text,
-        'DoseRate': _doseRateController.text,
-        'WithholdingPeriod': _withholdingPeriodController.text,
-        'ExportSlaughterInterval': _exportSlaughterIntervalController.text,
-        'DateSafeForSlaughter': _dateSafeForSlaughterController.text,
-        'AdverseReactions': _adverseReactionsController.text,
-        'BrokenNeedleInAnimal': _brokenNeedleInAnimal,
-        'EquipmentCleaned': _equipmentCleaned,
-        'EquipmentCleanedBy': _equipmentCleanedByController.text,
-        'ContactNo': _contactNoController.text,
-        'Comments': _commentsController,
+        'PropertyID': _propertyIdController.text,  // String
+        'PropertyAddress': _propertyAddressController.text,  // String
+        'LivestockDescription': 'Sheep',  // String
+        'PaddockID': _paddockIdController.text,  // String
+        'LivestockQty': int.tryParse(_livestockQtyController.text) ?? 0,  // Integer conversion with default value
+        'DrenchingDate': _dateController.text,  // String
+        'MobNumber': int.tryParse(_selectedMobNumber.toString()) ?? 0,  // Ensure this is an int
+        'ChemicalID': _selectedChemical ?? '',  // String
+        'BatchNumber': _batchNumberController.text,  // String
+        'ExpirationDate': _expirationDateController.text,  // String
+        'DoseRate': _doseRateController.text,  // String
+        'WithholdingPeriod': _withholdingPeriodController.text,  // String
+        'ExportSlaughterInterval': _exportSlaughterIntervalController.text,  // String
+        'DateSafeForSlaughter': _dateSafeForSlaughterController.text,  // String
+        'AdverseReactions': _adverseReactionsController.text,  // String
+        'BrokenNeedleInAnimal': _brokenNeedleInAnimal,  // Boolean
+        'EquipmentCleaned': _equipmentCleaned,  // Boolean
+        'EquipmentCleanedBy': _equipmentCleanedByController.text,  // String
+        'ContactNo': _contactNoController.text,  // String
+        'Comments': _commentsController.text,  // String
       };
 
       try {
         // Assuming you have the user ID available in your app
         String userId = FirebaseAuth.instance.currentUser!.uid;
+        int selectedMobNumberInt = int.tryParse(_selectedMobNumber.toString()) ?? 0;  // Convert to int safely
 
         // Fetch the correct mob document based on the userId and mob number
         QuerySnapshot mobSnapshot = await FirebaseFirestore.instance
             .collection('users')
             .doc(userId)
             .collection('mobs')
-            .where('mobNumber', isEqualTo: _selectedMobNumber)
+            .where('mobNumber', isEqualTo: selectedMobNumberInt)  // Ensure this is an int
             .get();
 
         if (mobSnapshot.docs.isNotEmpty) {
@@ -163,20 +192,20 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Drench Entry Saved')),
           );
-          Navigator.pushNamed(context, DashboardScreen.id);
+          Navigator.pushNamed(context, DrenchSuccessPage.id);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('No matching mob found')),
           );
         }
       } catch (e) {
+        print(e);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to save drench details: $e')),
         );
       }
     }
   }
-
 
   Future<void> calculateDateSafeForSlaughter() async {
     if (_dateController.text.isNotEmpty && _withholdingPeriodController.text.isNotEmpty) {
@@ -210,16 +239,12 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+        automaticallyImplyLeading: false,
+
         title: Row(
           children: [
             Text(
-              '           Drench Entry',
+              '                        Drench Entry',
               style: GoogleFonts.epilogue(
                 color: Colors.blue.shade900,
                 fontWeight: FontWeight.bold,
@@ -264,7 +289,8 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
 
               ),
               const SizedBox(height: 16),
-              const Text('Livestock description field: describe livestock and location'),
+              const Text('Livestock description: describe livestock and location'),
+              const SizedBox(height: 8),
               TextFormField(
                 decoration: _readOnlyInputDecoration('Livestock Description', Icons.description),
 
@@ -318,10 +344,22 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
                   setState(() {
                     _selectedMobNumber = value!;
                   });
-                  await fetchPaddockId(value!);
+
+                  // fetch the paddock id based on selected mob number
+                  User? user = FirebaseAuth.instance.currentUser;
+                  String? userId;
+                  if (user != null) {
+                    userId = user.uid;
+                  } else {
+                    print('User is not logged in.');
+                  }
+
+                  await fetchPaddockId(userId!, value!);
                 },
               ),
+
               const SizedBox(height: 16),
+
               TextFormField(
                 controller: _paddockIdController,
                 decoration: _readOnlyInputDecoration('Paddock ID', Icons.landscape),
@@ -471,6 +509,8 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
                 decoration: _readOnlyInputDecoration('Comments', Icons.comment),
               ),
 
+              const SizedBox(height: 16),
+
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -517,6 +557,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: MyNavigationBar(),
     );
   }
 }

@@ -46,9 +46,9 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     return Text(
       username,
-      style: GoogleFonts.inconsolata(
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
+      style: GoogleFonts.epilogue(
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
         color: Colors.black,
       ),
     );

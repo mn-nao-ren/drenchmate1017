@@ -15,6 +15,8 @@ class CreateMobPage extends StatefulWidget {
 }
 
 class _CreateMobPageState extends State<CreateMobPage> {
+  final TextEditingController _propertyAddressController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
   String? propertyAddress;
   int? paddockId;
@@ -29,6 +31,16 @@ class _CreateMobPageState extends State<CreateMobPage> {
   void initState() {
     super.initState();
     currentUser = FirebaseAuth.instance.currentUser;
+    _autoFillPropertyAddress();
+  }
+
+  Future<void> _autoFillPropertyAddress() async {
+    String? propertyAddress = await _firestoreService.fetchUserPropertyAddress();
+    if (propertyAddress != null) {
+      setState(() {
+        _propertyAddressController.text = propertyAddress;
+      });
+    }
   }
 
   @override
@@ -69,9 +81,10 @@ class _CreateMobPageState extends State<CreateMobPage> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                controller: _propertyAddressController,
                 decoration: InputDecoration(
                   labelText: 'Enter Property Address',
-                  prefixIcon: const Icon(Icons.home),
+                  prefixIcon: const Icon(Icons.location_on_outlined),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),

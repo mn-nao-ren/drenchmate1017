@@ -128,4 +128,53 @@ class FirestoreService {
           // Handle the error appropriately, e.g., show a message to the user
         }
   }
+
+  Future<String?> fetchUserPropertyAddress() async {
+    try {
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        String userEmail = currentUser.email!;
+        QuerySnapshot propertySnapshot = await _firestore
+            .collection('properties')
+            .where('userEmail', isEqualTo: userEmail)
+            .get();
+        if (propertySnapshot.docs.isNotEmpty) {
+          return propertySnapshot.docs.first['location'];
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching property address: $e');
+      return null;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> fetchUserMobs() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // Handle the case where the user is not logged in
+      print('User not logged in');
+      return [];
+    }
+
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('users').doc(user.uid).collection('mobs').get();
+
+      return snapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        data['id'] = doc.id;
+        // Ensure mobNumber is always a string
+        data['mobNumber'] = data['mobNumber'].toString();
+        return data;
+      }).toList();
+
+    } catch (e) {
+      print('Error fetching mobs: $e');
+      return [];
+    }
+  }
+
 }
