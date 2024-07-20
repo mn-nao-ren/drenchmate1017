@@ -31,7 +31,7 @@ class NoticeHandler with ChangeNotifier {
     * */
 
     try {
-      mobs = await firestoreService.fetchMobsForCurrentUser();
+      mobs = await firestoreService.fetchUserMobs();
       //print('Mobs for current user (advanced notice feature) : $mobs');
     } catch (e) {
       print('Error fetching mobs: $e');

@@ -54,29 +54,8 @@ class FirestoreService {
   }
 
 
-  Future<List<Map<String, dynamic>>> fetchMobsForCurrentUser() async {
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
-    final user = FirebaseAuth.instance.currentUser;
 
-    if (user == null) {
-      // Handle the case where the user is not logged in
-      print('User not logged in');
-      return [];
-    }
-
-    try {
-      QuerySnapshot snapshot = await firestore
-          .collection('mobs')
-          .where('userId', isEqualTo: user.uid)
-          .get();
-      return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-    } catch (e) {
-      print('Error fetching mobs: $e');
-      return [];
-    }
-  }
-
-
+  // fetch all mobs, not mobs of current user
   Future<List<String>> fetchMobs(String userId) async {
     try {
       QuerySnapshot snapshot = await _firestore

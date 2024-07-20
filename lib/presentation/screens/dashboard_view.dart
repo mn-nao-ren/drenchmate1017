@@ -52,7 +52,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(width: 32),
+                const SizedBox(width: 25),
                 ClipOval(
                     child: Image.asset('assets/round_logo.png',
                         height: 42, width: 42)),
@@ -61,7 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   style: GoogleFonts.lobster(
                       color: Colors.white,
                       fontSize: 34,
-                      fontWeight: FontWeight.w400),
+                      fontWeight: FontWeight.w500),
                 ),
               ],
             ),
@@ -96,11 +96,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                        Text(
                       'Welcome back👋',
-                      style: GoogleFonts.inter(
-                          fontSize: 25, fontWeight: FontWeight.w700),
+                      style: GoogleFonts.lobster(
+                          fontSize: 29, fontWeight: FontWeight.normal),
                     ),
 
-                    const SizedBox(width: 35),
+                    const SizedBox(width: 16),
 
                     TextButton(
                       onPressed: () {
@@ -126,7 +126,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             color: Colors.teal.shade900,
                           ),
 
-                          const SizedBox(width: 5),
+                          const SizedBox(width: 1),
 
 
                           Text(
@@ -152,7 +152,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
 
 
-                const SizedBox(height: 18),
+                const SizedBox(height: 24),
                 Text(
                   'Overview',
                   style: GoogleFonts.epilogue(
@@ -186,13 +186,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     'Highlights',
                     style: GoogleFonts.epilogue(
                       color: Colors.black,
-                        fontSize: 23, fontWeight: FontWeight.w700
+                        fontSize: 23, fontWeight: FontWeight.bold
                     )
 
                   ),
 
 
-                const SizedBox(height: 3),
+                const SizedBox(height: 4),
                 SingleChildScrollView(
                   child: GridView.count(
                     crossAxisCount: 2,
@@ -270,7 +270,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       HighlightCard(
                         color: Colors.blueGrey.shade400,
                         icon: 'assets/icon/property.png',
-                        title: 'Manage Products',
+                        title: 'Products',
                         subtitle: 'Chemical compositions',
                         buttonText: 'Enter a new product',
                         onTap: () {},
@@ -282,7 +282,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         color: Colors.lightBlue.shade500,
                         icon: 'assets/icon/mob.png',
                         title: 'Parasite Test',
-                        subtitle: 'Worm egg count test results',
+                        subtitle: 'Worm egg counts',
                         buttonText: 'Enter results',
                         onTap: () {},
                         onButtonPressed: () {

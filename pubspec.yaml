@@ -52,6 +52,7 @@ dependencies:
   flutter_mailer: ^2.1.2
   url_launcher: ^6.3.0
   permission_handler: ^11.3.1
+  device_info_plus: ^10.1.0
 
 
 

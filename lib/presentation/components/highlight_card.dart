@@ -52,7 +52,7 @@ class HighlightCard extends StatelessWidget {
                   fontWeight: FontWeight.w400),
             ),
             // add a small button later on, eg Button(),
-            const SizedBox(height: 14),
+            const SizedBox(height: 11),
 
             Align(
               alignment: Alignment.centerRight,

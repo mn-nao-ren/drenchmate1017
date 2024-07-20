@@ -9,6 +9,8 @@ import 'package:drenchmate_2024/presentation/components/username.dart';
 import 'package:drenchmate_2024/business_logic/services/drench_record_list_svc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+
 
 class ExportPage extends StatefulWidget {
   static String id = 'export_page';
@@ -35,6 +37,7 @@ class _ExportPageState extends State<ExportPage> {
         elevation: 0,
         automaticallyImplyLeading: false,
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -70,6 +73,19 @@ class _ExportPageState extends State<ExportPage> {
     );
   }
 
+  Future<bool> checkPermissions() async {
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      if (androidInfo.version.sdkInt <= 32) {
+        return await Permission.storage.request().isGranted;
+      } else {
+        // check for the READ_MEDIA_IMAGES permission
+        return await Permission.photos.request().isGranted;
+      }
+    }
+    return true;
+  }
+
   void _exportDrenchRecord(Map<String, dynamic> recordData, String? email) async {
     if (email == null || email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -79,11 +95,23 @@ class _ExportPageState extends State<ExportPage> {
     }
 
     try {
-      // Request storage permission
-      if (await Permission.storage.request().isGranted) {
-        // Create Excel file
+      bool hasPermissions = await checkPermissions();
+
+      if (hasPermissions) {
+
+        //create the excel file
         var excel = Excel.createExcel();
-        Sheet sheetObject = excel['DrenchRecords'];
+
+        // Remove default sheet if it exists
+        String? defaultSheetName = excel.getDefaultSheet();
+        //Rename the default sheet to 'DrenchRecord'
+        excel.rename(defaultSheetName!, 'DrenchRecord');
+        //Access the renamed sheet
+
+        Sheet sheetObject = excel['DrenchRecord'];
+
+
+
 
         // Add column headers
         sheetObject.appendRow([
@@ -145,26 +173,27 @@ class _ExportPageState extends State<ExportPage> {
         final file = File(path);
         file.writeAsBytesSync(excel.encode()!);
 
-        // Send email with attachment
         final Email emailToSend = Email(
           body: 'Please find the attached drench record.',
           subject: 'Drench Record Export',
           recipients: [email],
           attachmentPaths: [path],
           isHTML: false,
+
         );
 
         await FlutterEmailSender.send(emailToSend);
 
         print('Drench record exported and emailed successfully');
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Drench record exported and emailed successfully')),
+          const SnackBar(content: Text('Drench record exported and emailed succesfully')),
         );
+
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Storage permission denied')),
+          const SnackBar(content: Text('Permission denied. Email not sent.')),
         );
-        print('Storage permission denied');
+        print('Permission denied. Email not sent.');
       }
     } catch (e) {
       print(e);
