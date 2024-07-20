@@ -1,3 +1,4 @@
+import 'package:drenchmate_2024/presentation/screens/email_registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:drenchmate_2024/presentation/components/rounded_button.dart';
@@ -6,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dashboard_view.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
+import 'home_landing_page.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -88,7 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       validator: (value) =>
                       value!.isEmpty ? 'Password cannot be empty' : null,
                     ),
-                    const SizedBox(height: 20),
+
+                    const SizedBox(height: 7),
+
                     RoundedButton(
                       title: 'Log In',
                       color: Colors.blue.shade500,
@@ -113,6 +118,58 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       },
                     ),
+
+                    const SizedBox(height: 45),
+
+                    Material(
+                      elevation: 5.0,
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: MaterialButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, HomePage.id);
+                        },
+                        minWidth: 100.0,
+                        height: 4.0,
+                        child: const Text(
+                          'Nah, take me to the Welcome page',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 11),
+
+                    Material(
+                      elevation: 5.0,
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: MaterialButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, RegistrationPage.id);
+                        },
+                        minWidth: 100.0,
+                        height: 14.0,
+                        child: const Text(
+                          'Nah, take me to the New User registration page',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+
+                          ),
+                        ),
+                      ),
+                    ),
+
+
+
+
                   ],
                 ),
               ),

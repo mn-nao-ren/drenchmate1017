@@ -76,7 +76,7 @@ class DrenchMateApp extends StatelessWidget {
     } else if (isRegistered) {
       initialRoute = LoginScreen.id; // Registered but not logged in
     } else {
-      initialRoute = RegistrationPage.id; // Unregistered user
+      initialRoute = HomePage.id; // Unregistered user
     }
 
     return MultiProvider(
