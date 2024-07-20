@@ -105,7 +105,7 @@ class DrenchMateApp extends StatelessWidget {
           NotificationScreen.id: (context) => const NotificationScreen(),
           EnterResultsPage.id: (context) => const EnterResultsPage(),
           MobsView.id: (context) =>  const MobsView(),
-          DrenchSuccessPage.id: (context) => DrenchSuccessPage(),
+          DrenchSuccessPage.id: (context) => const DrenchSuccessPage(),
           ExportPage.id: (context) => const ExportPage(),
 
         },

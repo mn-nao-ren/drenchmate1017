@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
 
 class DrenchSuccessPage extends StatelessWidget {
-  static const String id = 'drench_success_page'; // Assign a route name for navigation
+  static const String id = 'drench_success_page';
+
+  const DrenchSuccessPage({super.key}); // Assign a route name for navigation
 
   @override
   Widget build(BuildContext context) {

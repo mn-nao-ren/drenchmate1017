@@ -1,15 +1,12 @@
 import 'dart:io';
-import 'package:device_apps/device_apps.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
 import 'package:excel/excel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:drenchmate_2024/presentation/screens/dashboard_view.dart';
 import 'package:drenchmate_2024/presentation/components/username.dart';
 import 'package:drenchmate_2024/business_logic/services/drench_record_list_svc.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
 
 class ExportPage extends StatefulWidget {

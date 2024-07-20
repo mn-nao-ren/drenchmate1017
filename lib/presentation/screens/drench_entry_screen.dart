@@ -7,7 +7,6 @@ import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
 import '../components/bottom_navigation_bar.dart';
 import 'chemical_entry_screen.dart';
 import 'package:drenchmate_2024/business_logic/services/new_drench_state_controller.dart';
-import 'package:drenchmate_2024/presentation/screens/dashboard_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:drenchmate_2024/presentation/screens/drench_success_screen.dart';
 
@@ -557,7 +556,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: MyNavigationBar(),
+      bottomNavigationBar: const MyNavigationBar(),
     );
   }
 }
