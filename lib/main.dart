@@ -21,6 +21,7 @@ import 'package:drenchmate_2024/presentation/screens/mobs_view.dart';
 import 'package:drenchmate_2024/business_logic/services/advanced_notice_logic.dart';
 import 'package:drenchmate_2024/presentation/screens/drench_success_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/export_page.dart';
+import 'package:drenchmate_2024/presentation/screens/save_results_success.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -107,6 +108,7 @@ class DrenchMateApp extends StatelessWidget {
           MobsView.id: (context) =>  const MobsView(),
           DrenchSuccessPage.id: (context) => const DrenchSuccessPage(),
           ExportPage.id: (context) => const ExportPage(),
+          ResultsSavedPage.id: (context) => const ResultsSavedPage(),
 
         },
 

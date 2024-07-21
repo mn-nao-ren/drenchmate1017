@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
+import 'get_weather_service.dart';
+import 'push_notifications_service.dart';
 
 class NoticeHandler with ChangeNotifier {
+  // final WeatherService weatherService;
+  // // could be push_notifications_service or the app's internal notifications page's service helper. KIV.
+  // final NotificationService notificationService;
   List<String> notices = [];
   Timer? _timer;
 
-  NoticeHandler() {
-    // Initialize and start the timer
-    _timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
-      checkConditions();
-    });
-  }
+  // NoticeHandler(this.weatherService, this.notificationService);
 
   @override
   void dispose() {
@@ -19,6 +19,20 @@ class NoticeHandler with ChangeNotifier {
     _timer?.cancel();
     super.dispose();
   }
+
+  NoticeHandler() {
+    // Initialize and start the timer
+    _timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
+      //checkConditions();
+    });
+  }
+
+  // void checkConditions() {
+  //   int daysSinceLastDrench = calculateDaysSinceLastDrench();
+  //   var weatherConditions =
+  // }
+
+
 
   Future<bool> evaluateConditions() async {
     FirestoreService firestoreService = FirestoreService();
@@ -54,13 +68,13 @@ class NoticeHandler with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> checkConditions() async {
-    bool conditionsMet = await evaluateConditions();
-    String message = "Our system has detected conditions indicating that your previous drench may no longer be effective. \n\nRecommended Actions:\n1. Immediate Drenching: Perform drenching using [recommended product].\n2. Review Drench Protocol: Consult with your veterinarian.\n3. Record Update: Ensure all details are logged in DrenchMate.\n4. Monitor Flock Health: Watch for health issues over the next few weeks.\n5. Regular Egg Counts: Schedule regular fecal egg count tests.\n6. Weather Monitoring: Stay alert to upcoming weather conditions.";
-
-
-    if (conditionsMet) {
-      sendAdvancedNotice(message);
-    }
-  }
+  // Future<void> checkConditions() async {
+  //   bool conditionsMet = await evaluateConditions();
+  //   String message = "Our system has detected conditions indicating that your previous drench may no longer be effective. \n\nRecommended Actions:\n1. Immediate Drenching: Perform drenching using [recommended product].\n2. Review Drench Protocol: Consult with your veterinarian.\n3. Record Update: Ensure all details are logged in DrenchMate.\n4. Monitor Flock Health: Watch for health issues over the next few weeks.\n5. Regular Egg Counts: Schedule regular fecal egg count tests.\n6. Weather Monitoring: Stay alert to upcoming weather conditions.";
+  //
+  //
+  //   if (conditionsMet) {
+  //     sendAdvancedNotice(message);
+  //   }
+  // }
 }

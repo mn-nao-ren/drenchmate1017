@@ -5,40 +5,31 @@ import 'package:firebase_auth/firebase_auth.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> saveEggResults(String userId, String mobNumber, int eggCountResults) async {
+  Future<void> saveEggResults(String mobNumberString, int eggCountResults) async {
     try {
-      CollectionReference mobsCollection =
-          _firestore.collection('users').doc(userId).collection('mobs');
+      int mobNumber = int.parse(mobNumberString);
+
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+      CollectionReference mobsCollection = _firestore.collection('users').doc(userId).collection('mobs');
 
       QuerySnapshot querySnapshot = await mobsCollection
           .where('mobNumber', isEqualTo: mobNumber)
-          .where('userId', isEqualTo: userId)
           .get();
 
-      // Get the document reference
-      DocumentReference mobDocRef;
-
       if (querySnapshot.docs.isEmpty) {
-        // If the mob doesn't exist, create a new document
-        mobDocRef = await mobsCollection.add({
-          'mobNumber': mobNumber,
-          'eggCount': eggCountResults,
-
-          'eggTestDate': Timestamp.now(),
-        });
-      } else {
-        // If the mob exists, use the existing document reference
-        mobDocRef = querySnapshot.docs.first.reference;
+        throw Exception('No mob found with the given mob number');
       }
 
+      DocumentReference mobDocRef = querySnapshot.docs.first.reference;
+
+
+
       // Reference to the 'eggResults' subcollection under the mob document
-      CollectionReference eggResultsCollection =
-          mobDocRef.collection('eggResults');
+      CollectionReference eggResultsCollection = mobDocRef.collection('eggResults');
 
       // Save egg count results to the 'eggResults' subcollection
       await eggResultsCollection.add({
         'eggCount': eggCountResults,
-
         'dateRecorded': Timestamp.now(),
       });
 

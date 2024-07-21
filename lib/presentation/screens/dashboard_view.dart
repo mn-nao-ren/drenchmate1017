@@ -51,7 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(width: 21),
+                const SizedBox(width: 36),
                 ClipOval(
                     child: Image.asset('assets/round_logo.png',
                         height: 42, width: 42)),
@@ -200,15 +200,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
-                      HighlightCard(
-                        color: Colors.blueGrey.shade400,
-                        icon: 'assets/weather.png',
-                        title: 'Weather Info',
-                        subtitle: 'Monitored, alerts set',
-                        buttonText: 'OpenWeather',
-                        onTap: () {},
-                        onButtonPressed: () {},
-                      ),
+                      // HighlightCard(
+                      //   color: Colors.blueGrey.shade400,
+                      //   icon: 'assets/weather.png',
+                      //   title: 'Weather Info',
+                      //   subtitle: 'Monitored, alerts set',
+                      //   buttonText: 'OpenWeather',
+                      //   onTap: () {},
+                      //   onButtonPressed: () {},
+                      // ),
                       HighlightCard(
                         color: Colors.lightBlue.shade500,
                         icon: 'assets/icon/mob.png',
@@ -244,17 +244,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Navigator.pushNamed(context, SetupPropertyScreen.id);
                         },
                       ),
-                      HighlightCard(
-                        color: Colors.lightBlue.shade500,
-                        icon: 'assets/icon/profile.png',
-                        title: 'Profile',
-                        subtitle: 'Add, restrict actions',
-                        buttonText: 'Create a Profile',
-                        onTap: () {},
-                        onButtonPressed: () {
-                          Navigator.pushNamed(context, CreateProfileScreen.id);
-                        },
-                      ),
+
 
                       HighlightCard(
                         color: Colors.blueGrey.shade400,
