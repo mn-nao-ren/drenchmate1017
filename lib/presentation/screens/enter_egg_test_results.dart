@@ -18,8 +18,7 @@ class _EnterResultsPageState extends State<EnterResultsPage> {
   User? currentUser = FirebaseAuth.instance.currentUser;
   final _formKey = GlobalKey<FormState>();
   String? mobNumber;
-  String? propertyAddress;
-  int? paddockId;
+  DateTime? testDate;
   int? eggCountResults;
 
   List<String> mobList = [];
@@ -44,7 +43,7 @@ class _EnterResultsPageState extends State<EnterResultsPage> {
     }
   }
 
-  Future<void> fetchMobDetails(String mobNumber) async {}
+
 
   @override
   void initState() {
@@ -125,49 +124,12 @@ class _EnterResultsPageState extends State<EnterResultsPage> {
                       const SizedBox(height: 10),
 
                       /* property address field still lacking auto pre-fill logic here */
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Enter property address',
-                          prefixIcon: const Icon(Icons.cabin_outlined),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a property address';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          propertyAddress = value;
-                        },
-                      ),
+
                       const SizedBox(height: 10),
 
                       /* another drop down field of paddock numbers user has entered in
               * the system previously  */
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Enter paddock number',
-                          prefixIcon: const Icon(Icons.numbers_outlined),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a paddock  number';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          paddockId = int.parse(value!);
-                        },
-                      ),
-                      const SizedBox(height: 10),
+
                       TextFormField(
                         decoration: InputDecoration(
                           labelText:
@@ -190,6 +152,27 @@ class _EnterResultsPageState extends State<EnterResultsPage> {
                       const SizedBox(
                         height: 20,
                       ),
+
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText:
+                          'Enter test date',
+                          prefixIcon: const Icon(Icons.date_range_outlined),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter egg count results';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+
+                        },
+                      ),
+
                       Center(
                           child: ElevatedButton(
                         onPressed: () async {
@@ -200,8 +183,7 @@ class _EnterResultsPageState extends State<EnterResultsPage> {
                               await _firestoreService.saveEggResults(
                                 currentUser!.uid,
                                 mobNumber!,
-                                propertyAddress!,
-                                paddockId!,
+
                                 eggCountResults!,
                               );
 

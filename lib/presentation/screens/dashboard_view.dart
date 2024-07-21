@@ -7,7 +7,6 @@ import 'package:drenchmate_2024/presentation/components/highlight_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
 import 'package:drenchmate_2024/presentation/screens/create_profile.dart';
-import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/setup_property_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/drench_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
@@ -52,7 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(width: 24),
+                const SizedBox(width: 21),
                 ClipOval(
                     child: Image.asset('assets/round_logo.png',
                         height: 42, width: 42)),
@@ -71,7 +70,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           elevation: 0,
           actions: [
             IconButton(
-              icon: const Icon(Icons.logout_outlined),
+              icon: const Icon(Icons.exit_to_app_sharp),
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
                 SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -100,7 +99,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           fontSize: 29, fontWeight: FontWeight.normal),
                     ),
 
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 24),
 
                     TextButton(
                       onPressed: () {
@@ -256,17 +255,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Navigator.pushNamed(context, CreateProfileScreen.id);
                         },
                       ),
-                      HighlightCard(
-                        color: Colors.blue.shade900,
-                        icon: 'assets/icon/generate_report.png',
-                        title: "Reports",
-                        subtitle: 'Backed-up logs for gov',
-                        buttonText: 'Generate Report',
-                        onTap: () {},
-                        onButtonPressed: () {
-                          Navigator.pushNamed(context, GenerateReportScreen.id);
-                        },
-                      ),
+
                       HighlightCard(
                         color: Colors.blueGrey.shade400,
                         icon: 'assets/icon/property.png',

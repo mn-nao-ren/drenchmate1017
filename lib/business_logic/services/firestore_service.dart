@@ -5,14 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> saveEggResults(String userId, String mobNumber,
-      String propertyAddress, int paddockId, int eggCountResults) async {
+  Future<void> saveEggResults(String userId, String mobNumber, int eggCountResults) async {
     try {
       CollectionReference mobsCollection =
           _firestore.collection('users').doc(userId).collection('mobs');
 
       QuerySnapshot querySnapshot = await mobsCollection
-          .where('propertyAddress', isEqualTo: propertyAddress)
           .where('mobNumber', isEqualTo: mobNumber)
           .where('userId', isEqualTo: userId)
           .get();
@@ -24,9 +22,9 @@ class FirestoreService {
         // If the mob doesn't exist, create a new document
         mobDocRef = await mobsCollection.add({
           'mobNumber': mobNumber,
-          'propertyAddress': propertyAddress,
-          'paddockId': paddockId,
-          'timestamp': Timestamp.now(),
+          'eggCount': eggCountResults,
+
+          'eggTestDate': Timestamp.now(),
         });
       } else {
         // If the mob exists, use the existing document reference
@@ -40,8 +38,7 @@ class FirestoreService {
       // Save egg count results to the 'eggResults' subcollection
       await eggResultsCollection.add({
         'eggCount': eggCountResults,
-        'propertyAddress': propertyAddress,
-        'paddockId': paddockId,
+
         'dateRecorded': Timestamp.now(),
       });
 
@@ -52,8 +49,6 @@ class FirestoreService {
       throw Exception('Failed to add egg results: $e');
     }
   }
-
-
 
   // fetch all mobs, not mobs of current user
   Future<List<String>> fetchMobs(String userId) async {
