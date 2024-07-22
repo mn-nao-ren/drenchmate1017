@@ -175,8 +175,7 @@ class FirestoreService {
     if (snapshot.docs.isNotEmpty) {
       return snapshot.docs.first['eggCountResults'];
     } else {
-      print(
-          "No egg results are found. firestore service fetchFecalEggCount method.");
+      print("No egg results are found. FirestoreService fetchFecalEggCount method.");
       return 0;
     }
   }

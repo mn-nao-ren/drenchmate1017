@@ -51,6 +51,8 @@ class NoticeHandler with ChangeNotifier {
   void checkConditions() async {
     try {
       List<Map<String, dynamic>> mobs = await _firestoreService.fetchUserMobs();
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+
       for (Map<String, dynamic> mob in mobs) {
         String mobId = mob['id'];
         String mobName = mob['mobName'];
@@ -59,7 +61,7 @@ class NoticeHandler with ChangeNotifier {
 
         var weatherConditions = await _weatherService.fetchWeatherConditions();
 
-        int fecalEggCount = await _firestoreService.fetchFecalEggCount(mobId);
+        int fecalEggCount = await _firestoreService.fetchFecalEggCount(userId, mobId);
 
         String reInfectionRisk =
             evaluateReInfectionRisk(weatherConditions, fecalEggCount);

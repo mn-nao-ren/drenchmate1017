@@ -3,8 +3,6 @@ import 'dart:convert';
 
 class WeatherService {
 
-
-
   Future<String> fetchWeatherConditions() async {
     const String apiKey = 'bef3cd0ba2275d3967a024c2b4d5a609';
     const String location = 'Perth,australia'; // e.g., 'London,uk'

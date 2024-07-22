@@ -6,8 +6,10 @@ import 'package:drenchmate_2024/business_logic/services/advanced_notice_logic.da
 import 'package:drenchmate_2024/business_logic/models/advanced_notice.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
 import 'package:drenchmate_2024/presentation/components/username.dart';
+import '../../business_logic/services/firestore_service.dart';
 import '../../business_logic/state/navbar_state.dart';
 import 'dashboard_view.dart';
+import 'package:drenchmate_2024/business_logic/services/get_weather_service.dart';
 
 class NotificationScreen extends StatefulWidget {
   static String id = 'notification_screen';
@@ -19,7 +21,7 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   List<String> notices = [];
-  NoticeHandler noticeHandler = NoticeHandler();
+
 
   @override
   void initState() {
@@ -107,3 +109,4 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 }
+

@@ -1,3 +1,4 @@
+import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
 import 'package:drenchmate_2024/presentation/screens/enter_egg_test_results.dart';
 import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/login_page.dart';
@@ -23,6 +24,9 @@ import 'package:drenchmate_2024/presentation/screens/drench_success_screen.dart'
 import 'package:drenchmate_2024/presentation/screens/export_page.dart';
 import 'package:drenchmate_2024/presentation/screens/save_results_success.dart';
 
+import 'business_logic/services/get_weather_service.dart';
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -39,7 +43,7 @@ void main() async {
   runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => NavbarState()),
-        ChangeNotifierProvider(create: (_) => NoticeHandler()),
+        ChangeNotifierProvider(create: (_) => NoticeHandler(FirestoreService(), WeatherService())),
       ],
       child: DrenchMateApp(
         isFirstTime: isFirstTime,
@@ -97,7 +101,10 @@ class DrenchMateApp extends StatelessWidget {
           DrenchEntryScreen.id: (context) => const DrenchEntryScreen(),
           ChemicalEntryScreen.id: (context) => const ChemicalEntryScreen(),
           CreateMobPage.id: (context) => const CreateMobPage(),
+
           NotificationScreen.id: (context) => const NotificationScreen(),
+
+
           EnterResultsPage.id: (context) => const EnterResultsPage(),
           MobsView.id: (context) => const MobsView(),
           DrenchSuccessPage.id: (context) => const DrenchSuccessPage(),
