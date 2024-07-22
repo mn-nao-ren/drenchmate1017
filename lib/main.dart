@@ -31,9 +31,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  PushNotificationsService pushNotificationService = PushNotificationsService();
 
   // Initialize Flutter Local Notifications Plugin
-  initializeNotifications();
+  pushNotificationService.initializeNotifications();
 
   // check user status
   bool isFirstTime = prefs.getBool('is_first_time') ?? true;

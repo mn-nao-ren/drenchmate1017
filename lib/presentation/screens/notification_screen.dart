@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:drenchmate_2024/business_logic/services/advanced_notice_logic.dart';
-import 'package:drenchmate_2024/business_logic/models/advanced_notice.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
 import 'package:drenchmate_2024/presentation/components/username.dart';
-import '../../business_logic/services/firestore_service.dart';
+import '../../business_logic/models/advanced_notice.dart';
 import '../../business_logic/state/navbar_state.dart';
 import 'dashboard_view.dart';
-import 'package:drenchmate_2024/business_logic/services/get_weather_service.dart';
 
 class NotificationScreen extends StatefulWidget {
   static String id = 'notification_screen';
@@ -48,23 +46,25 @@ class _NotificationScreenState extends State<NotificationScreen> {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                'Welcome back 👋',
-                style: GoogleFonts.epilogue(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
+              Center(
+                child: Text(
+                  'Welcome back 👋',
+                  style: GoogleFonts.epilogue(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               const SizedBox(height: 4),
-              const UserProfile(),
+              const Center(child: UserProfile()),
             ],
           ),
           titleTextStyle: GoogleFonts.epilogue(
             color: Colors.black,
             fontSize: 20,
-            fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.bold,
           ),
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.blueGrey.shade300,
           elevation: 0,
           toolbarHeight: 80,
           automaticallyImplyLeading: false,
@@ -98,7 +98,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     itemCount: noticeHandler.notices.length,
                     itemBuilder: (context, index) {
                       return AdvancedNotice(
-                          message: noticeHandler.notices[index]);
+                        mobName: noticeHandler.notices[index]['mobName'],
+                        paddockId: noticeHandler.notices[index]['paddockId'],
+                        mobNumber: noticeHandler.notices[index]['mobNumber'],
+                        timestamp: noticeHandler.notices[index]['timestamp'],
+                        onAcknowledge: () {
+                          noticeHandler.acknowledgeNotice(index);
+                        }
+                      );
                     });
               })),
             ],
@@ -106,6 +113,29 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
         bottomNavigationBar: const MyNavigationBar(),
       ),
+    );
+  }
+
+  void _showDetailedMessage(
+      BuildContext context, NoticeHandler noticeHandler, int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Drench Notice'),
+          content: const Text(
+              "DrenchMate is giving you advanced notice of when your last drench for this mob is no longer effective against parasites. DrenchMate recommends you drench the mob immediately, monitor mob health, and continue to schedule regular fecal egg count tests. DrenchMate will monitor all upcoming weather conditions for you. Consult your veterinarian if necessary."),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                noticeHandler.acknowledgeNotice(index);
+                Navigator.of(context).pop();
+              },
+              child: const Text("Ok, noted. Do not keep repeating this notification to me."),
+            ),
+          ],
+        );
+      },
     );
   }
 }

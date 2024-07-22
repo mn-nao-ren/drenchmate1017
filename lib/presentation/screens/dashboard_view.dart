@@ -50,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(width: 36),
+                const SizedBox(width: 29),
                 ClipOval(
                     child: Image.asset('assets/round_logo.png',
                         height: 42, width: 42)),

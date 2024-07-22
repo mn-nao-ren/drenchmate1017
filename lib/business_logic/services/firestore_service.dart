@@ -155,6 +155,7 @@ class FirestoreService {
         data['mobNumber'] = data['mobNumber'].toString();
         return data;
       }).toList();
+
     } catch (e) {
       print('Error fetching mobs: $e');
       return [];
@@ -168,12 +169,12 @@ class FirestoreService {
         .collection('mobs')
         .doc(mobId)
         .collection('eggResults')
-        .orderBy('timestamp', descending: true)
+        .orderBy('dateRecorded', descending: true)
         .limit(1)
         .get();
 
     if (snapshot.docs.isNotEmpty) {
-      return snapshot.docs.first['eggCountResults'];
+      return snapshot.docs.first['eggCount'];
     } else {
       print("No egg results are found. FirestoreService fetchFecalEggCount method.");
       return 0;
