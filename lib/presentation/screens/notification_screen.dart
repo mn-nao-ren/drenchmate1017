@@ -24,7 +24,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     super.initState();
-
   }
 
   void _onItemTapped(BuildContext context, int index) {
@@ -91,19 +90,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              Expanded(
-                child: Consumer<NoticeHandler>(
+              Expanded(child: Consumer<NoticeHandler>(
                   builder: (context, noticeHandler, child) {
-                    return ListView.builder(
-                      itemCount: noticeHandler.notices.length,
-                      itemBuilder: (context, index) {
-                        return AdvancedNotice(message: noticeHandler.notices[index]);
-                      }
-                    );
-                  }
-                )
-
-              ),
+                return ListView.builder(
+                    itemCount: noticeHandler.notices.length,
+                    itemBuilder: (context, index) {
+                      return AdvancedNotice(
+                          message: noticeHandler.notices[index]);
+                    });
+              })),
             ],
           ),
         ),

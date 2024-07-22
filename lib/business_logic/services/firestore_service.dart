@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -17,27 +16,26 @@ class FirestoreService {
         .get();
   }
 
-  Future<void> saveEggResults(String mobNumberString, int eggCountResults) async {
+  Future<void> saveEggResults(
+      String mobNumberString, int eggCountResults) async {
     try {
       int mobNumber = int.parse(mobNumberString);
 
       String userId = FirebaseAuth.instance.currentUser!.uid;
-      CollectionReference mobsCollection = _firestore.collection('users').doc(userId).collection('mobs');
+      CollectionReference mobsCollection =
+          _firestore.collection('users').doc(userId).collection('mobs');
 
-      QuerySnapshot querySnapshot = await mobsCollection
-          .where('mobNumber', isEqualTo: mobNumber)
-          .get();
+      QuerySnapshot querySnapshot =
+          await mobsCollection.where('mobNumber', isEqualTo: mobNumber).get();
 
       if (querySnapshot.docs.isEmpty) {
         throw Exception('No mob found with the given mob number');
       }
 
       DocumentReference mobDocRef = querySnapshot.docs.first.reference;
-
-
-
       // Reference to the 'eggResults' subcollection under the mob document
-      CollectionReference eggResultsCollection = mobDocRef.collection('eggResults');
+      CollectionReference eggResultsCollection =
+          mobDocRef.collection('eggResults');
 
       // Save egg count results to the 'eggResults' subcollection
       await eggResultsCollection.add({
@@ -53,7 +51,8 @@ class FirestoreService {
     }
   }
 
-  // fetch all mobs, not mobs of current user
+  // method that fetches all mobs, not just the mobs of current user
+  // not to be confused to fetchUserMobs
   Future<List<String>> fetchMobs(String userId) async {
     try {
       QuerySnapshot snapshot = await _firestore
@@ -87,23 +86,28 @@ class FirestoreService {
     });
   }
 
-  Future<void> saveMob(String propertyAddress, int paddockId, int mobNumber, String mobName, String userId, String userEmail) async {
-        final mobData = {
-          'propertyAddress': propertyAddress,
-          'paddockId': paddockId,
-          'mobNumber': mobNumber,
-          'mobName': mobName,
-          'userId': userId,
-          'userEmail': userEmail,
-        };
+  Future<void> saveMob(String propertyAddress, int paddockId, int mobNumber,
+      String mobName, String userId, String userEmail) async {
+    final mobData = {
+      'propertyAddress': propertyAddress,
+      'paddockId': paddockId,
+      'mobNumber': mobNumber,
+      'mobName': mobName,
+      'userId': userId,
+      'userEmail': userEmail,
+    };
 
-        try {
-          await FirebaseFirestore.instance.collection('users').doc(userId).collection('mobs').add(mobData);
-          print('Mob data saved successfully: $mobData');
-        } catch (e) {
-          print('Failed to save mob data: $e');
-          // Handle the error appropriately, e.g., show a message to the user
-        }
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('mobs')
+          .add(mobData);
+      print('Mob data saved successfully: $mobData');
+    } catch (e) {
+      print('Failed to save mob data: $e');
+      // Handle the error appropriately, e.g., show a message to the user
+    }
   }
 
   Future<String?> fetchUserPropertyAddress() async {
@@ -151,11 +155,29 @@ class FirestoreService {
         data['mobNumber'] = data['mobNumber'].toString();
         return data;
       }).toList();
-
     } catch (e) {
       print('Error fetching mobs: $e');
       return [];
     }
   }
 
+  Future<int> fetchFecalEggCount(String userId, String mobId) async {
+    QuerySnapshot snapshot = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('mobs')
+        .doc(mobId)
+        .collection('eggResults')
+        .orderBy('timestamp', descending: true)
+        .limit(1)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      return snapshot.docs.first['eggCountResults'];
+    } else {
+      print(
+          "No egg results are found. firestore service fetchFecalEggCount method.");
+      return 0;
+    }
+  }
 }

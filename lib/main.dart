@@ -31,14 +31,12 @@ void main() async {
   // Initialize Flutter Local Notifications Plugin
   initializeNotifications();
 
-
   // check user status
   bool isFirstTime = prefs.getBool('is_first_time') ?? true;
   bool isRegistered = prefs.getBool('is_registered') ?? false;
   bool isLoggedIn = prefs.getBool('is_logged_in') ?? false;
 
-  runApp(
-    MultiProvider(
+  runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => NavbarState()),
         ChangeNotifierProvider(create: (_) => NoticeHandler()),
@@ -47,11 +45,8 @@ void main() async {
         isFirstTime: isFirstTime,
         isRegistered: isRegistered,
         isLoggedIn: isLoggedIn,
-      )
-    )
-  );
+      )));
 }
-
 
 class DrenchMateApp extends StatelessWidget {
   final bool isFirstTime;
@@ -64,7 +59,6 @@ class DrenchMateApp extends StatelessWidget {
     required this.isRegistered,
     required this.isLoggedIn,
   });
-
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +76,8 @@ class DrenchMateApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ChemicalProvider()..fetchChemicals()),
+        ChangeNotifierProvider(
+            create: (_) => ChemicalProvider()..fetchChemicals()),
       ],
       child: MaterialApp(
         title: 'DrenchMate',
@@ -95,7 +90,6 @@ class DrenchMateApp extends StatelessWidget {
           HomePage.id: (context) => const HomePage(),
           RegistrationPage.id: (context) => const RegistrationPage(),
           LoginScreen.id: (context) => const LoginScreen(),
-
           DashboardScreen.id: (context) => const DashboardScreen(),
           CreateProfileScreen.id: (context) => const CreateProfileScreen(),
           GenerateReportScreen.id: (context) => const GenerateReportScreen(),
@@ -105,13 +99,11 @@ class DrenchMateApp extends StatelessWidget {
           CreateMobPage.id: (context) => const CreateMobPage(),
           NotificationScreen.id: (context) => const NotificationScreen(),
           EnterResultsPage.id: (context) => const EnterResultsPage(),
-          MobsView.id: (context) =>  const MobsView(),
+          MobsView.id: (context) => const MobsView(),
           DrenchSuccessPage.id: (context) => const DrenchSuccessPage(),
           ExportPage.id: (context) => const ExportPage(),
           ResultsSavedPage.id: (context) => const ResultsSavedPage(),
-
         },
-
       ),
     );
   }
