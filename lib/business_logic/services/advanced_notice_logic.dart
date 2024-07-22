@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
-import 'get_weather_service.dart';
-import 'push_notifications_service.dart';
 
 class NoticeHandler with ChangeNotifier {
   // final WeatherService weatherService;
@@ -10,6 +10,9 @@ class NoticeHandler with ChangeNotifier {
   // final NotificationService notificationService;
   List<String> notices = [];
   Timer? _timer;
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirestoreService _firestoreService = FirestoreService();
 
   // NoticeHandler(this.weatherService, this.notificationService);
 
@@ -29,8 +32,54 @@ class NoticeHandler with ChangeNotifier {
 
   // void checkConditions() {
   //   int daysSinceLastDrench = calculateDaysSinceLastDrench();
-  //   var weatherConditions =
+  //   var weatherConditions = weatherService.getWeatherConditions();
+  //   double reInfectionRisk = evaluateReInfectionRisk(weatherConditions, fecalEggCount);
+  //
+  //   const fecalEggThreshold = 200;
+  //   bool nextDrenchNeeded = determineNextDrenchNeeded(fecalEggCount);
+  //   bool drenchEffective = checkDrenchEffective(daysSinceLastDrench, effectivePeriodDays);
+  //
+  //   bool immediateDrenchingNeeded = evaluateImmediateDrenching(
+  //       nextDrenchNeeded,
+  //       drenchEffective,
+  //       reInfectionRisk
+  //   );
+  //
+  //   if (immediateDrenchingNeeded) {
+  //     notificationService.sendAdvancedNotice();
+  //   }
   // }
+
+  Future<int> calculateDaysSinceLastDrench() async {
+    List<Map<String, dynamic>> mobs = await _firestoreService.fetchUserMobs();
+    int daysSinceLastDrench = 0;
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    for (Map<String, dynamic> mob in mobs) {
+      String mobId = mob['id'];
+
+      //Access the drench documents using fs service
+      QuerySnapshot drenchesSnapshot = await _firestoreService
+          .fetchLatestDrench(userId, mobId);
+
+      if (drenchesSnapshot.docs.isNotEmpty) {
+        // Assuming 'date' is stored as a Timestamp in Firestore
+        Timestamp lastDrenchTimestamp = drenchesSnapshot.docs.first['date'];
+        DateTime lastDrenchDate = lastDrenchTimestamp.toDate();
+
+        // Calculate days since last drench
+        DateTime today = DateTime.now();
+        daysSinceLastDrench = today
+            .difference(lastDrenchDate)
+            .inDays;
+      }
+    }
+
+    // Return the calculated value
+    return daysSinceLastDrench;
+  }
+
+
 
 
 

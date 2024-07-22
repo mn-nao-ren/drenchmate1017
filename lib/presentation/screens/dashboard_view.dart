@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/presentation/components/highlight_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
-import 'package:drenchmate_2024/presentation/screens/create_profile.dart';
 import 'package:drenchmate_2024/presentation/screens/setup_property_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/drench_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
@@ -93,11 +92,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                       Text(
-                      'Welcome back👋',
-                      style: GoogleFonts.lobster(
-                          fontSize: 29, fontWeight: FontWeight.normal),
-                    ),
+                       Flexible(
+                         child: Text(
+                                               'Welcome back👋',
+                                               style: GoogleFonts.lobster(
+                            fontSize: 29, fontWeight: FontWeight.normal),
+                                             ),
+                       ),
 
                     const SizedBox(width: 24),
 

@@ -1,9 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:drenchmate_2024/business_logic/models/property.dart';
+
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<QuerySnapshot> fetchLatestDrench(String userId, String mobId) async {
+    return await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('mobs')
+        .doc(mobId)
+        .collection('drenches')
+        .orderBy('date', descending: true)
+        .limit(1)
+        .get();
+  }
 
   Future<void> saveEggResults(String mobNumberString, int eggCountResults) async {
     try {
@@ -126,7 +138,11 @@ class FirestoreService {
     }
 
     try {
-      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('users').doc(user.uid).collection('mobs').get();
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('mobs')
+          .get();
 
       return snapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;

@@ -1,11 +1,8 @@
-import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
-import 'package:drenchmate_2024/presentation/screens/save_results_success.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
 import 'package:drenchmate_2024/presentation/screens/dashboard_view.dart';
-import 'package:drenchmate_2024/presentation/screens/save_results_success.dart';
 
 class EnterResultsPage extends StatefulWidget {
   static String id = 'enter_results_page';
