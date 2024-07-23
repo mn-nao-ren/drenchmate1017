@@ -9,7 +9,7 @@
     <application
         android:label="DrenchMate"
         android:name="${applicationName}"
-        android:icon="@drawable/app_icon"
+        android:icon="@mipmap/ic_launcher"
         android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".MainActivity"

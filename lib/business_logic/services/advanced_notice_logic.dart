@@ -23,12 +23,12 @@ class NoticeHandler with ChangeNotifier {
   static const int fecalEggThreshold = 200;
   // measured in days, factor this into homogenity of units when using this value
   static const int effectivePeriodDays = 5;
-  static const Duration notificationInterval = Duration(seconds: 7);
+  static const Duration notificationInterval = Duration(seconds: 2);
 
   final FirebaseApi _firebaseApi = FirebaseApi();
 
   NoticeHandler(this._firestoreService, this._weatherService) {
-    _timer = Timer.periodic(const Duration(seconds: 7), (Timer t) {
+    _timer = Timer.periodic(const Duration(seconds: 2), (Timer t) {
       checkConditions();
     });
   }
@@ -69,7 +69,7 @@ class NoticeHandler with ChangeNotifier {
           channelDescription: _firebaseApi.androidChannel.description,
           importance: Importance.high,
           priority: Priority.high,
-          icon: '@drawable/ic_launcher',
+          icon: '@mipmap/ic_launcher',
         ),
       ),
       payload: jsonEncode({'title': "DrenchMate Advanced Notice", 'body': pushNotificationSubtitle}),
