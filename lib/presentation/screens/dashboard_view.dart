@@ -248,7 +248,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
 
                       HighlightCard(
-                        color: Colors.blueGrey.shade400,
+                        color: Colors.lightBlue.shade500,
                         icon: 'assets/icon/property.png',
                         title: 'Products',
                         subtitle: 'Chemical compositions',
@@ -259,7 +259,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         },
                       ),
                       HighlightCard(
-                        color: Colors.lightBlue.shade500,
+                        color: Colors.blue.shade900,
                         icon: 'assets/icon/mob.png',
                         title: 'Parasite Test',
                         subtitle: 'Worm egg counts',

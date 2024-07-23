@@ -116,27 +116,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 
-  void _showDetailedMessage(
-      BuildContext context, NoticeHandler noticeHandler, int index) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Drench Notice'),
-          content: const Text(
-              "DrenchMate is giving you advanced notice of when your last drench for this mob is no longer effective against parasites. DrenchMate recommends you drench the mob immediately, monitor mob health, and continue to schedule regular fecal egg count tests. DrenchMate will monitor all upcoming weather conditions for you. Consult your veterinarian if necessary."),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                noticeHandler.acknowledgeNotice(index);
-                Navigator.of(context).pop();
-              },
-              child: const Text("Ok, noted. Do not keep repeating this notification to me."),
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 }
 

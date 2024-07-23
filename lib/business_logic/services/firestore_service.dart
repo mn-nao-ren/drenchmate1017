@@ -1,8 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:drenchmate_2024/business_logic/models/profile.dart';
+import '../../presentation/components/username.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // Fetch property data based on user's propertyId
+  Future<Map<String, dynamic>> fetchPropertyData(String propertyId) async {
+    try {
+      DocumentSnapshot doc = await _firestore.collection('properties').doc(propertyId).get();
+      if (doc.exists) {
+        return doc.data() as Map<String, dynamic>;
+      } else {
+        throw Exception('Property not found');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch property data: $e');
+    }
+  }
 
   Future<QuerySnapshot> fetchLatestDrench(String userId, String mobId) async {
     return await _firestore
@@ -180,4 +196,19 @@ class FirestoreService {
       return 0;
     }
   }
+
+  Future<void> saveUserProfile(Profile userProfile) async {
+    await _firestore.collection('users')
+        .doc(userProfile.userId)
+        .set(userProfile.toMap());
+  }
+
+  // Fetch user profile from Firestore
+  // Fetch user profile from Firestore
+  Future<Profile> fetchUserProfile(String userId) async {
+    DocumentSnapshot doc =
+    await _firestore.collection('users').doc(userId).get();
+    return Profile.fromMap(doc.data() as Map<String, dynamic>);
+  }
+
 }

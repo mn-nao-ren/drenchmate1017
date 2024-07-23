@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class PushNotificationsService {
-// Initialize the Flutter Local Notifications Plugin
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   PushNotificationsService() {
@@ -34,8 +33,7 @@ class PushNotificationsService {
     );
   }
 
-
-  void triggerNotification(String message) {
+  void triggerNotification(String title, String message) {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
     AndroidNotificationDetails('your_channel_id', 'your_channel_name',
         importance: Importance.max,
@@ -45,7 +43,7 @@ class PushNotificationsService {
     NotificationDetails(android: androidPlatformChannelSpecifics);
     flutterLocalNotificationsPlugin.show(
         0,
-        'DrenchMate Alert: Time to Drench Again!',
+        title,
         message,
         platformChannelSpecifics);
   }

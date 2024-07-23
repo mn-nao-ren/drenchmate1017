@@ -9,10 +9,11 @@ import 'push_notifications_service.dart';
 
 class NoticeHandler with ChangeNotifier {
   final WeatherService _weatherService;
-  // // could be push_notifications_service or the app's internal notifications page's service helper. KIV.
-  // final NotificationService notificationService;
+
   List<Map<String, dynamic>> notices = [];
+  Map<String, DateTime> lastNotified = {};
   Timer? _timer;
+
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirestoreService _firestoreService = FirestoreService();
@@ -21,9 +22,10 @@ class NoticeHandler with ChangeNotifier {
   static const int fecalEggThreshold = 200;
   // measured in days, factor this into homogenity of units when using this value
   static const int effectivePeriodDays = 5;
+  static const Duration notificationInterval = Duration(hours: 7);
 
   NoticeHandler(this._firestoreService, this._weatherService) {
-    _timer = Timer.periodic(const Duration(seconds: 10), (Timer t) {
+    _timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
       checkConditions();
     });
   }
@@ -46,13 +48,21 @@ class NoticeHandler with ChangeNotifier {
       'mobNumber': mobNumber,
       'timestamp': timestamp,
       'message': message,
+      'acknowledged': false,
     });
 
     notifyListeners();
 
-    // use push_notifications_service to send a push notification, show alert
-    triggerNotification(message);
+    // Create a subtitle for the push notification
+    String pushNotificationSubtitle = "Mob $mobNumber, $mobName requires immediate drenching.";
+
+    // Send push notification with specified title and subtitle
+    PushNotificationsService().triggerNotification("DrenchMate Advanced Notice", pushNotificationSubtitle);
+
+    // Optionally show a local notification with the detailed message
+    PushNotificationsService().showNotification("Drench Notice", message);
   }
+
 
 
   void checkConditions() async {
@@ -86,14 +96,22 @@ class NoticeHandler with ChangeNotifier {
         );
 
         if (immediateDrenchingNeeded) {
-          bool alreadyNotified = notices.any((notice) =>
-          notice['mobName'] == mobName &&
-              notice['paddockId'] == paddockId &&
-              notice['mobNumber'] == mobNumber &&
-              notice['message'] == 'Drench Notice');
+          String noticeIdentifier = "$mobName-$paddockId-$mobNumber";
+
+
+          // bool alreadyNotified = notices.any((notice) =>
+          // notice['mobName'] == mobName &&
+          //     notice['paddockId'] == paddockId &&
+          //     notice['mobNumber'] == mobNumber &&
+          //     notice['message'] == 'Drench Notice');
+
+          bool alreadyNotified = lastNotified.containsKey(noticeIdentifier) &&
+              DateTime.now().difference(lastNotified[noticeIdentifier]!) < notificationInterval;
+
 
           if (!alreadyNotified) {
             sendAdvancedNotice(mobName, paddockId, mobNumber);
+            lastNotified[noticeIdentifier] = DateTime.now();
           }
         }
       }
@@ -140,8 +158,7 @@ class NoticeHandler with ChangeNotifier {
     return (daysSinceLastDrench <= effectivePeriodDays);
   }
 
-  bool evaluateImmediateDrenching(
-      bool nextDrenchNeeded, bool drenchEffective, String reInfectionRisk) {
+  bool evaluateImmediateDrenching(bool nextDrenchNeeded, bool drenchEffective, String reInfectionRisk) {
     return (nextDrenchNeeded || !drenchEffective || reInfectionRisk == 'high');
   }
 
@@ -150,7 +167,9 @@ class NoticeHandler with ChangeNotifier {
   }
 
   void acknowledgeNotice(int index) {
-    notices.removeAt(index);
+    String noticeIdentifier = "${notices[index]['mobName']}-${notices[index]['paddockId']}-${notices[index]['mobNumber']}";
+    lastNotified[noticeIdentifier] = DateTime.now();
+    notices.removeAt(index); // Remove the notice from the list
     notifyListeners();
   }
 }

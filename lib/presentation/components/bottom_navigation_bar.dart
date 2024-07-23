@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:drenchmate_2024/business_logic/state/navbar_state.dart';
 import 'package:drenchmate_2024/presentation/screens/export_page.dart';
 
+import '../../business_logic/services/firestore_service.dart';
 import '../screens/dashboard_view.dart';
+import '../screens/profile_page.dart';
 
 class MyNavigationBar extends StatelessWidget {
   const MyNavigationBar({super.key});
@@ -104,7 +107,14 @@ class MyNavigationBar extends StatelessWidget {
         Navigator.pushReplacementNamed(context, 'notification_screen');
         break;
       case 2:
-        Navigator.pushReplacementNamed(context, 'create_profile_screen');
+        final firestoreService = Provider.of<FirestoreService>(context, listen: false);
+        final userId = FirebaseAuth.instance.currentUser!.uid;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(firestoreService: firestoreService, userId: userId),
+          ),
+        );
         break;
       case 3:
         Navigator.pushReplacementNamed(context, ExportPage.id);

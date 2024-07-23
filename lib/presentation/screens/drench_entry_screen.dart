@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:drenchmate_2024/business_logic/models/chemical_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
+import '../../business_logic/models/profile.dart';
 import '../components/bottom_navigation_bar.dart';
 import 'chemical_entry_screen.dart';
 import 'package:drenchmate_2024/business_logic/services/new_drench_state_controller.dart';
@@ -142,10 +143,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
     }
   }
 
-
-
-  // saveDrenchDetails
-  Future<void> _saveDrenchDetails() async {
+  Future<void> _saveDrenchDetails(String mobId, String userName) async {
     if (_formKey.currentState!.validate()) {
       final drenchDetails = {
         'PropertyID': _propertyIdController.text,  // String
@@ -168,6 +166,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
         'EquipmentCleanedBy': _equipmentCleanedByController.text,  // String
         'ContactNo': _contactNoController.text,  // String
         'Comments': _commentsController.text,  // String
+        'PerformedBy': userName,  // Include the user name
       };
 
       try {
@@ -206,6 +205,71 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
     }
   }
 
+
+
+
+  // saveDrenchDetails
+  // Future<void> _saveDrenchDetails() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     final drenchDetails = {
+  //       'PropertyID': _propertyIdController.text,  // String
+  //       'PropertyAddress': _propertyAddressController.text,  // String
+  //       'LivestockDescription': 'Sheep',  // String
+  //       'PaddockID': _paddockIdController.text,  // String
+  //       'LivestockQty': int.tryParse(_livestockQtyController.text) ?? 0,  // Integer conversion with default value
+  //       'DrenchingDate': _dateController.text,  // String
+  //       'MobNumber': int.tryParse(_selectedMobNumber.toString()) ?? 0,  // Ensure this is an int
+  //       'ChemicalID': _selectedChemical ?? '',  // String
+  //       'BatchNumber': _batchNumberController.text,  // String
+  //       'ExpirationDate': _expirationDateController.text,  // String
+  //       'DoseRate': _doseRateController.text,  // String
+  //       'WithholdingPeriod': _withholdingPeriodController.text,  // String
+  //       'ExportSlaughterInterval': _exportSlaughterIntervalController.text,  // String
+  //       'DateSafeForSlaughter': _dateSafeForSlaughterController.text,  // String
+  //       'AdverseReactions': _adverseReactionsController.text,  // String
+  //       'BrokenNeedleInAnimal': _brokenNeedleInAnimal,  // Boolean
+  //       'EquipmentCleaned': _equipmentCleaned,  // Boolean
+  //       'EquipmentCleanedBy': _equipmentCleanedByController.text,  // String
+  //       'ContactNo': _contactNoController.text,  // String
+  //       'Comments': _commentsController.text,  // String
+  //     };
+  //
+  //     try {
+  //       // Assuming you have the user ID available in your app
+  //       String userId = FirebaseAuth.instance.currentUser!.uid;
+  //       int selectedMobNumberInt = int.tryParse(_selectedMobNumber.toString()) ?? 0;  // Convert to int safely
+  //
+  //       // Fetch the correct mob document based on the userId and mob number
+  //       QuerySnapshot mobSnapshot = await FirebaseFirestore.instance
+  //           .collection('users')
+  //           .doc(userId)
+  //           .collection('mobs')
+  //           .where('mobNumber', isEqualTo: selectedMobNumberInt)  // Ensure this is an int
+  //           .get();
+  //
+  //       if (mobSnapshot.docs.isNotEmpty) {
+  //         DocumentReference mobDocRef = mobSnapshot.docs.first.reference;
+  //         CollectionReference drenchesCollection = mobDocRef.collection('drenches');
+  //         await drenchesCollection.add(drenchDetails);
+  //
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           const SnackBar(content: Text('Drench Entry Saved')),
+  //         );
+  //         Navigator.pushNamed(context, DrenchSuccessPage.id);
+  //       } else {
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           const SnackBar(content: Text('No matching mob found')),
+  //         );
+  //       }
+  //     } catch (e) {
+  //       print(e);
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Failed to save drench details: $e')),
+  //       );
+  //     }
+  //   }
+  // }
+
   Future<void> calculateDateSafeForSlaughter() async {
     if (_dateController.text.isNotEmpty && _withholdingPeriodController.text.isNotEmpty) {
       DateTime drenchingDate = DateTime.parse(_dateController.text);
@@ -243,7 +307,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
         title: Row(
           children: [
             Text(
-              '                        Drench Entry',
+              '                     Drench Entry',
               style: GoogleFonts.epilogue(
                 color: Colors.blue.shade900,
                 fontWeight: FontWeight.bold,
@@ -535,7 +599,27 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: _saveDrenchDetails,
+                onPressed: () async {
+                  try {
+                    // Assuming you have the user ID available in your app
+                    String userId = FirebaseAuth.instance.currentUser!.uid;
+
+                    // Fetch the user profile
+                    Profile userProfile = await FirestoreService().fetchUserProfile(userId);
+
+                    // Fetch the mobId (you may need to adjust this based on how you obtain the mobId)
+                    String mobId = _selectedMobNumber.toString(); // Adjust as needed
+
+                    // Call _saveDrenchDetails with mobId and userName
+                    await _saveDrenchDetails(mobId, userProfile.username);
+                  } catch (e) {
+                    print(e);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Failed to save drench details: $e')),
+                    );
+                  }
+                },
+                //onPressed: _saveDrenchDetails,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlue,
                   padding: const EdgeInsets.symmetric(vertical: 16),

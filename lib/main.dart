@@ -3,6 +3,7 @@ import 'package:drenchmate_2024/presentation/screens/enter_egg_test_results.dart
 import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/login_page.dart';
 import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +24,7 @@ import 'package:drenchmate_2024/business_logic/services/advanced_notice_logic.da
 import 'package:drenchmate_2024/presentation/screens/drench_success_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/export_page.dart';
 import 'package:drenchmate_2024/presentation/screens/save_results_success.dart';
-
+import 'package:drenchmate_2024/presentation/screens/profile_page.dart';
 import 'business_logic/services/get_weather_service.dart';
 
 
@@ -45,6 +46,8 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => NavbarState()),
         ChangeNotifierProvider(create: (_) => NoticeHandler(FirestoreService(), WeatherService())),
+        ChangeNotifierProvider(create: (_) => ChemicalProvider()..fetchChemicals()),
+        Provider(create: (_) => FirestoreService()),
       ],
       child: DrenchMateApp(
         isFirstTime: isFirstTime,
@@ -57,8 +60,10 @@ class DrenchMateApp extends StatelessWidget {
   final bool isFirstTime;
   final bool isRegistered;
   final bool isLoggedIn;
+  FirestoreService firestoreService = FirestoreService();
+  String userId = FirebaseAuth.instance.currentUser!.uid;
 
-  const DrenchMateApp({
+  DrenchMateApp({
     super.key,
     required this.isFirstTime,
     required this.isRegistered,
@@ -105,12 +110,16 @@ class DrenchMateApp extends StatelessWidget {
 
           NotificationScreen.id: (context) => const NotificationScreen(),
 
-
           EnterResultsPage.id: (context) => const EnterResultsPage(),
           MobsView.id: (context) => const MobsView(),
           DrenchSuccessPage.id: (context) => const DrenchSuccessPage(),
           ExportPage.id: (context) => const ExportPage(),
           ResultsSavedPage.id: (context) => const ResultsSavedPage(),
+
+          ProfilePage.id: (context) => ProfilePage(
+            firestoreService: Provider.of<FirestoreService>(context, listen: false),
+            userId: FirebaseAuth.instance.currentUser!.uid,
+          ),
         },
       ),
     );
