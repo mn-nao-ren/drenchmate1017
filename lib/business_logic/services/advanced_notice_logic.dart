@@ -28,7 +28,7 @@ class NoticeHandler with ChangeNotifier {
   final FirebaseApi _firebaseApi = FirebaseApi();
 
   NoticeHandler(this._firestoreService, this._weatherService) {
-    _timer = Timer.periodic(const Duration(seconds: 2), (Timer t) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       checkConditions();
     });
   }
