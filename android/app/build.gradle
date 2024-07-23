@@ -27,6 +27,11 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+
 android {
     namespace "com.example.drenchmate_2024"
     compileSdk flutter.compileSdkVersion
@@ -71,6 +76,5 @@ flutter {
 }
 
 dependencies {
-
-
+    implementation platform('com.google.firebase:firebase-bom:33.1.2')
 }

@@ -26,11 +26,16 @@ import 'package:drenchmate_2024/presentation/screens/export_page.dart';
 import 'package:drenchmate_2024/presentation/screens/save_results_success.dart';
 import 'package:drenchmate_2024/presentation/screens/profile_page.dart';
 import 'business_logic/services/get_weather_service.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:drenchmate_2024/business_logic/services/firebase_api.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FirebaseApi().initNotifications();
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   PushNotificationsService pushNotificationService = PushNotificationsService();
 
@@ -42,26 +47,17 @@ void main() async {
   bool isRegistered = prefs.getBool('is_registered') ?? false;
   bool isLoggedIn = prefs.getBool('is_logged_in') ?? false;
 
-  runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => NavbarState()),
-        ChangeNotifierProvider(create: (_) => NoticeHandler(FirestoreService(), WeatherService())),
-        ChangeNotifierProvider(create: (_) => ChemicalProvider()..fetchChemicals()),
-        Provider(create: (_) => FirestoreService()),
-      ],
-      child: DrenchMateApp(
-        isFirstTime: isFirstTime,
-        isRegistered: isRegistered,
-        isLoggedIn: isLoggedIn,
-      )));
+  runApp(DrenchMateApp(
+    isFirstTime: isFirstTime,
+    isRegistered: isRegistered,
+    isLoggedIn: isLoggedIn,
+  ));
 }
 
 class DrenchMateApp extends StatelessWidget {
   final bool isFirstTime;
   final bool isRegistered;
   final bool isLoggedIn;
-  FirestoreService firestoreService = FirestoreService();
-  String userId = FirebaseAuth.instance.currentUser!.uid;
 
   DrenchMateApp({
     super.key,
@@ -86,8 +82,10 @@ class DrenchMateApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-            create: (_) => ChemicalProvider()..fetchChemicals()),
+        ChangeNotifierProvider(create: (_) => NavbarState()),
+        ChangeNotifierProvider(create: (_) => NoticeHandler(FirestoreService(), WeatherService())),
+        ChangeNotifierProvider(create: (_) => ChemicalProvider()..fetchChemicals()),
+        Provider(create: (_) => FirestoreService()),
       ],
       child: MaterialApp(
         title: 'DrenchMate',
@@ -107,15 +105,12 @@ class DrenchMateApp extends StatelessWidget {
           DrenchEntryScreen.id: (context) => const DrenchEntryScreen(),
           ChemicalEntryScreen.id: (context) => const ChemicalEntryScreen(),
           CreateMobPage.id: (context) => const CreateMobPage(),
-
           NotificationScreen.id: (context) => const NotificationScreen(),
-
           EnterResultsPage.id: (context) => const EnterResultsPage(),
           MobsView.id: (context) => const MobsView(),
           DrenchSuccessPage.id: (context) => const DrenchSuccessPage(),
           ExportPage.id: (context) => const ExportPage(),
           ResultsSavedPage.id: (context) => const ResultsSavedPage(),
-
           ProfilePage.id: (context) => ProfilePage(
             firestoreService: Provider.of<FirestoreService>(context, listen: false),
             userId: FirebaseAuth.instance.currentUser!.uid,

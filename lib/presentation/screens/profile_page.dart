@@ -10,7 +10,7 @@ class ProfilePage extends StatefulWidget {
   final FirestoreService firestoreService;
   final String userId;
 
-  ProfilePage({required this.firestoreService, required this.userId});
+  const ProfilePage({super.key, required this.firestoreService, required this.userId});
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -41,7 +41,10 @@ class _ProfilePageState extends State<ProfilePage> {
         userId: widget.userId,
         username: _nameController.text,
         email: _emailController.text,
-        propertyId: '', // Assuming propertyId is not editable here, use the existing value if needed
+        propertyId: '', // Assuming propertyId is not editable here; use the existing value if needed
+        role: '', // Set the role if it is needed; otherwise, update it based on your logic
+        permissions: [], // Provide default or existing permissions
+        createdAt: DateTime.now(), // Use the current date or existing date
       );
 
       try {
@@ -65,20 +68,20 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            appBar: AppBar(title: Text('Profile')),
-            body: Center(child: CircularProgressIndicator()),
+            appBar: AppBar(title: const Text('Profile')),
+            body: const Center(child: CircularProgressIndicator()),
           );
         }
         if (snapshot.hasError) {
           return Scaffold(
-            appBar: AppBar(title: Text('Profile')),
+            appBar: AppBar(title: const Text('Profile')),
             body: Center(child: Text('Error: ${snapshot.error}')),
           );
         }
         if (!snapshot.hasData) {
           return Scaffold(
-            appBar: AppBar(title: Text('Profile')),
-            body: Center(child: Text('No profile data found.')),
+            appBar: AppBar(title: const Text('Profile')),
+            body: const Center(child: Text('No profile data found.')),
           );
         }
 
@@ -88,10 +91,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
         return Scaffold(
           appBar: AppBar(
-              title: Text('Profile'),
+            title: const Text('Profile'),
             automaticallyImplyLeading: false,
           ),
-
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Form(
@@ -100,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   TextFormField(
                     controller: _nameController,
-                    decoration: InputDecoration(labelText: 'Name'),
+                    decoration: const InputDecoration(labelText: 'Name'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your name';
@@ -110,7 +112,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   TextFormField(
                     controller: _emailController,
-                    decoration: InputDecoration(labelText: 'Email'),
+                    decoration: const InputDecoration(labelText: 'Email'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
@@ -121,16 +123,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _saveProfile,
-                    child: Text('Save'),
+                    child: const Text('Save'),
                   ),
                 ],
               ),
             ),
           ),
           bottomNavigationBar: const MyNavigationBar(),
-
         );
-
       },
     );
   }

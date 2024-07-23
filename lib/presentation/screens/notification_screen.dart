@@ -34,6 +34,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final message = ModalRoute.of(context)!.settings.arguments;
     return PopScope(
       canPop: true,
       onPopInvoked: (bool didPop) async {

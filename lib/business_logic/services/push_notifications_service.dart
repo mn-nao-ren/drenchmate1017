@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class PushNotificationsService {
+  final _firebaseMessaging = FirebaseMessaging.instance;
+
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   PushNotificationsService() {
     initializeNotifications();
   }
+
 
   void initializeNotifications() {
     const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');

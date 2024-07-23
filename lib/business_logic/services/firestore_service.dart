@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:drenchmate_2024/business_logic/models/profile.dart';
-import '../../presentation/components/username.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -203,12 +202,26 @@ class FirestoreService {
         .set(userProfile.toMap());
   }
 
-  // Fetch user profile from Firestore
-  // Fetch user profile from Firestore
+
   Future<Profile> fetchUserProfile(String userId) async {
-    DocumentSnapshot doc =
-    await _firestore.collection('users').doc(userId).get();
-    return Profile.fromMap(doc.data() as Map<String, dynamic>);
+    DocumentSnapshot doc = await _firestore.collection('users').doc(userId).get();
+
+    if (!doc.exists) {
+      throw Exception('Profile not found');
+    }
+
+    // Ensure data exists and is of the expected type
+    final data = doc.data() as Map<String, dynamic>?;
+
+    if (data == null) {
+      throw Exception('No data found for this profile');
+    }
+
+    try {
+      return Profile.fromMap(data);
+    } catch (e) {
+      throw Exception('Failed to parse profile data: $e');
+    }
   }
 
 }
