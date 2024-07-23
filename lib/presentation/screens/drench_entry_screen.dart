@@ -11,6 +11,8 @@ import 'package:drenchmate_2024/business_logic/services/new_drench_state_control
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:drenchmate_2024/presentation/screens/drench_success_screen.dart';
 
+import 'dashboard_view.dart';
+
 class DrenchEntryScreen extends StatefulWidget {
   static String id = 'drench_entry_screen';
   const DrenchEntryScreen({super.key});
@@ -110,6 +112,8 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
         });
       }
     } catch (e) {
+      print(e);
+      print('Error happens in drench entry screen fetchCurrentUserDetails method');
       setState(() {
         _equipmentCleanedByController.text = 'Error loading data';
         _contactNoController.text = 'Error loading data';
@@ -208,67 +212,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
 
 
 
-  // saveDrenchDetails
-  // Future<void> _saveDrenchDetails() async {
-  //   if (_formKey.currentState!.validate()) {
-  //     final drenchDetails = {
-  //       'PropertyID': _propertyIdController.text,  // String
-  //       'PropertyAddress': _propertyAddressController.text,  // String
-  //       'LivestockDescription': 'Sheep',  // String
-  //       'PaddockID': _paddockIdController.text,  // String
-  //       'LivestockQty': int.tryParse(_livestockQtyController.text) ?? 0,  // Integer conversion with default value
-  //       'DrenchingDate': _dateController.text,  // String
-  //       'MobNumber': int.tryParse(_selectedMobNumber.toString()) ?? 0,  // Ensure this is an int
-  //       'ChemicalID': _selectedChemical ?? '',  // String
-  //       'BatchNumber': _batchNumberController.text,  // String
-  //       'ExpirationDate': _expirationDateController.text,  // String
-  //       'DoseRate': _doseRateController.text,  // String
-  //       'WithholdingPeriod': _withholdingPeriodController.text,  // String
-  //       'ExportSlaughterInterval': _exportSlaughterIntervalController.text,  // String
-  //       'DateSafeForSlaughter': _dateSafeForSlaughterController.text,  // String
-  //       'AdverseReactions': _adverseReactionsController.text,  // String
-  //       'BrokenNeedleInAnimal': _brokenNeedleInAnimal,  // Boolean
-  //       'EquipmentCleaned': _equipmentCleaned,  // Boolean
-  //       'EquipmentCleanedBy': _equipmentCleanedByController.text,  // String
-  //       'ContactNo': _contactNoController.text,  // String
-  //       'Comments': _commentsController.text,  // String
-  //     };
-  //
-  //     try {
-  //       // Assuming you have the user ID available in your app
-  //       String userId = FirebaseAuth.instance.currentUser!.uid;
-  //       int selectedMobNumberInt = int.tryParse(_selectedMobNumber.toString()) ?? 0;  // Convert to int safely
-  //
-  //       // Fetch the correct mob document based on the userId and mob number
-  //       QuerySnapshot mobSnapshot = await FirebaseFirestore.instance
-  //           .collection('users')
-  //           .doc(userId)
-  //           .collection('mobs')
-  //           .where('mobNumber', isEqualTo: selectedMobNumberInt)  // Ensure this is an int
-  //           .get();
-  //
-  //       if (mobSnapshot.docs.isNotEmpty) {
-  //         DocumentReference mobDocRef = mobSnapshot.docs.first.reference;
-  //         CollectionReference drenchesCollection = mobDocRef.collection('drenches');
-  //         await drenchesCollection.add(drenchDetails);
-  //
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           const SnackBar(content: Text('Drench Entry Saved')),
-  //         );
-  //         Navigator.pushNamed(context, DrenchSuccessPage.id);
-  //       } else {
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           const SnackBar(content: Text('No matching mob found')),
-  //         );
-  //       }
-  //     } catch (e) {
-  //       print(e);
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text('Failed to save drench details: $e')),
-  //       );
-  //     }
-  //   }
-  // }
+
 
   Future<void> calculateDateSafeForSlaughter() async {
     if (_dateController.text.isNotEmpty && _withholdingPeriodController.text.isNotEmpty) {
@@ -612,6 +556,11 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
 
                     // Call _saveDrenchDetails with mobId and userName
                     await _saveDrenchDetails(mobId, userProfile.username);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Saved drench details!')),
+                    );
+                    Navigator.pushNamed(context, DashboardScreen.id);
+
                   } catch (e) {
                     print(e);
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -640,7 +589,7 @@ class _DrenchEntryScreenState extends State<DrenchEntryScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: const MyNavigationBar(),
+
     );
   }
 }

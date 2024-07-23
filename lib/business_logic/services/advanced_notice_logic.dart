@@ -23,7 +23,7 @@ class NoticeHandler with ChangeNotifier {
   static const int fecalEggThreshold = 200;
   // measured in days, factor this into homogenity of units when using this value
   static const int effectivePeriodDays = 5;
-  static const Duration notificationInterval = Duration(seconds: 2);
+  static const Duration notificationInterval = Duration(seconds: 50);
 
   final FirebaseApi _firebaseApi = FirebaseApi();
 
