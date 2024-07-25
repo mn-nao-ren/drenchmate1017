@@ -23,7 +23,7 @@ class NoticeHandler with ChangeNotifier {
   static const int fecalEggThreshold = 200;
   // measured in days, factor this into homogenity of units when using this value
   static const int effectivePeriodDays = 5;
-  static const Duration notificationInterval = Duration(seconds: 12);
+  static const Duration notificationInterval = Duration(hours: 24);
 
   final FirebaseApi _firebaseApi = FirebaseApi();
 
@@ -77,7 +77,66 @@ class NoticeHandler with ChangeNotifier {
   }
 
 
+  // // with acknowledgement status
+  // void checkConditions() async {
+  //   try {
+  //     List<Map<String, dynamic>> mobs = await _firestoreService.fetchUserMobs();
+  //     String userId = FirebaseAuth.instance.currentUser!.uid;
+  //
+  //     for (Map<String, dynamic> mob in mobs) {
+  //       String mobId = mob['id'];
+  //       String mobName = mob['mobName'];
+  //       int paddockId = int.parse(mob['paddockId'].toString()); // Convert to int
+  //       int mobNumber = int.parse(mob['mobNumber'].toString()); // Convert to int
+  //
+  //       DocumentSnapshot mobDoc = await _firestore.collection('users')
+  //           .doc(userId)
+  //           .collection('mobs')
+  //           .doc(mobId)
+  //           .get();
+  //
+  //       var mobData = mobDoc.data() as Map<String, dynamic>?;
+  //       if (mobData != null && mobData.containsKey('acknowledged') && mobData['acknowledged'] == true) {
+  //         continue; // Skip this mob if it has been acknowledged
+  //       }
+  //
+  //       int daysSinceLastDrench = await calculateDaysSinceLastDrench(mobId);
+  //
+  //       var weatherConditions = await _weatherService.fetchWeatherConditions();
+  //
+  //       int fecalEggCount = await _firestoreService.fetchFecalEggCount(userId, mobId);
+  //
+  //       String reInfectionRisk = evaluateReInfectionRisk(weatherConditions, fecalEggCount);
+  //
+  //       bool nextDrenchNeeded = determineNextDrenchNeeded(fecalEggCount);
+  //       bool drenchEffective = checkDrenchEffective(daysSinceLastDrench, effectivePeriodDays);
+  //
+  //       bool immediateDrenchingNeeded = evaluateImmediateDrenching(
+  //         nextDrenchNeeded,
+  //         drenchEffective,
+  //         reInfectionRisk,
+  //       );
+  //
+  //       if (immediateDrenchingNeeded) {
+  //         String noticeIdentifier = "$mobName-$paddockId-$mobNumber";
+  //
+  //         bool alreadyNotified = lastNotified.containsKey(noticeIdentifier) &&
+  //             DateTime.now().difference(lastNotified[noticeIdentifier]!) < notificationInterval;
+  //
+  //         if (!alreadyNotified) {
+  //           sendAdvancedNotice(mobName, paddockId, mobNumber);
+  //           lastNotified[noticeIdentifier] = DateTime.now();
+  //         }
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print("Error in checkConditions method, advanced_notice_logic file: $e");
+  //   }
+  // }
 
+
+
+  //without acknowledgement status
   void checkConditions() async {
     try {
       List<Map<String, dynamic>> mobs = await _firestoreService.fetchUserMobs();
@@ -179,10 +238,33 @@ class NoticeHandler with ChangeNotifier {
     PushNotificationsService().showNotification("Advanced Notice", message);
   }
 
+  // without acknowledge
   void acknowledgeNotice(int index) {
     String noticeIdentifier = "${notices[index]['mobName']}-${notices[index]['paddockId']}-${notices[index]['mobNumber']}";
     lastNotified[noticeIdentifier] = DateTime.now();
+
+
+
     notices.removeAt(index); // Remove the notice from the list
     notifyListeners();
   }
+
+  // // with acknowledge
+  // void acknowledgeNotice(int index) async {
+  //   String noticeIdentifier = "${notices[index]['mobName']}-${notices[index]['paddockId']}-${notices[index]['mobNumber']}";
+  //   String mobId = notices[index]['mobId'];
+  //
+  //   lastNotified[noticeIdentifier] = DateTime.now();
+  //
+  //   // Save the acknowledgment status to Firestore
+  //   await _firestore.collection('users')
+  //       .doc(FirebaseAuth.instance.currentUser!.uid)
+  //       .collection('mobs')
+  //       .doc(mobId)
+  //       .update({'acknowledged': true});
+  //
+  //   notices.removeAt(index); // Remove the notice from the list
+  //   notifyListeners();
+  // }
+
 }
