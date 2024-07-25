@@ -26,7 +26,6 @@ import 'package:drenchmate_2024/presentation/screens/export_page.dart';
 import 'package:drenchmate_2024/presentation/screens/save_results_success.dart';
 import 'package:drenchmate_2024/presentation/screens/profile_page.dart';
 import 'business_logic/services/get_weather_service.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:drenchmate_2024/business_logic/services/firebase_api.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -59,7 +58,7 @@ class DrenchMateApp extends StatelessWidget {
   final bool isRegistered;
   final bool isLoggedIn;
 
-  DrenchMateApp({
+  const DrenchMateApp({
     super.key,
     required this.isFirstTime,
     required this.isRegistered,

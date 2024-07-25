@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart'; // Import local notifications
-import 'package:firebase_messaging/firebase_messaging.dart'; // Import Firebase Messaging
+// Import Firebase Messaging
 import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
 import 'firebase_api.dart';
 import 'get_weather_service.dart';
@@ -23,7 +23,7 @@ class NoticeHandler with ChangeNotifier {
   static const int fecalEggThreshold = 200;
   // measured in days, factor this into homogenity of units when using this value
   static const int effectivePeriodDays = 5;
-  static const Duration notificationInterval = Duration(seconds: 50);
+  static const Duration notificationInterval = Duration(seconds: 12);
 
   final FirebaseApi _firebaseApi = FirebaseApi();
 

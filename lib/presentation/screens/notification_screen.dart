@@ -49,7 +49,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             children: <Widget>[
               Center(
                 child: Text(
-                  'Welcome back 👋',
+                  'Drench Now 👋 ',
                   style: GoogleFonts.epilogue(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -65,19 +65,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
-          backgroundColor: Colors.blueGrey.shade300,
+          backgroundColor: Colors.white60,
           elevation: 0,
           toolbarHeight: 80,
           automaticallyImplyLeading: false,
-          actions: const [
-            Padding(
-              padding: EdgeInsets.only(right: 16.0),
-              child: Icon(
-                Icons.notifications_none,
-                color: Colors.black,
-              ),
-            ),
-          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),

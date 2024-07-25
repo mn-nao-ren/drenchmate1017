@@ -11,8 +11,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
-
-
 class ExportPage extends StatefulWidget {
   static String id = 'export_page';
 
@@ -26,6 +24,45 @@ class _ExportPageState extends State<ExportPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String? _email;
+  List<String> _dates = [];
+  String? _selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAvailableDates();
+  }
+
+  Future<void> _fetchAvailableDates() async {
+    String userId = _auth.currentUser!.uid;
+    Set<String> dates = {};
+
+    QuerySnapshot mobsSnapshot = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('mobs')
+        .get();
+
+    for (var mobDoc in mobsSnapshot.docs) {
+      QuerySnapshot drenchesSnapshot = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('mobs')
+          .doc(mobDoc.id)
+          .collection('drenches')
+          .get();
+
+      for (var drenchDoc in drenchesSnapshot.docs) {
+        var data = drenchDoc.data() as Map<String, dynamic>;
+        String date = data['DrenchingDate'];
+        dates.add(date);
+      }
+    }
+
+    setState(() {
+      _dates = dates.toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +75,6 @@ class _ExportPageState extends State<ExportPage> {
         elevation: 0,
         automaticallyImplyLeading: false,
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -71,14 +107,29 @@ class _ExportPageState extends State<ExportPage> {
                     child: const Text('Export All')
                 ),
               ],
-
             ),
-
             const SizedBox(height: 16),
+            DropdownButton<String>(
+              hint: const Text("Select a date"),
 
+              value: _selectedDate,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedDate = newValue;
+                });
+              },
+              items: _dates.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 16),
             DrenchRecordList(
               userId: userId,
               email: _email,
+              selectedDate: _selectedDate,
               onExport: _exportDrenchRecord,
             ),
           ],
@@ -113,7 +164,6 @@ class _ExportPageState extends State<ExportPage> {
       bool hasPermissions = await checkPermissions();
 
       if (hasPermissions) {
-
         //create the excel file
         var excel = Excel.createExcel();
 
@@ -125,12 +175,8 @@ class _ExportPageState extends State<ExportPage> {
 
         Sheet sheetObject = excel['DrenchRecord'];
 
-
-
-
         // Add column headers
         sheetObject.appendRow([
-
           const TextCellValue('PropertyID'),
           const TextCellValue('PropertyAddress'),
           const TextCellValue('LivestockDescription'),
@@ -151,12 +197,10 @@ class _ExportPageState extends State<ExportPage> {
           const TextCellValue('EquipmentCleanedBy'),
           const TextCellValue('ContactNo'),
           const TextCellValue('Comments'),
-
         ]);
 
-// Add drench record data
+        // Add drench record data
         sheetObject.appendRow([
-
           TextCellValue(recordData['PropertyID'].toString()),
           TextCellValue(recordData['PropertyAddress'].toString()),
           TextCellValue(recordData['LivestockDescription'].toString()),
@@ -177,10 +221,7 @@ class _ExportPageState extends State<ExportPage> {
           TextCellValue(recordData['EquipmentCleanedBy'].toString()),
           TextCellValue(recordData['ContactNo'].toString()),
           TextCellValue(recordData['Comments'].toString()),
-
         ]);
-
-
 
         // Save Excel file to temporary directory
         final directory = await getTemporaryDirectory();
@@ -194,16 +235,14 @@ class _ExportPageState extends State<ExportPage> {
           recipients: [email],
           attachmentPaths: [path],
           isHTML: false,
-
         );
 
         await FlutterEmailSender.send(emailToSend);
 
         print('Drench record exported and emailed successfully');
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Drench record exported and emailed succesfully')),
+          const SnackBar(content: Text('Drench record exported and emailed successfully')),
         );
-
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Permission denied. Email not sent.')),
@@ -217,7 +256,6 @@ class _ExportPageState extends State<ExportPage> {
       );
     }
   }
-
 
   void _exportAllDrenchRecords() async {
     if (_email == null || _email!.isEmpty) {
@@ -247,7 +285,6 @@ class _ExportPageState extends State<ExportPage> {
           TextCellValue(userId.toString()),
         ]);
 
-
         QuerySnapshot mobsSnapshot = await _firestore
             .collection('users')
             .doc(userId)
@@ -260,7 +297,6 @@ class _ExportPageState extends State<ExportPage> {
           Sheet sheetObject = excel[mobName];
           // append column headers
           sheetObject.appendRow([
-
             const TextCellValue('PropertyID'),
             const TextCellValue('PropertyAddress'),
             const TextCellValue('LivestockDescription'),
@@ -281,21 +317,25 @@ class _ExportPageState extends State<ExportPage> {
             const TextCellValue('EquipmentCleanedBy'),
             const TextCellValue('ContactNo'),
             const TextCellValue('Comments'),
-
           ]);
 
-          QuerySnapshot drenchesSnapshot = await _firestore
+          Query<Map<String, dynamic>> drenchQuery = _firestore
               .collection('users')
-              .doc(userId)
-              .collection('mobs')
+              .doc(userId).collection('mobs')
               .doc(mobDoc.id)
-              .collection('drenches')
-              .get();
+              .collection('drenches');
+
+          if (_selectedDate != null && _selectedDate!.isNotEmpty) {
+            drenchQuery = drenchQuery.where('DrenchingDate', isEqualTo: _selectedDate);
+          }
+
+          QuerySnapshot drenchesSnapshot = await drenchQuery.get();
+
+
 
           for (var drenchDoc in drenchesSnapshot.docs) {
             var recordData = drenchDoc.data() as Map<String, dynamic>;
             sheetObject.appendRow([
-
               TextCellValue(recordData['PropertyID'].toString()),
               TextCellValue(recordData['PropertyAddress'].toString()),
               TextCellValue(recordData['LivestockDescription'].toString()),
@@ -316,7 +356,6 @@ class _ExportPageState extends State<ExportPage> {
               TextCellValue(recordData['EquipmentCleanedBy'].toString()),
               TextCellValue(recordData['ContactNo'].toString()),
               TextCellValue(recordData['Comments'].toString()),
-
             ]);
           }
         }
@@ -346,7 +385,7 @@ class _ExportPageState extends State<ExportPage> {
         );
         print('Permission denied. Email not sent.');
       }
-    } catch(e) {
+    } catch (e) {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to export all drench records: $e')),

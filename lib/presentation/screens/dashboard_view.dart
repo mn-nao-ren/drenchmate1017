@@ -12,8 +12,10 @@ import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
 import 'package:drenchmate_2024/presentation/components/username.dart';
 import 'package:intl/intl.dart';
 import 'package:drenchmate_2024/presentation/components/first_steps_popup.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:drenchmate_2024/presentation/screens/mobs_view.dart';
+import '../../business_logic/services/advanced_notice_logic.dart';
 import 'login_page.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -32,10 +34,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(hours: 1), (timer) {
-      // logic for getting values for last drench date, egg count, weather conditions,
-      // and effective period days
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final noticeHandler = Provider.of<NoticeHandler>(context, listen: false);
+      noticeHandler.checkConditions();
     });
+
+    // _timer = Timer.periodic(const Duration(hours: 1), (timer) {
+    //   // logic for getting values for last drench date, egg count, weather conditions,
+    //   // and effective period days
+    // });
   }
 
 
@@ -50,7 +57,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(width: 29),
+                const SizedBox(width: 18),
                 ClipOval(
                     child: Image.asset('assets/round_logo.png',
                         height: 42, width: 42)),
@@ -211,7 +218,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       //   onButtonPressed: () {},
                       // ),
                       HighlightCard(
-                        color: Colors.lightBlue.shade500,
+                        color: Colors.blueGrey.shade400,
                         icon: 'assets/icon/mob.png',
                         title: 'Mobs Info',
                         subtitle: 'display latest from db',
@@ -224,7 +231,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         },
                       ),
                       HighlightCard(
-                        color: Colors.blue.shade900,
+                        color: Colors.lightBlue.shade500,
                         icon: 'assets/icon/drench.png',
                         title: "Drench Info",
                         subtitle: 'Upcoming Drenches',
@@ -235,7 +242,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         },
                       ),
                       HighlightCard(
-                        color: Colors.blueGrey.shade400,
+                        color: Colors.blue.shade900,
                         icon: 'assets/icon/property.png',
                         title: 'Property Info',
                         subtitle: 'Your farm property info',
@@ -248,7 +255,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
 
                       HighlightCard(
-                        color: Colors.lightBlue.shade500,
+                        color: Colors.blueGrey.shade400,
                         icon: 'assets/icon/property.png',
                         title: 'Products',
                         subtitle: 'Chemical compositions',
@@ -259,7 +266,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         },
                       ),
                       HighlightCard(
-                        color: Colors.blue.shade900,
+                        color: Colors.lightBlue.shade500,
                         icon: 'assets/icon/mob.png',
                         title: 'Parasite Test',
                         subtitle: 'Worm egg counts',

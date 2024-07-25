@@ -5,7 +5,6 @@ import 'package:drenchmate_2024/business_logic/models/chemical_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
 import '../../business_logic/models/profile.dart';
-import '../components/bottom_navigation_bar.dart';
 import 'chemical_entry_screen.dart';
 import 'package:drenchmate_2024/business_logic/services/new_drench_state_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';

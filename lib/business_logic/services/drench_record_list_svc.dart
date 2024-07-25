@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class DrenchRecordList extends StatefulWidget {
   final String userId;
   final String? email;
+  final String? selectedDate;
   final Function(Map<String, dynamic> recordData, String email) onExport;
 
   const DrenchRecordList({
@@ -13,6 +13,7 @@ class DrenchRecordList extends StatefulWidget {
     required this.userId,
     required this.email,
     required this.onExport,
+    this.selectedDate,
   });
 
   @override
@@ -69,13 +70,7 @@ class _DrenchRecordListState extends State<DrenchRecordList> {
         itemBuilder: (context, index) {
           final mob = mobData[index];
           return FutureBuilder<QuerySnapshot>(
-            future: FirebaseFirestore.instance
-                .collection('users')
-                .doc(widget.userId)
-                .collection('mobs')
-                .doc(mob['id'])
-                .collection('drenches')
-                .get(),
+            future: _fetchDrenchRecords(mob['id']),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -132,5 +127,20 @@ class _DrenchRecordListState extends State<DrenchRecordList> {
         },
       ),
     );
+  }
+
+  Future<QuerySnapshot> _fetchDrenchRecords(String mobId) {
+    Query<Map<String, dynamic>> query = FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userId)
+        .collection('mobs')
+        .doc(mobId)
+        .collection('drenches');
+
+    if (widget.selectedDate != null && widget.selectedDate!.isNotEmpty) {
+      query = query.where('DrenchingDate', isEqualTo: widget.selectedDate);
+    }
+
+    return query.get();
   }
 }
