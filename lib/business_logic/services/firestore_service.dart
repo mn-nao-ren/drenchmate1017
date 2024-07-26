@@ -31,8 +31,7 @@ class FirestoreService {
         .get();
   }
 
-  Future<void> saveEggResults(
-      String mobNumberString, int eggCountResults) async {
+  Future<void> saveEggResults(String mobNumberString, int eggCountResults) async {
     try {
       int mobNumber = int.parse(mobNumberString);
 

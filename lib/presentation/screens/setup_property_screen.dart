@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
 import 'package:drenchmate_2024/business_logic/services/input_validation_service.dart';
-
+import 'dashboard_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SetupPropertyScreen extends StatefulWidget {
   static String id = 'setup_property_screen';
@@ -17,7 +18,6 @@ class SetupPropertyScreen extends StatefulWidget {
 class _SetupPropertyScreenState extends State<SetupPropertyScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirestoreService _firestoreService = FirestoreService();
-
   final TextEditingController _ownerEmailController = TextEditingController();
   final TextEditingController _propertyNameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
@@ -25,6 +25,29 @@ class _SetupPropertyScreenState extends State<SetupPropertyScreen> {
   final TextEditingController _countryCodeController = TextEditingController();
   final TextEditingController _postalCodeController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    _prefillEmail();
+  }
+
+  Future<void> _prefillEmail() async {
+    try {
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        DocumentSnapshot userDoc = await _firestore.collection('users').doc(currentUser.uid).get();
+        if (userDoc.exists) {
+          String? email = userDoc.get('email');
+          if (email != null) {
+            _ownerEmailController.text = email;
+          }
+        }
+      }
+    } catch (e) {
+      // Handle any errors here
+      print('Error fetching user email: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +82,8 @@ class _SetupPropertyScreenState extends State<SetupPropertyScreen> {
                         fontWeight: FontWeight.w500,
                         fontSize: 17,
                       )
-                      //TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
-                      ),
+                    //TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                  ),
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _ownerEmailController,
@@ -129,7 +152,7 @@ class _SetupPropertyScreenState extends State<SetupPropertyScreen> {
                           final String countryCode = _countryCodeController.text.trim();
                           final String postalCode = _postalCodeController.text.trim();
                           final DateTime createdAt = DateTime.now();
-              
+
                           await _firestoreService.savePropertyData(
                             ownerEmail, // Assuming owner email is used as a userId
                             propertyName,
@@ -139,13 +162,13 @@ class _SetupPropertyScreenState extends State<SetupPropertyScreen> {
                             postalCode,
                             createdAt,
                           );
-              
+
                           // Show success message or navigate to another screen
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 content: Text('Property created successfully!')),
                           );
-                          Navigator.of(context).pop();
+                          Navigator.pushNamed(context, DashboardScreen.id);
 
                         } catch (e) {
                           // handle error

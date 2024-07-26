@@ -3,6 +3,7 @@ import 'package:drenchmate_2024/presentation/screens/enter_egg_test_results.dart
 import 'package:drenchmate_2024/presentation/screens/generate_report_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/login_page.dart';
 import 'package:drenchmate_2024/presentation/screens/notification_screen.dart';
+import 'package:drenchmate_2024/presentation/screens/view_egg_results_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,8 +26,10 @@ import 'package:drenchmate_2024/presentation/screens/drench_success_screen.dart'
 import 'package:drenchmate_2024/presentation/screens/export_page.dart';
 import 'package:drenchmate_2024/presentation/screens/save_results_success.dart';
 import 'package:drenchmate_2024/presentation/screens/profile_page.dart';
+import 'package:drenchmate_2024/presentation/screens/view_egg_results_page.dart';
 import 'business_logic/services/get_weather_service.dart';
 import 'package:drenchmate_2024/business_logic/services/firebase_api.dart';
+
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -110,10 +113,8 @@ class DrenchMateApp extends StatelessWidget {
           DrenchSuccessPage.id: (context) => const DrenchSuccessPage(),
           ExportPage.id: (context) => const ExportPage(),
           ResultsSavedPage.id: (context) => const ResultsSavedPage(),
-          ProfilePage.id: (context) => ProfilePage(
-            firestoreService: Provider.of<FirestoreService>(context, listen: false),
-            userId: FirebaseAuth.instance.currentUser!.uid,
-          ),
+          ProfilePage.id: (context) => ProfilePage(),
+          ViewEggResultsPage.id: (context) => ViewEggResultsPage(),
         },
       ),
     );

@@ -1,4 +1,3 @@
-
 import 'package:drenchmate_2024/presentation/screens/dashboard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/business_logic/services/auth_service.dart';
@@ -7,8 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-
 
 class RegistrationPage extends StatefulWidget {
   static const String id = 'registration_page';
@@ -20,7 +17,6 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,8 +49,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
   late String? role;
   late String contactNumber;
 
-
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _agreeToTerms = false;
   final AuthService _authService = AuthService();
@@ -66,8 +60,24 @@ class _RegistrationFormState extends State<RegistrationForm> {
     await prefs.setBool('is_first_time', false);
   }
 
+  Future<void> sendEmailVerification(User user) async {
+    await user.sendEmailVerification();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Verification email has been sent.')),
+    );
+  }
 
-
+  Future<void> checkEmailVerified(User user) async {
+    user = _auth.currentUser!;
+    await user.reload();
+    if (user.emailVerified) {
+      Navigator.pushNamed(context, DashboardScreen.id);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please verify your email before logging in.')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,15 +88,13 @@ class _RegistrationFormState extends State<RegistrationForm> {
         child: ListView(
           children: [
             const SizedBox(height: 10),
-            // DrenchMate logo
             Center(
               child: Image.asset(
-                'assets/drenchmate_logo.png', // Update the path to your logo image
+                'assets/drenchmate_logo.png',
                 height: 190,
               ),
             ),
             const SizedBox(height: 10),
-            // Sign Up text
             Center(
               child: Text(
                 'Sign Up',
@@ -103,8 +111,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
               onChanged: (value) {
                 username = value;
               },
-              decoration: 
-                kTextFieldDecoration.copyWith(hintText: 'Enter your username'),
+              decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your username'),
             ),
             const SizedBox(height: 20),
             TextField(
@@ -113,8 +120,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
               onChanged: (value) {
                 email = value;
               },
-              decoration:
-                kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+              decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
             ),
             const SizedBox(height: 20),
             TextField(
@@ -125,16 +131,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
               },
               decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your password'),
             ),
-
             const SizedBox(height: 20),
             TextField(
               textAlign: TextAlign.center,
               onChanged: (value) {
                 contactNumber = value;
               },
-              decoration:kTextFieldDecoration.copyWith(hintText: 'Enter your contact number'),
+              decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your contact number'),
             ),
-
             const SizedBox(height: 20),
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(labelText: 'Select your role'),
@@ -164,7 +168,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   value: _agreeToTerms,
                   onChanged: (bool? value) {
                     setState(() {
-                      _agreeToTerms = value ?? false;
+                      _agreeToTerms = (value ?? false);
                     });
                   },
                 ),
@@ -200,9 +204,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     });
 
                     await saveRegistrationStatus();
+                    await sendEmailVerification(newUser.user!);
 
-
-                    Navigator.pushNamed(context, DashboardScreen.id);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const EmailVerificationScreen(),
+                      ),
+                    );
                   } catch (e) {
                     // Handle errors appropriately
                     print(e);
@@ -221,11 +230,48 @@ class _RegistrationFormState extends State<RegistrationForm> {
               ),
               child: const Text('Register'),
             ),
-
           ],
         ),
       ),
     );
   }
+}
 
+class EmailVerificationScreen extends StatelessWidget {
+  const EmailVerificationScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final _auth = FirebaseAuth.instance;
+    User? user = _auth.currentUser;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Email Verification'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('A verification email has been sent to your email address.'),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                await user?.reload();
+                user = _auth.currentUser;
+                if (user != null && user!.emailVerified) {
+                  Navigator.pushReplacementNamed(context, DashboardScreen.id);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please verify your email before proceeding.')),
+                  );
+                }
+              },
+              child: const Text('I have verified my email'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

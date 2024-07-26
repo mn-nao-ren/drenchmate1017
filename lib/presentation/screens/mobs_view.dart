@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 class MobsView extends StatefulWidget {
   static String id = 'mobs_view';
 
-
   const MobsView({super.key});
 
   @override
@@ -40,6 +39,55 @@ class _MobsViewState extends State<MobsView> {
     }
   }
 
+  Future<void> _updatePaddockId(String userId, String mobId, int newPaddockId) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('mobs')
+          .doc(mobId)
+          .update({'paddockId': newPaddockId});
+      print('Paddock ID updated successfully');
+    } catch (e) {
+      print('Failed to update paddock ID: $e');
+      // Handle the error appropriately, e.g., show a message to the user
+    }
+  }
+
+  void _showChangePaddockDialog(String userId, String mobId) {
+    final TextEditingController _paddockIdController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Change Paddock ID'),
+          content: TextField(
+            controller: _paddockIdController,
+            decoration: const InputDecoration(hintText: 'Enter new paddock ID'),
+            keyboardType: TextInputType.number,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                final int newPaddockId = int.parse(_paddockIdController.text);
+                await _updatePaddockId(userId, mobId, newPaddockId);
+                Navigator.of(context).pop();
+                _loadMobs(); // Refresh the mobs list
+              },
+              child: const Text('Change'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,21 +95,19 @@ class _MobsViewState extends State<MobsView> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         foregroundColor: Colors.blue.shade900,
-        title:  Row(
-          children: [
 
+        title: Row(
+          children: [
             Text(
-              '                All Mobs',
+              'All Mobs',
               style: GoogleFonts.epilogue(
                 color: Colors.blue.shade900,
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: 19,
               ),
             ),
-
-            const SizedBox(width: 6),
+            const SizedBox(width: 5),
             const Icon(Icons.pets_outlined),
-
           ],
         ),
       ),
@@ -77,7 +123,7 @@ class _MobsViewState extends State<MobsView> {
               title: Text(mob['mobName'] ?? 'No Name'),
               subtitle: Text('Paddock: ${mob['paddockId']} - Mob Number: ${mob['mobNumber']}'),
               onTap: () {
-                // Handle mob tap, maybe navigate to a detailed page
+                _showChangePaddockDialog(mob['userId'], mob['mobId']);
               },
             ),
           );

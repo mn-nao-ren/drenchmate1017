@@ -1,61 +1,135 @@
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:drenchmate_2024/business_logic/services/firestore_service.dart';
-import 'package:drenchmate_2024/business_logic/models/profile.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dashboard_view.dart';
 
 class ProfilePage extends StatefulWidget {
   static const id = 'profile_page';
-  final FirestoreService firestoreService;
-  final String userId;
-
-  const ProfilePage({super.key, required this.firestoreService, required this.userId});
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nameController;
-  late TextEditingController _emailController;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late String userId;
+  Map<String, dynamic>? userDetails;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController();
-    _emailController = TextEditingController();
+    userId = _auth.currentUser?.uid ?? '';
+    _fetchUserDetails();
+  }
+
+  Future<void> _fetchUserDetails() async {
+    try {
+      DocumentSnapshot userDoc = await _firestore.collection('users').doc(userId).get();
+      setState(() {
+        userDetails = userDoc.data() as Map<String, dynamic>?;
+      });
+    } catch (e) {
+      print('Error fetching user details: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error fetching user details: $e')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+        automaticallyImplyLeading: false,
+      ),
+      body: userDetails == null
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Name: ${userDetails!['username']}', style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 8),
+            Text('Email: ${userDetails!['email']}', style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 8),
+            Text('Contact Number: ${userDetails!['contactNumber']}', style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 8),
+            Text('Role: ${userDetails!['role']}', style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 16),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChangePasswordScreen()),
+                  );
+                },
+                child: const Text('Change Password'),
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: const MyNavigationBar(),
+    );
+  }
+}
+
+class ChangePasswordScreen extends StatefulWidget {
+  @override
+  _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
+}
+
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+  final _formKey = GlobalKey<FormState>();
+  late TextEditingController _currentPasswordController;
+  late TextEditingController _newPasswordController;
+  late TextEditingController _confirmPasswordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentPasswordController = TextEditingController();
+    _newPasswordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
+    _currentPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
-  Future<void> _saveProfile() async {
+  Future<void> _changePassword() async {
     if (_formKey.currentState!.validate()) {
-      final updatedProfile = Profile(
-        userId: widget.userId,
-        username: _nameController.text,
-        email: _emailController.text,
-        propertyId: '', // Assuming propertyId is not editable here; use the existing value if needed
-        role: '', // Set the role if it is needed; otherwise, update it based on your logic
-        permissions: [], // Provide default or existing permissions
-        createdAt: DateTime.now(), // Use the current date or existing date
-      );
-
       try {
-        await widget.firestoreService.saveUserProfile(updatedProfile);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated successfully')),
+        User user = FirebaseAuth.instance.currentUser!;
+        String email = user.email!;
+
+        // Reauthenticate the user
+        AuthCredential credential = EmailAuthProvider.credential(
+          email: email,
+          password: _currentPasswordController.text,
         );
-        Navigator.pushNamed(context, DashboardScreen.id);
+        await user.reauthenticateWithCredential(credential);
+
+        // Update the password
+        await user.updatePassword(_newPasswordController.text);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Password changed successfully')),
+        );
+
+        Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to update profile: $e')),
+          SnackBar(content: Text('Failed to change password: $e')),
         );
       }
     }
@@ -63,75 +137,64 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Profile>(
-      future: widget.firestoreService.fetchUserProfile(widget.userId),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('Profile')),
-            body: const Center(child: CircularProgressIndicator()),
-          );
-        }
-        if (snapshot.hasError) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('Profile')),
-            body: Center(child: Text('Error: ${snapshot.error}')),
-          );
-        }
-        if (!snapshot.hasData) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('Profile')),
-            body: const Center(child: Text('No profile data found.')),
-          );
-        }
-
-        Profile userProfile = snapshot.data!;
-        _nameController.text = userProfile.username;
-        _emailController.text = userProfile.email;
-
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Profile'),
-            automaticallyImplyLeading: false,
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(labelText: 'Name'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your name';
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(labelText: 'Email'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _saveProfile,
-                    child: const Text('Save'),
-                  ),
-                ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Change Password'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              TextFormField(
+                controller: _currentPasswordController,
+                obscureText: true,
+                decoration: const InputDecoration(labelText: 'Current Password'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your current password';
+                  }
+                  return null;
+                },
               ),
-            ),
+              TextFormField(
+                controller: _newPasswordController,
+                obscureText: true,
+                decoration: const InputDecoration(labelText: 'New Password'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your new password';
+                  }
+                  if (value.length < 6) {
+                    return 'Password should be at least 6 characters';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _confirmPasswordController,
+                obscureText: true,
+                decoration: const InputDecoration(labelText: 'Confirm Password'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please confirm your new password';
+                  }
+                  if (value != _newPasswordController.text) {
+                    return 'Passwords do not match';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _changePassword,
+                child: const Text('Change Password'),
+              ),
+            ],
           ),
-          bottomNavigationBar: const MyNavigationBar(),
-        );
-      },
+        ),
+      ),
     );
   }
 }

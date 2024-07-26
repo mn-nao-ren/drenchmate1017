@@ -49,6 +49,7 @@ class _CreateMobPageState extends State<CreateMobPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         foregroundColor: Colors.blue.shade900,
+        automaticallyImplyLeading: false,
         title: Row(
           children: [
             Text(

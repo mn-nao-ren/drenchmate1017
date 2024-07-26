@@ -112,7 +112,7 @@ class MyNavigationBar extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => ProfilePage(firestoreService: firestoreService, userId: userId),
+            builder: (context) => ProfilePage(),
           ),
         );
         break;

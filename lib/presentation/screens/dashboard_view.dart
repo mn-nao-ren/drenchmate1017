@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'package:drenchmate_2024/presentation/screens/chemical_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/enter_egg_test_results.dart';
+import 'package:drenchmate_2024/presentation/screens/view_egg_results_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:drenchmate_2024/presentation/components/highlight_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.dart';
 import 'package:drenchmate_2024/presentation/screens/setup_property_screen.dart';
+import 'package:drenchmate_2024/presentation/screens/view_egg_results_page.dart';
 import 'package:drenchmate_2024/presentation/screens/drench_entry_screen.dart';
 import 'package:drenchmate_2024/presentation/screens/create_mob_page.dart';
 import 'package:drenchmate_2024/presentation/components/username.dart';
@@ -57,7 +59,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(width: 18),
+                const SizedBox(width: 24),
                 ClipOval(
                     child: Image.asset('assets/round_logo.png',
                         height: 42, width: 42)),
@@ -271,7 +273,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         title: 'Parasite Test',
                         subtitle: 'Worm egg counts',
                         buttonText: 'Enter results',
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamed(context, ViewEggResultsPage.id);
+                        },
                         onButtonPressed: () {
                           Navigator.pushNamed(context, EnterResultsPage.id);
                         },
