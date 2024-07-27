@@ -2,6 +2,7 @@ import 'package:drenchmate_2024/presentation/components/bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dashboard_view.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -42,7 +43,13 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text(
+            '                         Profile',
+          style: GoogleFonts.epilogue(
+            fontWeight: FontWeight.w900,
+            color: Colors.blue.shade900,
+          )
+        ),
         automaticallyImplyLeading: false,
       ),
       body: userDetails == null

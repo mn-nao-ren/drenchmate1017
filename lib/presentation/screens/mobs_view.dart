@@ -39,22 +39,21 @@ class _MobsViewState extends State<MobsView> {
     }
   }
 
-  Future<void> _updatePaddockId(String userId, String mobId, int newPaddockId) async {
+  Future<void> _updatePaddockId(String userId, String mobNumber, int newPaddockId) async {
     try {
       await _firestore
           .collection('users')
           .doc(userId)
           .collection('mobs')
-          .doc(mobId)
+          .doc(mobNumber)
           .update({'paddockId': newPaddockId});
       print('Paddock ID updated successfully');
     } catch (e) {
       print('Failed to update paddock ID: $e');
-      // Handle the error appropriately, e.g., show a message to the user
     }
   }
 
-  void _showChangePaddockDialog(String userId, String mobId) {
+  void _showChangePaddockDialog(String userId, String mobNumber) {
     final TextEditingController _paddockIdController = TextEditingController();
 
     showDialog(
@@ -70,10 +69,12 @@ class _MobsViewState extends State<MobsView> {
           actions: [
             TextButton(
               onPressed: () async {
-                final int newPaddockId = int.parse(_paddockIdController.text);
-                await _updatePaddockId(userId, mobId, newPaddockId);
-                Navigator.of(context).pop();
-                _loadMobs(); // Refresh the mobs list
+                if (_paddockIdController.text.isNotEmpty) {
+                  final int newPaddockId = int.parse(_paddockIdController.text);
+                  await _updatePaddockId(userId, mobNumber, newPaddockId);
+                  Navigator.of(context).pop();
+                  _loadMobs(); // Refresh the mobs list
+                }
               },
               child: const Text('Change'),
             ),
@@ -95,15 +96,14 @@ class _MobsViewState extends State<MobsView> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         foregroundColor: Colors.blue.shade900,
-
         title: Row(
           children: [
             Text(
-              'All Mobs',
+              'All Mobs (tap mob to change paddock number)',
               style: GoogleFonts.epilogue(
                 color: Colors.blue.shade900,
                 fontWeight: FontWeight.bold,
-                fontSize: 19,
+                fontSize: 16,
               ),
             ),
             const SizedBox(width: 5),
@@ -117,13 +117,25 @@ class _MobsViewState extends State<MobsView> {
         itemCount: mobs.length,
         itemBuilder: (context, index) {
           final mob = mobs[index];
+          final mobName = mob['mobName'] ?? 'No Name';
+          final paddockId = mob['paddockId']?.toString() ?? 'No Paddock';
+          final mobNumber = mob['mobNumber']?.toString() ?? 'No Mob Number';
+          final userId = mob['userId'] ?? '';
+
           return Card(
             margin: const EdgeInsets.all(8.0),
             child: ListTile(
-              title: Text(mob['mobName'] ?? 'No Name'),
-              subtitle: Text('Paddock: ${mob['paddockId']} - Mob Number: ${mob['mobNumber']}'),
+              title: Text(mobName),
+              subtitle: Text('Paddock: $paddockId - Mob Number: $mobNumber'),
               onTap: () {
-                _showChangePaddockDialog(mob['userId'], mob['mobId']);
+                if (userId.isNotEmpty && mobNumber.isNotEmpty) {
+                  _showChangePaddockDialog(userId, mobNumber);
+                } else {
+                  // Handle the case where userId or mobNumber is empty
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Invalid userId or mobNumber')),
+                  );
+                }
               },
             ),
           );

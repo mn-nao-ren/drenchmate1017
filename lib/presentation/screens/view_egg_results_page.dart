@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class ViewEggResultsPage extends StatefulWidget {
   static const String id = 'view_egg_results_page';
@@ -50,7 +52,13 @@ class _ViewEggResultsPageState extends State<ViewEggResultsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View Egg Results'),
+        title: Text(
+          '         View Egg Results',
+          style: GoogleFonts.lato(
+
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: fetchEggResults(),
@@ -67,10 +75,44 @@ class _ViewEggResultsPageState extends State<ViewEggResultsPage> {
               itemCount: eggResults.length,
               itemBuilder: (context, index) {
                 var result = eggResults[index];
-                return ListTile(
-                  title: Text(result['mobName']),
-                  subtitle: Text(
-                      'Egg Count: ${result['eggCount']}\nDate: ${result['dateRecorded']}'),
+                return Card(
+                  margin: EdgeInsets.all(10),
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          result['mobName'],
+                          style: GoogleFonts.epilogue(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue.shade900,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'Egg Count: ${result['eggCount']}',
+                          style: GoogleFonts.epilogue(
+                            fontSize: 18,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'Date: ${DateFormat('yyyy-MM-dd').format(result['dateRecorded'])}',
+                          style: GoogleFonts.epilogue(
+                            fontSize: 16,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               },
             );
